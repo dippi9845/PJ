@@ -1,2 +1,2 @@
 # PJ-PayloadInjectionTool
-Payload injection tool
+A generic payload injection tool, written in python
