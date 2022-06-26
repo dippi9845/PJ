@@ -20,4 +20,10 @@ class WebPage:
         
         self.__injectables = injectables
     
+    def addIjectable(self, inj : Injectable):
+        self.__injectables.add(inj)
+    
+    def getInjectables(self):
+        return dict(self.__injectables)
+    
     
