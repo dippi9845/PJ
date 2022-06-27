@@ -16,8 +16,11 @@ class WebDriver(webdriver):
     def getElementBy(self, locate : str, type : Type):
         return self.__driver.find_element(type, locate)
     
-    def getElementsBy(self, locate : str, type : Type):
-        return self.__driver.find_elements(type, locate)
+    def setUrl(self, url : str):
+        return self.__driver.get(url=url)
+
+    def setText(self, element, text : str):
+        element.send_keys(text)
     
     def clickOnElement(self, element):
         element.click()
