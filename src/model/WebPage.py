@@ -1,4 +1,4 @@
-import Injectable
+import injectable.Injectable as Injectable
 
 class WebPage:
 
