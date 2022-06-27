@@ -10,6 +10,10 @@ class WebDriver(webdriver):
     def __init__(self, driver=webdriver.Firefox()) -> None:
         self.__driver = driver
     
+    def __init__(self, url : str, driver=webdriver.Firefox()) -> None:
+        self.__driver = driver
+        self.setUrl(url)
+
     def getWebDriver(self) -> webdriver:
         return self.__driver
 
