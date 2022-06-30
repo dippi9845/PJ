@@ -25,7 +25,7 @@ class Variable(Injectable):
 
     def _clear(self):
         self.__content = ""
- 
+
     def inject(self, payload : str):
         if self.__variable == True:
             self._clear()
