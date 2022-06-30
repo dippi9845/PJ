@@ -1,4 +1,4 @@
-import injectable.Injectable as Injectable
+from injectable.Injectable import Injectable
 
 class WebPage:
 
@@ -26,4 +26,7 @@ class WebPage:
     def getInjectables(self) -> dict:
         return dict(self.__injectables)
     
+    def injectAll(self, payload : str) -> None:
+        for i in self.__injectables:
+            i.inject(payload)
     
