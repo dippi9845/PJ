@@ -20,13 +20,13 @@ class WebPage:
         
         self.__injectables = injectables
     
-    def addIjectable(self, inj : Injectable) -> None:
+    def add_ijectable(self, inj : Injectable) -> None:
         self.__injectables.add(inj)
     
-    def getInjectables(self) -> dict:
+    def get_injectables(self) -> dict:
         return dict(self.__injectables)
     
-    def injectAll(self, payload : str) -> None:
+    def inject_all(self, payload : str) -> None:
         for i in self.__injectables:
             i.inject(payload)
     

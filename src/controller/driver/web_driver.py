@@ -14,17 +14,17 @@ class WebDriver(webdriver):
         self.__driver = driver
         self.setUrl(url)
 
-    def getWebDriver(self) -> webdriver:
+    def get_web_driver(self) -> webdriver:
         return self.__driver
 
-    def getElementBy(self, locate : str, type : Type):
+    def get_element_by(self, locate : str, type : Type):
         return self.__driver.find_element(type, locate)
     
-    def setUrl(self, url : str):
+    def set_url(self, url : str):
         return self.__driver.get(url=url)
 
-    def setText(self, element, text : str):
+    def set_text(self, element, text : str):
         element.send_keys(text)
     
-    def clickOnElement(self, element):
+    def click_on_element(self, element):
         element.click()

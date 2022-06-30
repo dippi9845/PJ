@@ -1,4 +1,3 @@
-
 class Injectable:
 
     def _clear():

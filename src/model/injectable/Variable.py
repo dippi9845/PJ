@@ -11,16 +11,16 @@ class Variable(Injectable):
     def __str__(self):
         return self.__varName + "=" + self.__content
     
-    def getVariableName(self):
+    def get_variable_name(self):
         return self.__varName
     
-    def getProtocol(self):
+    def get_protocol(self):
         return self.__protocol
     
-    def isVaraible(self):
+    def is_varaible(self):
         return self.__isVariable
     
-    def getContent(self):
+    def get_content(self):
         return self.__content
 
     def _clear(self):
