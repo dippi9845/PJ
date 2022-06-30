@@ -1,4 +1,4 @@
-import Injectable
+from injectable import Injectable
 '''
 This class in not instantiable, need to be defined _clear and inject,
 in the controller, couse is up to the controller how to inject the
