@@ -1,4 +1,4 @@
-import Injectable
+from injectable import Injectable
 
 class Variable(Injectable):
 

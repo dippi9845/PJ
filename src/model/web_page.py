@@ -1,4 +1,4 @@
-from injectable.Injectable import Injectable
+from injectable.injectable import Injectable
 
 class WebPage:
 

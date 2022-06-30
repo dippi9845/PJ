@@ -1,5 +1,5 @@
 from selenium import webdriver
-import Type
+import type
 '''
 An abstraction to the selenium web driver
 '''
@@ -17,7 +17,7 @@ class WebDriver(webdriver):
     def get_web_driver(self) -> webdriver:
         return self.__driver
 
-    def get_element_by(self, locate : str, type : Type):
+    def get_element_by(self, locate : str, type : type):
         return self.__driver.find_element(type, locate)
     
     def set_url(self, url : str):
