@@ -1,7 +1,7 @@
 '''
 An interface that model a whatever thing that can be injected a payload
 '''
-class Injectableinterface:
+class Injectable:
 
     def _clear():
         pass
