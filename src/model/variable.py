@@ -3,10 +3,11 @@ This class model a url a varaible
 '''
 class Variable:
 
-    def __init__(self, var_name : str, protocol : str, content="") -> None:
+    def __init__(self, var_name : str, protocol : str, content="", value_setter="=") -> None:
         self.__var_name =  var_name
         self.__protocol = protocol
         self.__content = content
+        self.__value_setter = value_setter
     
     def _set_content(self, content : str) -> None:
         self.__content = content
@@ -21,4 +22,4 @@ class Variable:
         return self.__content
     
     def __str__(self) -> str:
-        return self.__var_name + "=" + self.__content
+        return self.__var_name + self.__value_setter + self.__content
