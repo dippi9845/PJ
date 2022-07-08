@@ -14,5 +14,5 @@ class TerminalView(MainView):
     def ask_input(string : str) -> str:
         return input(string)
 
-    def log(self, string: str):
-        print(string)
+    def log(self, string: str, end='\n'):
+        print(string, end=end)

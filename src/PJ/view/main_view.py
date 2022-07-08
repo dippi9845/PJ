@@ -17,7 +17,7 @@ class MainView:
     def ask_input(self, string : str) -> str:
         pass
 
-    def log(self, string : str):
+    def log(self, string : str, end='\n'):
         pass
 
     def log_info(self, string : str, level_of_log=3):
