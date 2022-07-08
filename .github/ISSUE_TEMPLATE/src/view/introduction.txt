@@ -1,0 +1,6 @@
+This is PJ, a python tool for injecting any kind of vulnerability,
+into Urls, Web Pages for now. I is a open source tool,
+see https://github.com/dippi9845/PJ-PayloadInjectionTool/ for more detail.
+Before copying read LICENSE file.
+Enjoy.
+--------------------------------------------
