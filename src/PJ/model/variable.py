@@ -1,5 +1,5 @@
 '''
-This class model a url a varaible
+This class model a varaible in the url
 '''
 class Variable:
 
