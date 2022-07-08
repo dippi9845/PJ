@@ -1,11 +1,18 @@
 from ..main_view import MainView
 
 class TerminalView(MainView):
-    def introduction():
-        pass
+    
+    INTRODUCTION_FILE = "../../../../res/view/introduction.txt"
+
+    def __init__(self) -> None:
+        self.introduction()
+
+    def introduction(self):
+        with open(self.INTRODUCTION_FILE) as file:
+            print(file.read())
 
     def ask_input(string : str) -> str:
-        pass
+        return input(string)
 
     def log_info():
         pass
