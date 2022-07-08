@@ -14,11 +14,5 @@ class TerminalView(MainView):
     def ask_input(string : str) -> str:
         return input(string)
 
-    def log_info():
-        pass
-
-    def log_warning():
-        pass
-
-    def log_error():
-        pass
+    def log(self, string: str):
+        print(string)
