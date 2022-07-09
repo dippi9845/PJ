@@ -7,6 +7,7 @@ class TerminalView(MainView):
 
     WARINING_SEGNALATION = "[" + Fore.YELLOW + "WARINIG" + Fore.WHITE + "] "
     ERROR_SEGNALATION = "[" + Fore.RED + "ERROR" + Fore.WHITE + "] "
+    INFO_SEGNALATION = "[" + Fore.CYAN + "INFO" + Fore.WHITE +"] "
 
     def __init__(self) -> None:
         self.introduction()
@@ -26,3 +27,10 @@ class TerminalView(MainView):
     
     def log_error(self, string: str):
         return super().log_error(self.ERROR_SEGNALATION + string)
+    
+    def log_info(self, string: str, level_of_log=3):
+        
+        if level_of_log == 3:
+            return super().log_info(self.INFO_SEGNALATION + string, level_of_log)
+        else:
+            return super().log_info(string, level_of_log)
