@@ -2,6 +2,8 @@ from PJ.model.variable import Variable
 from ....model.injectable.injectable import Injectable
 from ....model.injectable.fixed_variable import FixedVariable
 from ....model.injectable.injectable_variable import InjectableVariable
+from functools import reduce
+from ..url import urls
 
 class UrlInjector:
 
@@ -20,8 +22,14 @@ class UrlInjector:
             var.inject(payload)
 
     '''
-    Inject all payloads
+    Inject all payloads, to a given url
     '''
-    def inject_all(self):
+    def inject_all(self, url : str):
         for payload in self.__payloads:
             self.__inject_all_variable(payload)
+            
+            dicts = map(lambda x: x.to_dict(), self.__vars) + map(lambda x: x.to_dict(), self.__fixed_vars)
+            params = reduce(lambda x,y : x.update(y), dicts)
+
+            urls.url_request(url, params)
+            
