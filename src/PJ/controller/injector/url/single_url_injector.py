@@ -1,4 +1,3 @@
-from PJ.model.variable import Variable
 from ....model.injectable.injectable import Injectable
 from ....model.injectable.fixed_variable import FixedVariable
 from ....model.injectable.injectable_variable import InjectableVariable
@@ -14,10 +13,12 @@ class SingleUrlInjector:
         self.__fixed_vars = fixed_vars
         self.__request = request
     
-    '''
-    lo farei pure iterabile
-    '''
+    def __iter__(self):
+        return self
 
+    def __next__(self):
+        pass
+    
     def __inject_all_variable(self, payload : str) -> None:
         for var in self.__vars:
             var.inject(payload)
