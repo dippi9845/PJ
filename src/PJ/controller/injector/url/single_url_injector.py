@@ -7,11 +7,12 @@ from ..url import urls
 
 class SingleUrlInjector:
 
-    def __init__(self, url: str, payloads : list[str], vars : list[InjectableVariable], vars_in_url_are_fixed=True, fixed_vars=[]) -> None:
+    def __init__(self, url: str, payloads : list[str], vars : list[InjectableVariable], vars_in_url_are_fixed=True, fixed_vars=[], request=urls.url_request) -> None:
         self.__url = url
         self.__payloads = payloads
         self.__vars = vars
         self.__fixed_vars = fixed_vars
+        self.__request = request
     
     '''
     lo farei pure iterabile
@@ -31,4 +32,4 @@ class SingleUrlInjector:
             dicts = map(lambda x: x.to_dict(), self.__vars) + map(lambda x: x.to_dict(), self.__fixed_vars)
             params = reduce(lambda x,y : x.update(y), dicts)
 
-            urls.url_request(self.url, params)
+            self.__request(self.url, params)
