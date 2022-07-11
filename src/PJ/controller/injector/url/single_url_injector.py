@@ -1,5 +1,3 @@
-from ....model.injectable.injectable import Injectable
-from ....model.injectable.fixed_variable import FixedVariable
 from ....model.injectable.injectable_variable import InjectableVariable
 from functools import reduce
 from ..url import urls
