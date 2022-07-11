@@ -14,12 +14,12 @@ class SingleUrlInjector:
         self.__request = request
     
     def __iter__(self):
-        return self
+        return SingleUrlInjectorIterator(self)
 
-    def __next__(self):
-        pass
-    
-    def __inject_all_variable(self, payload : str) -> None:
+    def _get_payload(self, index : int):
+        return self.__payloads[index]
+
+    def _inject_all_variable(self, payload : str) -> None:
         for var in self.__vars:
             var.inject(payload)
 
@@ -34,3 +34,18 @@ class SingleUrlInjector:
             params = reduce(lambda x,y : x.update(y), dicts)
 
             self.__request(self.url, params)
+
+class SingleUrlInjectorIterator:
+
+    def __init__(self, url_injector : SingleUrlInjector) -> None:
+        self.__index = 0
+        self.__url_injector = url_injector
+    
+    def __next__(self) -> str:
+        if self.__index < len(self.__payloads):
+            payload = self.__url_injector._get_payload(self.__index)
+            self.__url_injector._inject_all_variable(payload)
+            self.__index += 1
+            return payload
+        else:
+            raise StopIteration
