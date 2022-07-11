@@ -10,4 +10,7 @@ class UrlsInjector:
     '''
     lo farei pure iterabile
     '''
-            
+    
+    def inject_all(self):
+        for i in self.__urls:
+            i.inject_all()
