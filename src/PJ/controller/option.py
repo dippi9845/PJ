@@ -1,4 +1,5 @@
 from enum import Enum
+from PJ.model.variable import FixedVariable, InjectableVariable, Variable
 
 class InjectionType(Enum):
     URL = 1
@@ -22,3 +23,14 @@ class Option:
 
         else:
             raise TypeError("Unsupported url type")
+    
+    def add_variable(self, var : Variable):
+        
+        if type(var) == InjectableVariable:
+            self.variable.append(var)
+        
+        elif type(var) == FixedVariable:
+            self.fixed_variable.append(var)
+        
+        else:
+            raise TypeError("this variable is not supported")
