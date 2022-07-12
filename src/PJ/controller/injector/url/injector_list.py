@@ -1,5 +1,5 @@
 from single_url_injector import SingleUrlInjector
-from ....model.injectable.injectable_variable import InjectableVariable
+from ....model.injectable_variable import InjectableVariable
 
 class InjectorList:
     def __init__(self, injectors : list[SingleUrlInjector]):
