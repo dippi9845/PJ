@@ -18,7 +18,7 @@ class Option:
         if type(self.url) == str:
             self.url = [self.url, url]
         
-        elif type(self.url) == list[str]:
+        elif type(self.url) == list:
             self.url.append(url)
 
         else:
