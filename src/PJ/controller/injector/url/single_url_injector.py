@@ -1,6 +1,6 @@
 from ....model.variable import InjectableVariable
 from functools import reduce
-from ..url import urls
+import urls
 
 class SingleUrlInjector:
 
