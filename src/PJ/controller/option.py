@@ -37,3 +37,6 @@ class Option:
     
     def to_dict(self) -> dict:
         pass
+
+def by_file(filename : str):
+    pass
