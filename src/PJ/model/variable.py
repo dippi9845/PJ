@@ -1,3 +1,5 @@
+from injectable import Injectable
+
 '''
 This class model a varaible in the url
 '''
@@ -22,3 +24,22 @@ class Variable:
     
     def to_dict(self):
         return {self.__var_name : self.__content}
+
+''' 
+This is a variable that can't be injected anything
+'''
+class FixedVariable(Injectable, Variable):
+
+    def __init__(self, var_name : str, protocol : str, content="") -> None:
+        super().__init__(var_name, protocol, content)
+
+
+class InjectableVariable(Injectable, Variable):
+    def __init__(self, var_name : str, protocol : str, content="") -> None:
+        super().__init__(var_name, protocol, content)
+
+    def _clear(self) -> None:
+        self._set_content("")
+
+    def inject(self, payload : str) -> None:
+        self._set_content(payload)
