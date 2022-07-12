@@ -1,4 +1,4 @@
-from ....model.injectable_variable import InjectableVariable
+from ....model.variable import InjectableVariable
 from functools import reduce
 from ..url import urls
 
