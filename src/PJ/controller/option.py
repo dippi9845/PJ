@@ -14,7 +14,7 @@ class Option:
             self.variable = []
             self.fixed_variable = []
 
-    def add_url(self, url : str):
+    def add_url(self, url : str) -> None:
         if type(self.url) == str:
             self.url = [self.url, url]
         
@@ -24,7 +24,7 @@ class Option:
         else:
             raise TypeError("Unsupported url type")
     
-    def add_variable(self, var : Variable):
+    def add_variable(self, var : Variable) -> None:
         
         if type(var) == InjectableVariable:
             self.variable.append(var)
@@ -34,3 +34,6 @@ class Option:
         
         else:
             raise TypeError("this variable is not supported")
+    
+    def to_dict(self) -> dict:
+        pass
