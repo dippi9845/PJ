@@ -5,7 +5,10 @@ class InjectorList:
     def __init__(self, injectors : list[SingleUrlInjector]):
         self.__injectors = injectors
 
-    def inject_all(self):
+    def __iter__(self):
+        return InjectorListIterator(self)
+
+    def _inject_all(self):
         for i in self.__injectors:
             i.inject_all()
     
@@ -14,6 +17,12 @@ class InjectorList:
         rtr = map(lambda x: InjectorList(x.copy()), rtr)
         return rtr
 
+class InjectorListIterator:
+    def __init__(self) -> None:
+        pass
+    
+    def __iter(self):
+        pass
 '''
     create an Injector list by values, with payloads different by every Single Url Injector
 '''
