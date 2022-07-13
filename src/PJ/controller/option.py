@@ -6,7 +6,7 @@ class InjectionType(Enum):
     WEBDRIVER = 2
 
 class Option:
-    def __init__(self, injection_type : InjectionType, url : str) -> None:
+    def __init__(self, injection_type : InjectionType, url : str, payloads : list[str]) -> None:
         self.injection_type = injection_type
         self.url = url
 
