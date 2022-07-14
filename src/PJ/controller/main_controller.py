@@ -8,8 +8,6 @@ class MainController:
         self.set_option(run)
         self.__view = view
     
-    def complete_option():
-        pass
 
     def set_option(self, run : Option) -> None:
         self.__run = run
