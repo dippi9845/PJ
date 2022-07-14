@@ -1,5 +1,5 @@
 from enum import Enum
-from PJ.model.variable import FixedVariable, InjectableVariable, Variable
+from ..model.variable import FixedVariable, InjectableVariable, Variable
 
 class InjectionType(Enum):
     URL = 1
