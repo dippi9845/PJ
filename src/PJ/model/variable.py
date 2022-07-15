@@ -5,7 +5,7 @@ This class model a varaible in the url
 '''
 class Variable:
 
-    def __init__(self, var_name : str, protocol : str, content="") -> None:
+    def __init__(self, var_name : str, protocol="GET", content="") -> None:
         self.__var_name =  var_name
         self.__protocol = protocol
         self.__content = content
@@ -22,20 +22,28 @@ class Variable:
     def get_content(self) -> str:
         return self.__content
     
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {self.__var_name : self.__content}
+
+
+def from_dict(value : dict) -> Variable:
+    name = list(value.keys())[0]
+    content = list(value.values())[0]
+
+    return Variable(name, content=content)
+
 
 ''' 
 This is a variable that can't be injected anything
 '''
 class FixedVariable(Injectable, Variable):
 
-    def __init__(self, var_name : str, protocol : str, content="") -> None:
+    def __init__(self, var_name : str, protocol="GET", content="") -> None:
         super().__init__(var_name, protocol, content)
 
 
 class InjectableVariable(Injectable, Variable):
-    def __init__(self, var_name : str, protocol : str, content="") -> None:
+    def __init__(self, var_name : str, protocol="GET", content="") -> None:
         super().__init__(var_name, protocol, content)
 
     def _clear(self) -> None:
