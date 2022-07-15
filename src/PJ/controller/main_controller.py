@@ -21,4 +21,4 @@ class MainController:
         pass
 
 def by_file(filename : str, view : MainView) -> MainController:
-    return MainController(option_by_file(filename), view)
+    return MainController(view, option=option_by_file(filename))
