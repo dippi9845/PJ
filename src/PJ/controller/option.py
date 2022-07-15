@@ -51,7 +51,7 @@ def by_file(filename : str) -> Option:
             tmp.variable = map(from_dict, data["variable"])
             tmp.fixed_variable = map(from_dict, data["fixed_variable"])
 
-
+            return tmp
         
         elif data["injection_type"] == InjectionType.WEBDRIVER:
             pass
