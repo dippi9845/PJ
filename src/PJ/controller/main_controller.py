@@ -5,11 +5,17 @@ from option import by_file as option_by_file
 class MainController:
 
     def __init__(self, view : MainView , option=None) -> None:
-        self.set_option(option)
         self.__view = view
+        self.set_option(option)
 
-    def set_option(self, run : Option) -> None:
-        self.__run = run
+    def _complete_option(self):
+        pass
+
+    def set_option(self, option : Option) -> None:
+        if option == None:
+            self._complete_option()
+        else:
+            self.__option = option
 
     def start_injecting(self):
         pass
