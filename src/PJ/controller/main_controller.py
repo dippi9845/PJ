@@ -4,10 +4,9 @@ from option import by_file as option_by_file
 
 class MainController:
 
-    def __init__(self, run : Option, view : MainView) -> None:
-        self.set_option(run)
+    def __init__(self, view : MainView , option=None) -> None:
+        self.set_option(option)
         self.__view = view
-    
 
     def set_option(self, run : Option) -> None:
         self.__run = run
