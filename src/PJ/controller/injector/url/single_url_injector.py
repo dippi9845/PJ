@@ -25,6 +25,7 @@ class SingleUrlInjector:
     Inject all payloads, to a given url
     '''
     def inject_all(self):
+        # TODO: __inject_all_variable non è definita
         for payload in self.__payloads:
             self.__inject_all_variable(payload)
             
