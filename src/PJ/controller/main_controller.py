@@ -28,7 +28,7 @@ class MainController:
     def _complete_option(self):
         in_type = self.__view.ask_input("what kind of injection would you like to perform ? \n" + InjectionType.URL.value + " : to perform url injection\n" + InjectionType.WEBDRIVER.value + " : to perform web page injection")
         
-        in_type = InjectionType(int(in_type))
+        in_type = InjectionType(in_type)
 
         urls = self._ask_for_multiple("Insert an url (hit enter to exit)\n")
         

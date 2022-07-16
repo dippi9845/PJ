@@ -3,8 +3,8 @@ from ..model.variable import FixedVariable, InjectableVariable, Variable, from_d
 from json import loads
 
 class InjectionType(Enum):
-    URL = 1
-    WEBDRIVER = 2
+    URL = "1"
+    WEBDRIVER = "2"
 
 class Option:
     def __init__(self, injection_type : InjectionType, url, payloads : list[str]) -> None:
@@ -64,13 +64,13 @@ def by_file(filename : str) -> Option:
         data = loads(f.read())
         tmp = Option(data["injection_type"], data["url"], data["payloads"])
         
-        if int(data["injection_type"]) is InjectionType.URL.value:
+        if data["injection_type"] is InjectionType.URL.value:
             
             tmp.variable = map(from_dict, data["variable"])
             tmp.fixed_variable = map(from_dict, data["fixed_variable"])
 
             return tmp
         
-        elif int(data["injection_type"]) is InjectionType.WEBDRIVER.value:
+        elif data["injection_type"] is InjectionType.WEBDRIVER.value:
             pass
         
