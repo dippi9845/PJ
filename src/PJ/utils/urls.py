@@ -12,9 +12,15 @@ def url_parameters(url : str) -> dict:
     return dict(parse_qsl(urlparse(url).query))
 
 def remove_query(url : str) -> str:
+    '''
+    Remove the query part from given url
+    '''
     return urljoin(url, urlparse(url).path)
 
 def unparse_url(url: str, params : dict) -> str:
+    '''
+    Create an url by given parameters
+    '''
     if url[-1] != "?":
         url = url + "?"
     
