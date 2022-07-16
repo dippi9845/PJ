@@ -1,8 +1,7 @@
 from functools import reduce
-from PJ.controller.option import InjectionType
-from PJ.view.main_view import MainView
-from option import Option
-from option import by_file as option_by_file
+from ..view.main_view import MainView
+from option import Option, InjectionType, by_file as option_by_file
+from ..model.variable import Variable, FixedVariable
 
 class MainController:
 
@@ -42,7 +41,14 @@ class MainController:
 
         self.__option = Option(in_type, urls, payloads)
 
-        variables = self._ask_for_multiple("Insert varaible name, and value separed by a space (hiy enter to exit)\n")
+        variables = self._ask_for_multiple("Insert varaible name, and value separed by a space (hit enter to exit)\n")
+        variables = map(lambda x: x.split(" "), variables)
+        variables = map(lambda x: Variable(x[0], content=x[1]), variables)
+        self.__option.variable = variables
+
+        fixed_varariables = self._ask_for_multiple("Insert fixed varaible name, and value separed by a space (hit enter to exit)\n")
+        fixed_varariables = map(lambda x: x.split(" "), fixed_varariables)
+        fixed_varariables = map(lambda x: FixedVariable(x[0], content=x[1]), fixed_varariables)
         
 
     def set_option(self, option : Option) -> None:
