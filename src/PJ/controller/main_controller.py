@@ -1,3 +1,4 @@
+from functools import reduce
 from PJ.controller.option import InjectionType
 from PJ.view.main_view import MainView
 from option import Option
@@ -35,8 +36,12 @@ class MainController:
         if urls is []:
             raise TypeError("A least one url need to be setted")
         
+        payloads = self._ask_for_multiple("Inesert path of file that contais payloads (hit enter to exit)\n")
+        payloads = map(self._get_payloads_from_file, payloads)
+        payloads = reduce(lambda x, y: x + y, payloads)
 
-
+        self.__option = Option(in_type, urls, payloads)
+        
 
     def set_option(self, option : Option) -> None:
         if option == None:
