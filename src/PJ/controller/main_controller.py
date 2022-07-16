@@ -49,7 +49,7 @@ class MainController:
         fixed_varariables = self._ask_for_multiple("Insert fixed varaible name, and value separed by a space (hit enter to exit)\n")
         fixed_varariables = map(lambda x: x.split(" "), fixed_varariables)
         fixed_varariables = map(lambda x: FixedVariable(x[0], content=x[1]), fixed_varariables)
-        
+        self.__option.fixed_variable = fixed_varariables
 
     def set_option(self, option : Option) -> None:
         if option == None:
