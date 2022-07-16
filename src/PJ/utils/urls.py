@@ -3,6 +3,9 @@ from requests import Response
 from urllib.parse import urlparse, parse_qsl, urljoin, urlencode
 
 def url_request(url : str, params=None) -> Response:
+    '''
+    Perform a get request
+    '''
     return get_request(url=url, params=params)
 
 def url_parameters(url : str) -> dict:
