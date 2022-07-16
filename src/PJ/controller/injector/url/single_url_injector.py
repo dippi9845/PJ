@@ -40,6 +40,7 @@ class SingleUrlInjectorIterator:
         self.__url_injector = url_injector
     
     def __next__(self) -> str:
+        # self.__payloads non è definita
         if self.__index < len(self.__payloads):
             payload = self.__url_injector._get_payload(self.__index)
             self.__url_injector._inject_all_variable(payload)
