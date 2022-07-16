@@ -4,7 +4,7 @@ import urls
 
 class SingleUrlInjector:
 
-    def __init__(self, url: str, payloads : list[str], vars : list[InjectableVariable], vars_in_url_are_fixed=True, fixed_vars=[], request=urls.url_request) -> None:
+    def __init__(self, url: str, payloads : list[str], vars : list[InjectableVariable], fixed_vars=[], request=urls.url_request) -> None:
         self.__url = url
         self.__payloads = payloads
         self.__vars = vars
