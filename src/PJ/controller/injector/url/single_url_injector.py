@@ -1,10 +1,10 @@
 from ....model.variable import InjectableVariable
 from functools import reduce
-import urls
+from ....utils.urls import url_request
 
 class SingleUrlInjector:
 
-    def __init__(self, url: str, payloads : list[str], vars : list[InjectableVariable], fixed_vars=[], request=urls.url_request) -> None:
+    def __init__(self, url: str, payloads : list[str], vars : list[InjectableVariable], fixed_vars=[], request=url_request) -> None:
         self.__url = url
         self.__payloads = payloads
         self.__vars = vars
