@@ -21,10 +21,21 @@ class MainController:
         
         return rtr
 
+    def _get_payloads_from_file(filename : str, split_flag="\n") -> list:
+        with open(filename, "r") as f:
+            return f.read().split(split_flag)
 
     def _complete_option(self):
         in_type = self.__view.ask_input("what kind of injection would you like to perform ? \n" + InjectionType.URL.value + " : to perform url injection\n" + InjectionType.WEBDRIVER.value + " : to perform web page injection")
+        
         in_type = InjectionType(int(in_type))
+
+        urls = self._ask_for_multiple("Insert an url (hit enter to exit)\n")
+        
+        if urls is []:
+            raise TypeError("A least one url need to be setted")
+        
+
 
 
     def set_option(self, option : Option) -> None:
