@@ -2,6 +2,17 @@ from enum import Enum
 from ..model.variable import FixedVariable, InjectableVariable, Variable, from_dict
 from json import loads
 
+'''
+Da rifare tutto:
+    option ora contiene:
+        1) i vari file dei payload
+        2) i vari file dove trovare gli oggetti da iniettare Url
+        3) quanti threa creare per l'iniezione
+    
+    option deve essere esportabile via file
+
+'''
+
 class InjectionType(Enum):
     URL = "1"
     WEBDRIVER = "2"
