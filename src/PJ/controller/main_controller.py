@@ -41,6 +41,8 @@ class MainController:
         payloads = reduce(lambda x, y: x + y, payloads)
 
         self.__option = Option(in_type, urls, payloads)
+
+        variables = self._ask_for_multiple("Insert varaible name, and value separed by a space (hiy enter to exit)\n")
         
 
     def set_option(self, option : Option) -> None:
