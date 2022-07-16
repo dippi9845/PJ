@@ -53,7 +53,8 @@ class Option:
             rtr["variable"] = variable
             rtr["fixed_variable"] = fixed_variable
 
-        
+            return rtr
+
         elif self.__injection_type is InjectionType.WEBDRIVER:
             pass
             
