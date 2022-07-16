@@ -15,7 +15,7 @@ class MainController:
         rtr = []
         
         while tmp is not "":
-            tmp = input(question)
+            tmp = self.__view.ask_input(question)
             rtr.append(tmp)
         
         rtr.pop()
