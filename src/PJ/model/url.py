@@ -4,8 +4,8 @@ class Url:
     def __init__(self, url : str, injectable_varaible=[], fixed_variable=[] ,vars_in_url_are_fixed=True) -> None:
         parameters = url_parameters(url)
         self.__url = remove_params(url)
-        self.__fixed_vars = []
-        self.__variable = []
+        self.__fixed_vars = fixed_variable
+        self.__variable = injectable_varaible
 
         if vars_in_url_are_fixed is True:
             for name, value in zip(parameters):
