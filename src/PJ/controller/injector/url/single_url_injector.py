@@ -23,13 +23,13 @@ class SingleUrlInjector:
         '''
         return len(self.__payloads)
 
-    def _inject(self, payload : str):
+    def _inject_payload(self, payload : str):
         '''
         Inject to url the given, the specified payload
         '''
         self.__url.inject(payload)
     
-    def _inject(self, payload_inedex : int):
+    def _inject_by_index(self, payload_inedex : int):
         '''
         Inject the payload, in the position given by the parameter
         '''
@@ -52,7 +52,7 @@ class SingleUrlInjectorIterator:
     def __next__(self) -> str:
         if self.__index < self.__url_injector._get_payload_num():
             payload = self.__url_injector._get_payload(self.__index)
-            self.__url_injector._inject_all_variable(payload)
+            self.__url_injector._inject_payload(payload)
             self.__index += 1
             return payload
         else:
