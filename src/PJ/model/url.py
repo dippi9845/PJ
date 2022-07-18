@@ -29,7 +29,7 @@ class Url:
         return self.__url
     
     def get_params(self) -> dict:
-        vars = map(lambda x: x.to_dict(), self.__variable) + map(lambda x: x.to_dict(), self.__fixed_vars)
+        vars = list(map(lambda x: x.to_dict(), self.__variable)) + list(map(lambda x: x.to_dict(), self.__fixed_vars))
         params = {}
         map(lambda x : params.update(x), vars)
         return params

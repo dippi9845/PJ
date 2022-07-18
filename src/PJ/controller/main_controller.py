@@ -36,19 +36,19 @@ class MainController:
             raise TypeError("A least one url need to be setted")
         
         payloads = self._ask_for_multiple("Inesert path of file that contais payloads (hit enter to exit)\n")
-        payloads = map(self._get_payloads_from_file, payloads)
+        payloads = list(map(self._get_payloads_from_file, payloads))
         payloads = reduce(lambda x, y: x + y, payloads)
 
         self.__option = Option(in_type, urls, payloads)
 
         variables = self._ask_for_multiple("Insert varaible name, and value separed by a space (hit enter to exit)\n")
-        variables = map(lambda x: x.split(" "), variables)
-        variables = map(lambda x: Variable(x[0], content=x[1]), variables)
+        variables = list(map(lambda x: x.split(" "), variables))
+        variables = list(map(lambda x: Variable(x[0], content=x[1]), variables))
         self.__option.variable = variables
 
         fixed_varariables = self._ask_for_multiple("Insert fixed varaible name, and value separed by a space (hit enter to exit)\n")
-        fixed_varariables = map(lambda x: x.split(" "), fixed_varariables)
-        fixed_varariables = map(lambda x: FixedVariable(x[0], content=x[1]), fixed_varariables)
+        fixed_varariables = list(map(lambda x: x.split(" "), fixed_varariables))
+        fixed_varariables = list(map(lambda x: FixedVariable(x[0], content=x[1]), fixed_varariables))
         self.__option.fixed_variable = fixed_varariables
 
     def set_option(self, option : Option) -> None:
