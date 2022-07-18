@@ -1,3 +1,4 @@
+from cProfile import run
 from enum import Enum
 from PJ.model.variable import FixedVariable, InjectableVariable, Variable, from_dict
 from json import loads
@@ -24,25 +25,10 @@ class Configuration:
         self.injection_type = injection_type
         self.url = url
         self.payloads = payloads
-
-        if self.injection_type is InjectionType.URL:
-            pass
-        elif self.injection_type is InjectionType.WEBDRIVER:
-            pass
-            
-        else:
-            raise TypeError("Type of injection is not valid, or supported")
         
 
     def add_url(self, url : str) -> None:
-        if type(self.url) is str:
-            self.url = [self.url, url]
-        
-        elif type(self.url) is list:
-            self.url.append(url)
-
-        else:
-            raise TypeError("Unsupported url type")
+        self.url.append(url)
     
     def add_variable(self, var : Variable) -> None:
         
