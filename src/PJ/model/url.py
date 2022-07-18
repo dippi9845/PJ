@@ -1,5 +1,11 @@
+from enum import Enum
 from PJ.utils.urls import url_parameters, remove_query as remove_params, unparse_url
 from PJ.model.variable import FixedVariable, InjectableVariable
+
+class ExportIdentifier(Enum):
+    URL = "url"
+    INJECTABLE_VARAIBLE = "variables"
+    FIXED_VARAIBLE = "Fixed"
 
 class Url:
     def __init__(self, url : str, injectable_varaible : list[InjectableVariable]=[], fixed_variable : list[FixedVariable]=[] ,vars_in_url_are_fixed=True) -> None:
@@ -46,4 +52,4 @@ class Url:
         return vars
     
     def to_dict(self) -> dict:
-        return {"url" : self.__url, "variable" : self.get_injectable(), "fixed" : self.get_fixed()}
+        return {ExportIdentifier.URL.value : self.__url, ExportIdentifier.INJECTABLE_VARAIBLE.value : self.get_injectable(), ExportIdentifier.FIXED_VARAIBLE.value : self.get_fixed()}
