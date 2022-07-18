@@ -19,7 +19,14 @@ class Configuration:
         self.load_payload_file()
     
     def add_payload_file(self, payload_file : str) -> None:
-        self.payload_files_to_add.add(payload_file)
+        if type(payload_file) is str:
+            self.payload_files_to_add.add(payload_file)
+
+        elif type(payload_file) is list:
+            self.payload_files_to_add.update(set(payload_file))
+        
+        elif type(payload_file) is set:
+            self.payload_files_to_add.update(payload_file)
 
     def load_payload_file(self) -> None:
         for i in self.payload_files_to_add:
