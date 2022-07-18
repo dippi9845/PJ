@@ -12,13 +12,28 @@ class SingleUrlInjector:
         return SingleUrlInjectorIterator(self)
 
     def _get_payload(self, index : int) -> str:
+        '''
+        Returns the payload at the given position
+        '''
         return self.__payloads[index]
 
     def _get_payload_num(self) -> int:
+        '''
+        Return the number of payloads stored
+        '''
         return len(self.__payloads)
 
     def _inject(self, payload : str):
+        '''
+        Inject to url the given, the specified payload
+        '''
         self.__url.inject(payload)
+    
+    def _inject(self, payload_inedex : int):
+        '''
+        Inject the payload, in the position given by the parameter
+        '''
+        self.__url.inject(self._get_payload(payload_inedex))
 
     def inject_all(self):
         '''
