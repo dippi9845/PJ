@@ -49,10 +49,19 @@ class SingleUrlInjectorIterator:
         self.__index = 0
         self.__url_injector = url_injector
     
+    def __is_over(self) -> bool:
+        self.__index < self.__url_injector._get_payload_num()
+    
+    def __get_payload_at_index(self) -> SingleUrlInjector:
+        return self.__url_injector._get_payload(self.__index)
+
+    def __inject(self, payload : str) -> None:
+        self.__url_injector._inject_payload(payload)
+
     def __next__(self) -> str:
-        if self.__index < self.__url_injector._get_payload_num():
-            payload = self.__url_injector._get_payload(self.__index)
-            self.__url_injector._inject_payload(payload)
+        if self.__is_over():
+            payload = self.__get_payload_at_index()
+            self.__inject(payload)
             self.__index += 1
             return payload
         else:
