@@ -29,9 +29,15 @@ class InjectorListIterator:
         self.__index = 0
         self.__injector_list = injector_list
     
+    def __is_over(self) -> bool:
+        return self.__index < self.__injector_list._get_injector_num()
+    
+    def __get_injector_at_index(self) -> SingleUrlInjector:
+        return self.__injector_list._get_injector(self.__index)
+
     def __next__(self) -> SingleUrlInjector:
-        if self.__index < self.__injector_list._get_injector_num():
-            injector = self.__injector_list._get_injector(self.__index)
+        if self.__is_over():
+            injector = self.__get_injector_at_index()
             self.__index += 1
             return injector
 
