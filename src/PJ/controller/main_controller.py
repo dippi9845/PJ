@@ -1,7 +1,7 @@
 from functools import reduce
-from ..view.main_view import MainView
+from PJ.view.main_view import MainView
 from option import Option, InjectionType, by_file as option_by_file
-from ..model.variable import Variable, FixedVariable
+from PJ.model.variable import Variable, FixedVariable
 
 class MainController:
 

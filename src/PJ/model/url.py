@@ -1,5 +1,5 @@
-from ..utils.urls import url_parameters, remove_query as remove_params, unparse_url
-from ..model.variable import FixedVariable, InjectableVariable
+from PJ.utils.urls import url_parameters, remove_query as remove_params, unparse_url
+from PJ.model.variable import FixedVariable, InjectableVariable
 
 class Url:
     def __init__(self, url : str, injectable_varaible : list[InjectableVariable]=[], fixed_variable : list[FixedVariable]=[] ,vars_in_url_are_fixed=True) -> None:

@@ -1,5 +1,5 @@
 from PJ.model.url import Url
-from ....utils.urls import url_request
+from PJ.utils.urls import url_request
 
 class SingleUrlInjector:
 
