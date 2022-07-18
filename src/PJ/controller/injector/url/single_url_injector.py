@@ -17,10 +17,13 @@ class SingleUrlInjector:
     def _get_payload_num(self) -> int:
         return len(self.__payloads)
 
-    '''
-    Inject all payloads, to a given url
-    '''
+    def _inject(self, payload : str):
+        self.__url.inject(payload)
+
     def inject_all(self):
+        '''
+        Inject all payloads, to a given url
+        '''
         for payload in self.__payloads:
             self.__url.inject(payload)
             self.__request(self.__url.get_url(), self.__url.get_params())
