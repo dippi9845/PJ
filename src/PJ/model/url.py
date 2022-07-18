@@ -17,9 +17,11 @@ class Url:
             for name, value in zip(parameters):
                 self.__variable.append(InjectableVariable(name))
     
-    def inject(self, payload : str) -> None:
+    def inject(self, payload : str) -> str:
         for i in self.__variable:
             i.inject(payload)
+        
+        return self.__str__
     
     def __str__(self) -> str:
         params = map(lambda x: x.to_dict(), self.__variable) + map(lambda x: x.to_dict(), self.__fixed_vars)
