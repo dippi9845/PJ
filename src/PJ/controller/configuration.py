@@ -8,6 +8,15 @@ class InjectionType(Enum):
     URL = "1"
     WEBDRIVER = "2"
 
+class ExportIdntifier(Enum):
+    INJECTION_TYPE = "Injection Type"
+    CONFIGURATION_NAME = "Name"
+    PAYLOADS = "Payloads"
+    PAYLOAD_FILES = "Payload Files"
+    PAYLOAD_FILE_SEPARETOR = "Payload File Separetor"
+
+    URLS = "Urls"
+
 class Configuration:
     def __init__(self, config_name : str="Default Config", payloads : set[str] = {}, payload_files : set[str] = {}, payload_file_separetor : str="\n") -> None:
         self.config_name = config_name
@@ -39,7 +48,7 @@ class Configuration:
         raise NotImplementedError("build_injetor() method need to be implemented in subclasses")
 
     def to_dict(self) -> dict:
-        return {"Injection Type": "Not defined", "Name" : self.config_name, "Payloads" : self.payloads, "Payload Files" : self.payload_files}
+        return {"Injection Type": None, "Name" : self.config_name, "Payloads" : self.payloads, "Payload Files" : self.payload_files, "Payload File Separetor": self.payload_file_separetor}
 
 
 class UrlConfiguration(Configuration):
