@@ -19,7 +19,8 @@ class InjectionType(Enum):
     WEBDRIVER = "2"
 
 class Configuration:
-    def __init__(self, injection_type : InjectionType=InjectionType.URL, url : list[Url]=[], payloads : list[str]=[]) -> None:
+    def __init__(self, config_name : str="Default Config", injection_type : InjectionType=InjectionType.URL, url : list[Url]=[], payloads : list[str]=[]) -> None:
+        self.config_name = config_name
         self.injection_type = injection_type
         self.url = url
         self.payloads = payloads
