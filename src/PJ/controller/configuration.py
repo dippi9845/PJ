@@ -48,7 +48,7 @@ class Configuration:
         raise NotImplementedError("build_injetor() method need to be implemented in subclasses")
 
     def to_dict(self) -> dict:
-        return {"Injection Type": None, "Name" : self.config_name, "Payloads" : self.payloads, "Payload Files" : self.payload_files, "Payload File Separetor": self.payload_file_separetor}
+        return {ExportIdntifier.INJECTION_TYPE.value : None, ExportIdntifier.CONFIGURATION_NAME.value : self.config_name, ExportIdntifier.PAYLOADS.value : self.payloads, ExportIdntifier.PAYLOAD_FILES.value : self.payload_files, ExportIdntifier.PAYLOAD_FILE_SEPARETOR.value : self.payload_file_separetor}
 
 
 class UrlConfiguration(Configuration):
@@ -64,16 +64,16 @@ class UrlConfiguration(Configuration):
         raise NotImplementedError("build_injetor() not yet implemented")
     
     def to_dict(self) -> dict:
-        return super().to_dict().update({"Injection Type": InjectionType.URL.value, "Urls" : [i.to_dict() for i in self.url]})
+        return super().to_dict().update({ExportIdntifier.INJECTION_TYPE.value: InjectionType.URL.value, ExportIdntifier.URLS.value : [i.to_dict() for i in self.url]})
         
 
 def by_file(filename : str) -> Configuration:
     with open(filename, "r") as f:
         data = loads(f.read())
         
-        if data["Injection Type"] is InjectionType.URL.value:
+        if data[ExportIdntifier.INJECTION_TYPE.value] is InjectionType.URL.value:
             pass
         
-        elif data["Injection Type"] is InjectionType.WEBDRIVER.value:
+        elif data[ExportIdntifier.INJECTION_TYPE.value] is InjectionType.WEBDRIVER.value:
             raise NotImplementedError("Web driver as injection type is not implemented yet")
         
