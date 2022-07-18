@@ -9,7 +9,7 @@ class InjectionType(Enum):
     WEBDRIVER = "2"
 
 class Configuration:
-    def __init__(self, config_name : str="Default Config", payloads : list[str]=[], payload_files : list[str] = [], payload_file_separetor : str="\n") -> None:
+    def __init__(self, config_name : str="Default Config", payloads : set[str] = {}, payload_files : set[str] = {}, payload_file_separetor : str="\n") -> None:
         self.config_name = config_name
         self.payload_files = payload_files
         self.payload_files_to_add = payload_files
@@ -19,14 +19,14 @@ class Configuration:
         self.load_payload_file()
     
     def add_payload_file(self, payload_file : str) -> None:
-        self.payload_files_to_add.append(payload_file)
+        self.payload_files_to_add.add(payload_file)
 
     def load_payload_file(self) -> None:
         for i in self.payload_files_to_add:
             with open(i, "r") as f:
                 self.payloads += f.read().split(self.payload_file_separetor)
         
-        self.payload_files_to_add = []
+        self.payload_files_to_add = {}
     
     def build_injector(self):
         raise NotImplementedError("build_injetor() method need to be implemented in subclasses")
@@ -37,8 +37,8 @@ class Configuration:
 
 class UrlConfiguration(Configuration):
     
-    def __init__(self, config_name: str = "Default Config", payloads: list[str] = [], payload_files: list[str] = [], url : list[Url] = []) -> None:
-        super().__init__(config_name, payloads, payload_files)
+    def __init__(self, config_name: str = "Default Config", payloads: set[str] = {}, payload_files: set[str] = {}, payload_file_separetor : str="\n", url : list[Url] = []) -> None:
+        super().__init__(config_name, payloads, payload_files, payload_file_separetor)
         self.url = url
     
     def add_url(self, url : str) -> None:
