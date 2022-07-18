@@ -1,6 +1,7 @@
 from enum import Enum
-from ..model.variable import FixedVariable, InjectableVariable, Variable, from_dict
+from PJ.model.variable import FixedVariable, InjectableVariable, Variable, from_dict
 from json import loads
+from PJ.model.url import Url
 
 '''
 Da rifare tutto:
@@ -17,17 +18,15 @@ class InjectionType(Enum):
     URL = "1"
     WEBDRIVER = "2"
 
-class Option:
-    def __init__(self, injection_type : InjectionType, url, payloads : list[str]) -> None:
-        self.__injection_type = injection_type
+class Configuration:
+    def __init__(self, injection_type : InjectionType=InjectionType.URL, url : list[Url]=[], payloads : list[str]=[]) -> None:
+        self.injection_type = injection_type
         self.url = url
         self.payloads = payloads
 
-        if self.__injection_type is InjectionType.URL:
-            self.variable = []
-            self.fixed_variable = []
-        
-        elif self.__injection_type is InjectionType.WEBDRIVER:
+        if self.injection_type is InjectionType.URL:
+            pass
+        elif self.injection_type is InjectionType.WEBDRIVER:
             pass
             
         else:
@@ -56,7 +55,7 @@ class Option:
             raise TypeError("this variable is not supported")
     
     def to_dict(self) -> dict:
-        if self.__injection_type is InjectionType.URL:
+        if self.injection_type is InjectionType.URL:
             variable = map(lambda x: x.to_dict(), self.variable)
             fixed_variable = map(lambda x: x.to_dict(), self.fixed_variable)
 
@@ -66,14 +65,14 @@ class Option:
 
             return rtr
 
-        elif self.__injection_type is InjectionType.WEBDRIVER:
+        elif self.injection_type is InjectionType.WEBDRIVER:
             pass
             
 
-def by_file(filename : str) -> Option:
+def by_file(filename : str) -> Configuration:
     with open(filename, "r") as f:
         data = loads(f.read())
-        tmp = Option(data["injection_type"], data["url"], data["payloads"])
+        tmp = Configuration(data["injection_type"], data["url"], data["payloads"])
         
         if data["injection_type"] is InjectionType.URL.value:
             
