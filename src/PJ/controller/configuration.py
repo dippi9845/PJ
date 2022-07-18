@@ -48,7 +48,7 @@ class UrlConfiguration(Configuration):
         super().__init__(config_name, payloads, payload_files, payload_file_separetor)
         self.url = url
     
-    def add_url(self, url : str) -> None:
+    def add_url(self, url : Url) -> None:
         self.url.append(url)
     
     def build_injector(self) -> InjectorList:
