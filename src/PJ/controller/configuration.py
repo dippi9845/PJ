@@ -62,9 +62,9 @@ def by_file(filename : str) -> Configuration:
     with open(filename, "r") as f:
         data = loads(f.read())
         
-        if data["injection_type"] is InjectionType.URL.value:
+        if data["Injection Type"] is InjectionType.URL.value:
             pass
         
-        elif data["injection_type"] is InjectionType.WEBDRIVER.value:
+        elif data["Injection Type"] is InjectionType.WEBDRIVER.value:
             raise NotImplementedError("Web driver as injection type is not implemented yet")
         
