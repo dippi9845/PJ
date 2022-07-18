@@ -1,38 +1,29 @@
-from ....model.variable import InjectableVariable
-from functools import reduce
+from PJ.model.url import Url
 from ....utils.urls import url_request
 
 class SingleUrlInjector:
 
-    def __init__(self, url: str, payloads : list[str], vars : list[InjectableVariable], fixed_vars=[], request=url_request) -> None:
+    def __init__(self, url : Url, payloads : list[str], request: function=url_request) -> None:
         self.__url = url
         self.__payloads = payloads
-        self.__vars = vars
-        self.__fixed_vars = fixed_vars
         self.__request = request
     
     def __iter__(self):
         return SingleUrlInjectorIterator(self)
 
-    def _get_payload(self, index : int):
+    def _get_payload(self, index : int) -> str:
         return self.__payloads[index]
 
-    def _inject_all_variable(self, payload : str) -> None:
-        for var in self.__vars:
-            var.inject(payload)
+    def _get_payload_num(self) -> int:
+        return len(self.__payloads)
 
     '''
     Inject all payloads, to a given url
     '''
     def inject_all(self):
-        # TODO: __inject_all_variable non è definita
         for payload in self.__payloads:
-            self.__inject_all_variable(payload)
-            
-            dicts = map(lambda x: x.to_dict(), self.__vars) + map(lambda x: x.to_dict(), self.__fixed_vars)
-            params = reduce(lambda x,y : x.update(y), dicts)
-
-            self.__request(self.url, params)
+            self.__url.inject(payload)
+            self.__request(self.__url.get_url(), self.__url.get_params())
 
 class SingleUrlInjectorIterator:
 
@@ -41,8 +32,7 @@ class SingleUrlInjectorIterator:
         self.__url_injector = url_injector
     
     def __next__(self) -> str:
-        # TODO: self.__payloads non è definita
-        if self.__index < len(self.__payloads):
+        if self.__index < self.__url_injector._get_payload_num():
             payload = self.__url_injector._get_payload(self.__index)
             self.__url_injector._inject_all_variable(payload)
             self.__index += 1
