@@ -1,12 +1,18 @@
-from requests import get as get_request
+from requests import get, post
 from requests import Response
 from urllib.parse import urlparse, parse_qsl, urljoin, urlencode
 
-def url_request(url : str, params=None) -> Response:
+def get_request(url : str, params=None) -> Response:
     '''
     Perform a get request
     '''
-    return get_request(url=url, params=params)
+    return get(url=url, params=params)
+
+def post_request(url : str, params : dict=None) -> Response:
+    '''
+    Perform a get request
+    '''
+    return post(url=url, params=params)
 
 def url_parameters(url : str) -> dict:
     '''
