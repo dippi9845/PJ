@@ -6,7 +6,7 @@ from configuration import InjectionType, Configuration, UrlConfiguration, by_fil
 
 class MainController:
 
-    def __init__(self, view : MainView , config=None) -> None:
+    def __init__(self, view : MainView , config : Configuration=None) -> None:
         self.__view = view
         self.set_configuration(config)
 
@@ -28,10 +28,6 @@ class MainController:
                 rtr.append(Url(url, injectable_varaible=injectables, fixed_variable=fixed))
                 
         return rtr
-    
-    def _get_payloads_from_file(filename : str, split_flag="\n") -> list:
-        with open(filename, "r") as f:
-            return f.read().split(split_flag)
 
     def _ask_for_url_injection_type(self):
         name = self.__view.ask_input("Insert the name of the configuration")
@@ -67,7 +63,6 @@ class MainController:
         else:
             raise TypeError("Unknown option")
         
-
     def set_configuration(self, config : Configuration=None) -> None:
         if config == None:
             self._complete_confguration()
