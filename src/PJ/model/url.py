@@ -34,13 +34,13 @@ class Url:
     def get_url(self) -> str:
         return self.__url
 
+    def get_injectable_list(self) -> list:
+        return [x.to_dict() for x in self.__variable]
+    
     def get_injectable_dict(self) -> dict:
         rtr = {}
         map(lambda x : rtr.update(x), self.get_injectable_list())
         return rtr
-    
-    def get_injectable_list(self) -> list:
-        return [x.to_dict() for x in self.__variable]
     
     def get_fixed_list(self) -> list:
         return [x.to_dict() for x in self.__fixed_vars]
@@ -51,9 +51,15 @@ class Url:
         return rtr
 
     def get_params(self) -> dict:
-        vars = self.get_injectable()
-        vars.update(self.get_fixed())
+        vars = self.get_injectable_dict()
+        vars.update(self.get_fixed_dict())
         return vars
     
     def to_dict(self) -> dict:
-        return {ExportIdentifier.URL.value : self.__url, ExportIdentifier.INJECTABLE_VARAIBLE.value : self.get_injectable(), ExportIdentifier.FIXED_VARAIBLE.value : self.get_fixed()}
+        return {ExportIdentifier.URL.value : self.__url, ExportIdentifier.INJECTABLE_VARAIBLE.value : self.get_injectable_dict(), ExportIdentifier.FIXED_VARAIBLE.value : self.get_fixed_dict()}
+
+def from_dict(raw : dict) -> Url:
+    injecatbles = [InjectableVariable(key, content=value) for key, value in raw[ExportIdentifier.INJECTABLE_VARAIBLE.value].items()]
+    fixed = [FixedVariable(key, content=value) for key, value in raw[ExportIdentifier.FIXED_VARAIBLE.value].items()]
+
+    return Url(raw[ExportIdentifier.URL], injectable_varaible=injecatbles, fixed_variable=fixed)
