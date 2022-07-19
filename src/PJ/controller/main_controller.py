@@ -18,10 +18,10 @@ class MainController:
             url = self.__view.ask_input(url_question)
             
             if url is not "":
-                injectables = self._ask_for_multiple(injectable_question)
+                injectables = self.__view.ask_for_multiple(injectable_question)
                 injectables = [InjectableVariable(i) for i in injectables]
 
-                fixed = self._ask_for_multiple(fixed_question)
+                fixed = self.__view.ask_for_multiple(fixed_question)
                 fixed = [i.split(" ") for i in fixed]
                 fixed = [FixedVariable(i[0], content=i[1]) for i in fixed]
 
@@ -45,7 +45,7 @@ class MainController:
         if ch is True:
             pass
         
-        payload_files = self._ask_for_multiple("Inesert path of file that contais payloads (hit enter to exit)\n")
+        payload_files = self.__view.ask_for_multiple("Inesert path of file that contais payloads (hit enter to exit)\n")
         
         if payload_files is [] and payloads is []:
             self.__view.log_error("No payload file and no manual payload, provided")
