@@ -67,9 +67,16 @@ class MainController:
         else:
             self.__config = config
 
-# TODO : completare 
     def start_injecting(self):
-        pass
+        to_inject = self.__config.build_injector()
+
+        for single in to_inject:
+            for payload in single:
+                pass
+    
+    def inject_all(self):
+        to_inject = self.__config.build_injector()
+        to_inject.inject_all()
 
 def by_file(filename : str, view : MainView) -> MainController:
     return MainController(view, option=config_by_file(filename))
