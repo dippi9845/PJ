@@ -19,8 +19,6 @@ class TerminalView(MainView):
     def ask_input(string : str) -> str:
         return input(string)
 
-    # TODO : completare ask_yes_no
-
     def log(self, string: str, end='\n'):
         print(string, end=end)
     
