@@ -1,6 +1,8 @@
 from functools import reduce
+from PJ.model.url import Url
 from PJ.view.main_view import MainView
-from PJ.model.variable import Variable, FixedVariable
+from PJ.model.variable import InjectableVariable, Variable, FixedVariable
+from configuration import InjectionType, Configuration, UrlConfiguration
 
 class MainController:
 
@@ -20,6 +22,25 @@ class MainController:
         
         return rtr
 
+    def _ask_for_url_varaible(self, url_question : str, injectable_question : str, fixed_question : str) -> list[Url]:
+        url = " "
+        rtr = []
+        
+        while url is not "":
+            url = self.__view.ask_input(url_question)
+            
+            if url is not "":
+                injectables = self._ask_for_multiple(injectable_question)
+                injectables = [InjectableVariable(i) for i in injectables]
+
+                fixed = self._ask_for_multiple(fixed_question)
+                fixed = [i.split(" ") for i in fixed]
+                fixed = [FixedVariable(i[0], content=i[1]) for i in fixed]
+
+                rtr.append(Url(url, injectable_varaible=injectables, fixed_variable=fixed))
+                
+        return rtr
+    
     def _get_payloads_from_file(filename : str, split_flag="\n") -> list:
         with open(filename, "r") as f:
             return f.read().split(split_flag)
@@ -29,26 +50,32 @@ class MainController:
         
         in_type = InjectionType(in_type)
 
-        urls = self._ask_for_multiple("Insert an url (hit enter to exit)\n")
+        if in_type is InjectionType.URL:
+            name = self.__view.ask_input("Insert the name of the configuration")
+
+            urls = self._ask_for_url_varaible()
+            
+            ch = self.__view.ask_yes_no("Do you want to insert manually the payloads ? (y/N)")
+            payloads = []
+
+            if ch is True:
+                pass
+            
+            payload_files = self._ask_for_multiple("Inesert path of file that contais payloads (hit enter to exit)\n")
+            
+            if payload_files is [] and payloads is []:
+                self.__view.log_error("No payload file and no manual payload, provided")
+                self._complete_option()
+            else:
+                return UrlConfiguration(config_name=name, url=urls, payloads=payloads, payload_files=payload_files)
         
-        if urls is []:
-            raise TypeError("A least one url need to be setted")
+        elif in_type is InjectionType.WEBDRIVER:
+            pass
+
+        else:
+            raise TypeError("Unknown option")
         
-        payloads = self._ask_for_multiple("Inesert path of file that contais payloads (hit enter to exit)\n")
-        payloads = list(map(self._get_payloads_from_file, payloads))
-        payloads = reduce(lambda x, y: x + y, payloads)
-
-        self.__option = Option(in_type, urls, payloads)
-
-        variables = self._ask_for_multiple("Insert varaible name, and value separed by a space (hit enter to exit)\n")
-        variables = list(map(lambda x: x.split(" "), variables))
-        variables = list(map(lambda x: Variable(x[0], content=x[1]), variables))
-        self.__option.variable = variables
-
-        fixed_varariables = self._ask_for_multiple("Insert fixed varaible name, and value separed by a space (hit enter to exit)\n")
-        fixed_varariables = list(map(lambda x: x.split(" "), fixed_varariables))
-        fixed_varariables = list(map(lambda x: FixedVariable(x[0], content=x[1]), fixed_varariables))
-        self.__option.fixed_variable = fixed_varariables
+        
 
     def set_option(self, option : Option) -> None:
         if option == None:
