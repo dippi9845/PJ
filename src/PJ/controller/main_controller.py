@@ -33,12 +33,11 @@ class MainController:
 
         urls = self._ask_for_url_varaible()
         
-        ch = self.__view.ask_yes_no("Do you want to insert manually the payloads ? (y/N)")
+        ch = self.__view.ask_yes_no("Do you want to insert manually the payloads ? (y/N)", suggested="N")
         payloads = []
 
-        # TODO : completare
         if ch is True:
-            pass
+            payloads = self.__view.ask_for_multiple("Insert a payload (hit enter to exit)")
         
         payload_files = self.__view.ask_for_multiple("Inesert path of file that contais payloads (hit enter to exit)\n")
         
