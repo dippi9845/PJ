@@ -50,6 +50,7 @@ class MainController:
         
         in_type = InjectionType(in_type)
 
+        # TODO: magari creare una funzione adatta a fare questo
         if in_type is InjectionType.URL:
             name = self.__view.ask_input("Insert the name of the configuration")
 
@@ -58,6 +59,7 @@ class MainController:
             ch = self.__view.ask_yes_no("Do you want to insert manually the payloads ? (y/N)")
             payloads = []
 
+            # TODO : completare
             if ch is True:
                 pass
             
@@ -70,19 +72,20 @@ class MainController:
                 return UrlConfiguration(config_name=name, url=urls, payloads=payloads, payload_files=payload_files)
         
         elif in_type is InjectionType.WEBDRIVER:
-            pass
+            raise NotImplementedError("still not implemented")
 
         else:
             raise TypeError("Unknown option")
         
         
-
+# TODO : togliere option qua e nell'intero file
     def set_option(self, option : Option) -> None:
         if option == None:
             self._complete_option()
         else:
             self.__option = option
 
+# TODO : completare 
     def start_injecting(self):
         pass
 
