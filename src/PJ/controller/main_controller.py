@@ -1,6 +1,5 @@
 from functools import reduce
 from PJ.view.main_view import MainView
-from option import Option, InjectionType, by_file as option_by_file
 from PJ.model.variable import Variable, FixedVariable
 
 class MainController:
