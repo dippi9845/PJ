@@ -12,16 +12,16 @@ class MainView:
         self.__level_of_log = level_of_log
 
     def introduction(self):
-        pass
+        raise NotImplementedError("need to be implemented by superclass")
 
     def ask_input(self, string : str) -> str:
-        pass
+        raise NotImplementedError("need to be implemented by superclass")
 
     def ask_yes_no(self, question : str) -> bool:
-        pass
+        raise NotImplementedError("need to be implemented by superclass")
 
     def log(self, string : str, end='\n'):
-        pass
+        raise NotImplementedError("need to be implemented by superclass")
 
     def log_info(self, string : str, level_of_log=3):
         if self.__level_of_log >= level_of_log:
