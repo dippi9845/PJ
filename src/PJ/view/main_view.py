@@ -17,7 +17,7 @@ class MainView:
     def ask_input(self, string : str) -> str:
         raise NotImplementedError("need to be implemented by superclass")
 
-    def ask_yes_no(self, question : str) -> bool:
+    def ask_yes_no(self, question : str, suggested : str = "Y") -> bool:
         raise NotImplementedError("need to be implemented by superclass")
 
     def log(self, string : str, end='\n'):
