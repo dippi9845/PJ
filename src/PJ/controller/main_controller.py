@@ -2,13 +2,13 @@ from functools import reduce
 from PJ.model.url import Url
 from PJ.view.main_view import MainView
 from PJ.model.variable import InjectableVariable, Variable, FixedVariable
-from configuration import InjectionType, Configuration, UrlConfiguration
+from configuration import InjectionType, Configuration, UrlConfiguration, by_file as config_by_file
 
 class MainController:
 
-    def __init__(self, view : MainView , option=None) -> None:
+    def __init__(self, view : MainView , config=None) -> None:
         self.__view = view
-        self.set_option(option)
+        self.set_configuration(config)
 
     def _ask_for_multiple(self, question : str) -> list:
         tmp = " "
@@ -61,11 +61,11 @@ class MainController:
         
         if payload_files is [] and payloads is []:
             self.__view.log_error("No payload file and no manual payload, provided")
-            self._complete_option()
+            self._complete_confguration()
         else:
             return UrlConfiguration(config_name=name, url=urls, payloads=payloads, payload_files=payload_files)
     
-    def _complete_option(self):
+    def _complete_confguration(self):
         in_type = self.__view.ask_input("what kind of injection would you like to perform ? \n" + InjectionType.URL.value + " : to perform url injection\n" + InjectionType.WEBDRIVER.value + " : to perform web page injection")
         
         in_type = InjectionType(in_type)
@@ -79,17 +79,16 @@ class MainController:
         else:
             raise TypeError("Unknown option")
         
-        
-# TODO : togliere option qua e nell'intero file
-    def set_option(self, option : Option) -> None:
-        if option == None:
-            self._complete_option()
+
+    def set_configuration(self, config : Configuration=None) -> None:
+        if config == None:
+            self._complete_confguration()
         else:
-            self.__option = option
+            self.__config = config
 
 # TODO : completare 
     def start_injecting(self):
         pass
 
 def by_file(filename : str, view : MainView) -> MainController:
-    return MainController(view, option=option_by_file(filename))
+    return MainController(view, option=config_by_file(filename))
