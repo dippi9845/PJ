@@ -1,7 +1,7 @@
 from enum import Enum
 from PJ.model.variable import from_dict
 from json import loads
-from PJ.model.url import Url
+from PJ.model.url import Url, from_dict as url_from_dict
 from injector.url.injector_list import InjectorList
 
 class InjectionType(Enum):
@@ -48,7 +48,7 @@ class Configuration:
         raise NotImplementedError("build_injetor() method need to be implemented in subclasses")
 
     def to_dict(self) -> dict:
-        return {ExportIdntifier.INJECTION_TYPE.value : None, ExportIdntifier.CONFIGURATION_NAME.value : self.config_name, ExportIdntifier.PAYLOADS.value : self.payloads, ExportIdntifier.PAYLOAD_FILES.value : self.payload_files, ExportIdntifier.PAYLOAD_FILE_SEPARETOR.value : self.payload_file_separetor}
+        return {ExportIdntifier.INJECTION_TYPE.value : None, ExportIdntifier.CONFIGURATION_NAME.value : self.config_name, ExportIdntifier.PAYLOADS.value : list(self.payloads), ExportIdntifier.PAYLOAD_FILES.value : list(self.payload_files), ExportIdntifier.PAYLOAD_FILE_SEPARETOR.value : self.payload_file_separetor}
 
 
 class UrlConfiguration(Configuration):
@@ -72,7 +72,14 @@ def by_file(filename : str) -> Configuration:
         data = loads(f.read())
         
         if data[ExportIdntifier.INJECTION_TYPE.value] is InjectionType.URL.value:
-            pass
+            name = data[ExportIdntifier.CONFIGURATION_NAME.value]
+            payloads = set(data[ExportIdntifier.PAYLOADS.value])
+            files = set(data[ExportIdntifier.PAYLOAD_FILES.value])
+            separetor = data[ExportIdntifier.PAYLOAD_FILE_SEPARETOR.value]
+            raw_list = data[ExportIdntifier.URLS.value]
+            urls = [url_from_dict(u) for u in raw_list]
+
+            return UrlConfiguration(name, payloads=payloads, payload_files=files, payload_file_separetor=separetor, url=urls)
         
         elif data[ExportIdntifier.INJECTION_TYPE.value] is InjectionType.WEBDRIVER.value:
             raise NotImplementedError("Web driver as injection type is not implemented yet")
