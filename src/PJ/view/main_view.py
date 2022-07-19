@@ -17,6 +17,9 @@ class MainView:
     def ask_input(self, string : str) -> str:
         pass
 
+    def ask_yes_no(self, question : str) -> bool:
+        pass
+
     def log(self, string : str, end='\n'):
         pass
 
