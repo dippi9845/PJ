@@ -10,18 +10,6 @@ class MainController:
         self.__view = view
         self.set_configuration(config)
 
-    def _ask_for_multiple(self, question : str) -> list:
-        tmp = " "
-        rtr = []
-        
-        while tmp is not "":
-            tmp = self.__view.ask_input(question)
-            rtr.append(tmp)
-        
-        rtr.pop()
-        
-        return rtr
-
     def _ask_for_url_varaible(self, url_question : str, injectable_question : str, fixed_question : str) -> list[Url]:
         url = " "
         rtr = []

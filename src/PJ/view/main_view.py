@@ -22,6 +22,18 @@ class MainView:
 
     def log(self, string : str, end='\n'):
         raise NotImplementedError("need to be implemented by superclass")
+    
+    def ask_for_multiple(self, question : str) -> list:
+        tmp = " "
+        rtr = []
+        
+        while tmp is not "":
+            tmp = self.__view.ask_input(question)
+            rtr.append(tmp)
+        
+        rtr.pop()
+        
+        return rtr
 
     def log_info(self, string : str, level_of_log=3):
         if self.__level_of_log >= level_of_log:
