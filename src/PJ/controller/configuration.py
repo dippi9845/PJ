@@ -8,6 +8,8 @@ class InjectionType(Enum):
     URL = "1"
     WEBDRIVER = "2"
 
+# TODO : marcare come classmethod tutte le factory in tutti i moduli
+
 class ExportIdntifier(Enum):
     INJECTION_TYPE = "Injection Type"
     CONFIGURATION_NAME = "Name"
