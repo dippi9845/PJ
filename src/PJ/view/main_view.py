@@ -1,3 +1,5 @@
+from abc import abstractmethod
+
 class MainView:
     
     MAX_LEVEL_OF_LOG = 6
@@ -11,14 +13,17 @@ class MainView:
         
         self.__level_of_log = level_of_log
 
+    @abstractmethod
     def introduction(self):
-        raise NotImplementedError("need to be implemented by subclass")
+        pass
 
+    @abstractmethod
     def ask_input(self, string : str) -> str:
-        raise NotImplementedError("need to be implemented by subclass")
+        pass
 
+    @abstractmethod
     def log(self, string : str, end='\n'):
-        raise NotImplementedError("need to be implemented by subclass")
+        pass
 
     def ask_yes_no(self, question : str, yes : str = "y", no : str = "n", suggested : str = "y", case_sensitive : bool = False, yes_to_bool : bool = True) -> bool:
         ch = self.ask_input(question)

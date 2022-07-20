@@ -1,5 +1,5 @@
 from enum import Enum
-from PJ.model.variable import from_dict
+from abc import abstractmethod
 from json import loads
 from PJ.model.url import Url, from_dict as url_from_dict
 from injector.url.injector_list import InjectorList
@@ -44,8 +44,9 @@ class Configuration:
         
         self.payload_files_to_add = {}
     
+    @abstractmethod
     def build_injector(self):
-        raise NotImplementedError("build_injetor() method need to be implemented in subclasses")
+        pass
 
     def to_dict(self) -> dict:
         return {ExportIdntifier.INJECTION_TYPE.value : None, ExportIdntifier.CONFIGURATION_NAME.value : self.config_name, ExportIdntifier.PAYLOADS.value : list(self.payloads), ExportIdntifier.PAYLOAD_FILES.value : list(self.payload_files), ExportIdntifier.PAYLOAD_FILE_SEPARETOR.value : self.payload_file_separetor}
@@ -60,8 +61,9 @@ class UrlConfiguration(Configuration):
     def add_url(self, url : Url) -> None:
         self.url.append(url)
     
+    @abstractmethod
     def build_injector(self) -> InjectorList:
-        raise NotImplementedError("build_injetor() not yet implemented")
+        pass
     
     def to_dict(self) -> dict:
         return super().to_dict().update({ExportIdntifier.INJECTION_TYPE.value: InjectionType.URL.value, ExportIdntifier.URLS.value : [i.to_dict() for i in self.url]})
