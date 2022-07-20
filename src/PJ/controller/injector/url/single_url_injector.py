@@ -10,6 +10,9 @@ class SingleUrlInjector:
         self.__payloads = payloads
         self.__request = request
     
+    def get_url(self) -> str:
+        return self.__url.get_url()
+
     def __iter__(self):
         return SingleUrlInjectorIterator(self)
 
