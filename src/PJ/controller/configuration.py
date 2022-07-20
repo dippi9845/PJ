@@ -1,6 +1,7 @@
 from enum import Enum
 from abc import abstractmethod
 from json import loads
+from PJ.controller.injector.injector import Injector
 from PJ.model.url import Url, from_dict as url_from_dict
 from injector.url.injector_list import InjectorList
 
@@ -47,7 +48,7 @@ class Configuration:
         self.payload_files_to_add = {}
     
     @abstractmethod
-    def build_injector(self):
+    def build_injector(self) -> Injector:
         pass
 
     def to_dict(self) -> dict:
@@ -63,7 +64,7 @@ class UrlConfiguration(Configuration):
     def add_url(self, url : Url) -> None:
         self.url.append(url)
     
-    @abstractmethod
+    # TODO : implementare sta roba
     def build_injector(self) -> InjectorList:
         pass
     
