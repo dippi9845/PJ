@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 
-'''
-An interface that model a whatever thing that can be injected a payload
-'''
 class Injectable(ABC):
+    '''
+    An interface that model a whatever thing that can be injected a payload
+    '''
 
     @abstractmethod
     def _clear():
