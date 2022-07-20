@@ -1,6 +1,8 @@
 from PJ.model.url import Url
 from PJ.utils.urls import url_request
 
+# TODO : use injector
+
 class SingleUrlInjector:
 
     def __init__(self, url : Url, payloads : list[str], request: function=url_request) -> None:
