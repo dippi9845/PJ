@@ -7,8 +7,14 @@ class Injectable(ABC):
 
     @abstractmethod
     def _clear():
+        '''
+        Clear the value in the injectable
+        '''
         pass
 
     @abstractmethod
     def inject(payload : str):
+        '''
+        inject the given payload
+        '''
         pass
