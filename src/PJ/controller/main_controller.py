@@ -2,6 +2,7 @@ from PJ.model.url import Url
 from PJ.view.main_view import MainView
 from PJ.model.variable import InjectableVariable, FixedVariable
 from configuration import InjectionType, Configuration, UrlConfiguration, by_file as config_by_file
+from injector.url.injector_list import InjectorList
 
 class MainController:
 
@@ -68,11 +69,13 @@ class MainController:
             self.__config = config
 
     def start_injecting(self):
-        to_inject = self.__config.build_injector()
+        to_inject : InjectorList = self.__config.build_injector()
 
         for single in to_inject:
+            self.__view.log_info("Injecting: " + single.get_url(), level_of_log=4)
             for payload in single:
-                pass
+                self.__view.log_info("Tryied this payload: " + payload, level_of_log=6)
+        
     
     def inject_all(self):
         to_inject = self.__config.build_injector()
