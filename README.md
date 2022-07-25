@@ -1,4 +1,4 @@
-<div>
+<div align="center">
   <img src="img/logo2.png"> 
 </div>
 ![PJ logo](/img/logo2.png "PJ")
