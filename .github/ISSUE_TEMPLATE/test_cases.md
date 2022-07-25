@@ -1,3 +1,12 @@
+---
+name: Tests missing
+about: Create a list of missing or needed tests
+title: 'Tests requested'
+labels: ''
+assignees: ''
+
+---
+
 # Add tests cases for:
 
 - [ ] Class 1
