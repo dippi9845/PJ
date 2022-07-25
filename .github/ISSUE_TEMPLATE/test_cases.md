@@ -20,3 +20,15 @@ assignees: ''
   - [ ] Method 2
   - [ ] Method 3
   - [ ] ...
+
+## Module 1
+  - [ ] Method 1
+  - [ ] Method 2
+  - [ ] Method 3
+  - [ ] ...
+
+## Module 2
+  - [ ] Method 1
+  - [ ] Method 2
+  - [ ] Method 3
+  - [ ] ...
