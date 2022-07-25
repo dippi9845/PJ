@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="img/logo2.png"> 
+  <img src="img/logo.png"> 
 </h1>
 
 # Payload Injection Tool
