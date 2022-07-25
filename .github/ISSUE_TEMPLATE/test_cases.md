@@ -2,7 +2,7 @@
 name: Tests missing
 about: Create a list of missing or needed tests
 title: 'Tests requested'
-labels: ''
+labels: 'enhancement'
 assignees: ''
 
 ---
