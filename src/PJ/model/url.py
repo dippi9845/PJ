@@ -58,8 +58,9 @@ class Url:
     def to_dict(self) -> dict:
         return {ExportIdentifier.URL.value : self.__url, ExportIdentifier.INJECTABLE_VARAIBLE.value : self.get_injectable_dict(), ExportIdentifier.FIXED_VARAIBLE.value : self.get_fixed_dict()}
 
-def from_dict(raw : dict) -> Url:
-    injecatbles = [InjectableVariable(key, content=value) for key, value in raw[ExportIdentifier.INJECTABLE_VARAIBLE.value].items()]
-    fixed = [FixedVariable(key, content=value) for key, value in raw[ExportIdentifier.FIXED_VARAIBLE.value].items()]
+    @classmethod
+    def from_dict(raw : dict) -> Url:
+        injecatbles = [InjectableVariable(key, content=value) for key, value in raw[ExportIdentifier.INJECTABLE_VARAIBLE.value].items()]
+        fixed = [FixedVariable(key, content=value) for key, value in raw[ExportIdentifier.FIXED_VARAIBLE.value].items()]
 
-    return Url(raw[ExportIdentifier.URL], injectable_varaible=injecatbles, fixed_variable=fixed)
+        return Url(raw[ExportIdentifier.URL], injectable_varaible=injecatbles, fixed_variable=fixed)
