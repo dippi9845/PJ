@@ -1,3 +1,4 @@
+from typing_extensions import Self
 from injectable import Injectable
 
 '''
@@ -25,12 +26,12 @@ class Variable:
     def to_dict(self) -> dict:
         return {self.__var_name : self.__content}
 
+    @classmethod
+    def from_dict(value : dict) -> Self:
+        name = list(value.keys())[0]
+        content = list(value.values())[0]
 
-def from_dict(value : dict) -> Variable:
-    name = list(value.keys())[0]
-    content = list(value.values())[0]
-
-    return Variable(name, content=content)
+        return Variable(name, content=content)
 
 
 ''' 
@@ -41,9 +42,9 @@ class FixedVariable(Injectable, Variable):
     def __init__(self, var_name : str, protocol="GET", content="") -> None:
         super().__init__(var_name, protocol, content)
 
-
-def fixed_by_variable(variable : Variable) -> FixedVariable:
-    return FixedVariable(variable.get_variable_name(), protocol=variable.get_protocol(), content=variable.get_content())
+    @classmethod
+    def by_variable(variable : Variable) -> Self:
+        return FixedVariable(variable.get_variable_name(), protocol=variable.get_protocol(), content=variable.get_content())
 
 
 class InjectableVariable(Injectable, Variable):
@@ -56,5 +57,6 @@ class InjectableVariable(Injectable, Variable):
     def inject(self, payload : str) -> None:
         self._set_content(payload)
 
-def injectable_by_variable(variable : Variable) -> InjectableVariable:
-    return InjectableVariable(variable.get_variable_name(), protocol=variable.get_protocol(), content=variable.get_content())
+    @classmethod
+    def by_variable(variable : Variable) -> Self:
+        return InjectableVariable(variable.get_variable_name(), protocol=variable.get_protocol(), content=variable.get_content())
