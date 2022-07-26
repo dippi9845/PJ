@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
+about: After a discussion to the community, you have a full idea to what to add, write a full report
 title: ''
 labels: 'new feature'
 assignees: ''
