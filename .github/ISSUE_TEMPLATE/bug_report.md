@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: After you have discussed to the comiunity that a bug is present, write a full documentation about it
+about: After you have discussed to the community that a bug is present, write a full documentation about it
 title: 'Found a bug ...'
 labels: 'bug'
 assignees: ''
