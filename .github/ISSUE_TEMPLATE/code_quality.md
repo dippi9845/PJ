@@ -1,8 +1,8 @@
 ---
-name: Beautify code
+name: Code quality
 about: Create a report improve readability of the code, following coding conventions (PEP) and OOP conventions
 title: 'Beautify suggestion'
-labels: 'enhancement'
+labels: 'enhancement code quality'
 assignees: ''
 
 ---
