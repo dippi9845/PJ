@@ -3,7 +3,7 @@ from abc import abstractmethod
 from json import loads
 from PJ.controller.injector.injector import Injector
 from PJ.model.url import Url, from_dict as url_from_dict
-from injector.url.injector_list import InjectorList
+from PJ.controller.injector.url.injector_list import InjectorList
 
 class InjectionType(Enum):
     URL = "1"
