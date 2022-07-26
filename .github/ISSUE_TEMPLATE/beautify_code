@@ -1,0 +1,8 @@
+---
+name: Beautify code
+about: Create a report improve readability of the code, following coding conventions (PEP) and OOP conventions
+title: 'Beautify suggestion'
+labels: 'enhancement'
+assignees: ''
+
+---
