@@ -1,10 +1,11 @@
 from injectable import Injectable
 from __future__ import annotations
-'''
-This class model a varaible in the url
-'''
-class Variable:
 
+
+class Variable:
+    '''
+    This class model a varaible in the url
+    '''
     def __init__(self, var_name : str, protocol="GET", content="") -> None:
         self.__var_name =  var_name
         self.__protocol = protocol
@@ -46,6 +47,9 @@ class FixedVariable(Injectable, Variable):
 
 
 class InjectableVariable(Injectable, Variable):
+    '''
+    A variable that can be injected a payload
+    '''
     def __init__(self, var_name : str, protocol="GET", content="") -> None:
         super().__init__(var_name, protocol, content)
 
