@@ -10,6 +10,12 @@ class InjectorList(Injector):
     def __iter__(self):
         return InjectorListIterator(self)
     
+    def _inject_by_index(self, index : int) -> None:
+        '''
+        Cant inject an injector, so do nothing
+        '''
+        pass
+
     def _get_injection(self, index : int) -> SingleUrlInjector:
         return self.__injectors[index]
 
