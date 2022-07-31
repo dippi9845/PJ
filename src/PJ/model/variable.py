@@ -11,6 +11,10 @@ class Variable:
         self.__protocol = protocol
         self.__content = content
     
+    def __eq__(self, __o: object) -> bool:
+        if isinstance(__o, Variable):
+            return self.get_variable_name() == __o.get_variable_name() and self.get_protocol() == __o.get_protocol()
+
     def _set_content(self, content : str) -> None:
         self.__content = content
 
