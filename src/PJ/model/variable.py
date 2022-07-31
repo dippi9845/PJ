@@ -42,7 +42,7 @@ class FixedVariable(Injectable, Variable):
         super().__init__(var_name, protocol, content)
 
     @classmethod
-    def by_variable(variable : Variable) -> FixedVariable:
+    def from_variable(variable : Variable) -> FixedVariable:
         return FixedVariable(variable.get_variable_name(), protocol=variable.get_protocol(), content=variable.get_content())
 
 
@@ -60,5 +60,5 @@ class InjectableVariable(Injectable, Variable):
         self._set_content(payload)
 
     @classmethod
-    def by_variable(variable : Variable) -> InjectableVariable:
+    def from_variable(variable : Variable) -> InjectableVariable:
         return InjectableVariable(variable.get_variable_name(), protocol=variable.get_protocol(), content=variable.get_content())

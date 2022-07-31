@@ -27,7 +27,7 @@ class InjectorList:
         return rtr
     
     @classmethod
-    def by_values(urls : list[Url], payloads : list[str]) -> InjectorList:
+    def from_values(urls : list[Url], payloads : list[str]) -> InjectorList:
         '''
         Create an Injector list by values, with payloads different by every Single Url Injector
         '''

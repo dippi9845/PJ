@@ -56,7 +56,7 @@ class Configuration:
         return {ExportIdntifier.INJECTION_TYPE.value : None, ExportIdntifier.CONFIGURATION_NAME.value : self.config_name, ExportIdntifier.PAYLOADS.value : list(self.payloads), ExportIdntifier.PAYLOAD_FILES.value : list(self.payload_files), ExportIdntifier.PAYLOAD_FILE_SEPARETOR.value : self.payload_file_separetor}
 
     @classmethod
-    def by_file(filename : str) -> Configuration:
+    def from_file(filename : str) -> Configuration:
         with open(filename, "r") as f:
             data = loads(f.read())
             
