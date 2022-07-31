@@ -65,13 +65,16 @@ class Configuration:
                 if data.__contains__(ExportIdntifier.CONFIGURATION_NAME.value):
                     name = data[ExportIdntifier.CONFIGURATION_NAME.value]
                 
+                else:
+                    name = "Unamed url configuration"
+                
                 payloads = set(data[ExportIdntifier.PAYLOADS.value])
                 files = set(data[ExportIdntifier.PAYLOAD_FILES.value])
                 separetor = data[ExportIdntifier.PAYLOAD_FILE_SEPARETOR.value]
                 raw_list = data[ExportIdntifier.URLS.value]
                 urls = [Url.from_dict(u) for u in raw_list]
 
-                return UrlConfiguration(name, payloads=payloads, payload_files=files, payload_file_separetor=separetor, url=urls)
+                return UrlConfiguration(config_name=name, payloads=payloads, payload_files=files, payload_file_separetor=separetor, url=urls)
             
             elif data[ExportIdntifier.INJECTION_TYPE.value] is InjectionType.WEBDRIVER.value:
                 raise NotImplementedError("Web driver as injection type is not implemented yet")
