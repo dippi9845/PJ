@@ -62,17 +62,17 @@ class Configuration:
             
             if data[ExportIdntifier.INJECTION_TYPE.value] is InjectionType.URL.value:
                 
-                if data.__contains__(ExportIdntifier.CONFIGURATION_NAME.value):
-                    name = data[ExportIdntifier.CONFIGURATION_NAME.value]
-                
-                else:
-                    name = "Unamed url configuration"
-                
                 if not data.__contains__(ExportIdntifier.PAYLOADS.value) and not data.__contains__(ExportIdntifier.PAYLOAD_FILES.value):
                     raise IOError("The configuration file doesn't contains any payloads to inject")
                 
                 elif not data.__contains__(ExportIdntifier.URLS.value):
                     raise IOError("The configuration file doesn't contains any url to be injected")
+                
+                if data.__contains__(ExportIdntifier.CONFIGURATION_NAME.value):
+                    name = data[ExportIdntifier.CONFIGURATION_NAME.value]
+                
+                else:
+                    name = "Unamed url configuration"
                 
                 payloads = set(data[ExportIdntifier.PAYLOADS.value])
                 files = set(data[ExportIdntifier.PAYLOAD_FILES.value])
