@@ -1,5 +1,5 @@
-from injectable import Injectable
 from __future__ import annotations
+from injectable import Injectable
 
 
 class Variable:
@@ -52,8 +52,8 @@ class FixedVariable(Injectable, Variable):
         super().__init__(var_name, protocol, content)
 
     @classmethod
-    def from_variable(variable : Variable) -> FixedVariable:
-        return FixedVariable(variable.get_variable_name(), protocol=variable.get_protocol(), content=variable.get_content())
+    def from_variable(cls, variable : Variable) -> FixedVariable:
+        return cls(variable.get_variable_name(), protocol=variable.get_protocol(), content=variable.get_content())
 
 
 class InjectableVariable(Injectable, Variable):

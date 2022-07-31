@@ -1,10 +1,10 @@
+from __future__ import annotations
 from enum import Enum
 from abc import abstractmethod
 from json import loads
 from PJ.controller.injector.injector import Injector
 from PJ.model.url import Url
 from PJ.controller.injector.url.injector_list import InjectorList
-from __future__ import annotations
 
 class InjectionType(Enum):
     URL = "1"

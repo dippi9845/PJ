@@ -1,7 +1,7 @@
+from __future__ import annotations
 from enum import Enum
 from PJ.utils.urls import url_parameters, remove_query as remove_params, unparse_url
 from PJ.model.variable import FixedVariable, InjectableVariable
-from __future__ import annotations
 
 class ExportIdentifier(Enum):
     URL = "url"

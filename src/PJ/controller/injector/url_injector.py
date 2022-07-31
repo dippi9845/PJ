@@ -1,7 +1,7 @@
+from __future__ import annotations
 from PJ.model.url import Url
 from PJ.utils.urls import get_request
 from PJ.controller.injector.injector import Injector, InjectorIterator, InjectorList
-from __future__ import annotations
 
 class SingleUrlInjector(Injector):
 
