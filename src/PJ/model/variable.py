@@ -27,11 +27,17 @@ class Variable:
         return {self.__var_name : self.__content}
 
     @classmethod
-    def from_dict(value : dict) -> Variable:
-        name = list(value.keys())[0]
-        content = list(value.values())[0]
+    def from_dict(value : dict) -> Variable | list[Variable]:
+        
+        rtr = []
+        
+        for name, content in value.items():
+            rtr.append(Variable(name, content=content))
 
-        return Variable(name, content=content)
+        if len(rtr) == 1:
+            return rtr[0]
+        else:
+            return rtr
 
 
 class FixedVariable(Injectable, Variable):
