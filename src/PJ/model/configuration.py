@@ -68,6 +68,12 @@ class Configuration:
                 else:
                     name = "Unamed url configuration"
                 
+                if not data.__contains__(ExportIdntifier.PAYLOADS.value) and not data.__contains__(ExportIdntifier.PAYLOAD_FILES.value):
+                    raise IOError("The configuration file doesn't contains any payloads to inject")
+                
+                elif not data.__contains__(ExportIdntifier.URLS.value):
+                    raise IOError("The configuration file doesn't contains any url to be injected")
+                
                 payloads = set(data[ExportIdntifier.PAYLOADS.value])
                 files = set(data[ExportIdntifier.PAYLOAD_FILES.value])
                 separetor = data[ExportIdntifier.PAYLOAD_FILE_SEPARETOR.value]
