@@ -24,7 +24,7 @@ class InjectorIterator:
     def _is_over(self) -> bool:
         self.__index < self.__injection_num
 
-    def _get_injector_at_index(self):
+    def _get_injector_at_index(self) -> str | Injector:
         return self.__injector._get_injection(self.__index)
 
     def __next__(self):
