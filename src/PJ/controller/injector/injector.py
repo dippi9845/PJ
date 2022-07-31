@@ -32,3 +32,5 @@ class InjectorIterator:
             injector = self._get_injector_at_index()
             self.__index += 1
             return injector
+        else:
+            raise StopIteration
