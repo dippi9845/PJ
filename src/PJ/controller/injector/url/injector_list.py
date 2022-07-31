@@ -1,20 +1,16 @@
 from PJ.model.url import Url
 from single_url_injector import SingleUrlInjector
 from __future__ import annotations
+from PJ.controller.injector.injector import Injector, InjectorIterator
 
-# TODO : use injector
-
-class InjectorList:
+class InjectorList(Injector):
     def __init__(self, injectors : list[SingleUrlInjector]):
         self.__injectors = injectors
 
     def __iter__(self):
         return InjectorListIterator(self)
-
-    def _get_injector_num(self) -> int:
-        return len(self.__injectors)
     
-    def _get_injector(self, index : int) -> SingleUrlInjector:
+    def _get_injection(self, index : int) -> SingleUrlInjector:
         return self.__injectors[index]
 
     def inject_all(self):
@@ -34,22 +30,9 @@ class InjectorList:
         return InjectorList([SingleUrlInjector(x, payloads) for x in urls])
 
 
-class InjectorListIterator:
-    def __init__(self, injector_list : InjectorList) -> None:
-        self.__index = 0
-        self.__injector_list = injector_list
-    
-    def __is_over(self) -> bool:
-        return self.__index < self.__injector_list._get_injector_num()
-    
-    def __get_injector_at_index(self) -> SingleUrlInjector:
-        return self.__injector_list._get_injector(self.__index)
-
-    def __next__(self) -> SingleUrlInjector:
-        if self.__is_over():
-            injector = self.__get_injector_at_index()
-            self.__index += 1
-            return injector
+class InjectorListIterator(InjectorIterator):
+    def __init__(self, injector: InjectorList) -> None:
+        super().__init__(injector, len(injector))
 
 
 
