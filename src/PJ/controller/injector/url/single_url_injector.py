@@ -3,8 +3,6 @@ from PJ.utils.urls import get_request
 from PJ.controller.injector.injector import Injector, InjectorIterator
 from __future__ import annotations
 
-# TODO : use injector
-
 class SingleUrlInjector(Injector):
 
     def __init__(self, url : Url, payloads : list[str], request: function=get_request) -> None:
