@@ -33,11 +33,10 @@ class Variable:
         return Variable(name, content=content)
 
 
-''' 
-This is a variable that can't be injected anything
-'''
 class FixedVariable(Injectable, Variable):
-
+    ''' 
+    This is a variable that can't be injected anything
+    '''
     def __init__(self, var_name : str, protocol="GET", content="") -> None:
         super().__init__(var_name, protocol, content)
 
