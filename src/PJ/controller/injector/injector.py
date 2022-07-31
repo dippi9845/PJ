@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
-from typing_extensions import Self
+from __future__ import annotations
 
 class Injector(ABC):
     
     @abstractmethod
-    def _get_injection(self, index : int) -> str | Self:
+    def _get_injection(self, index : int) -> str | Injector:
         pass
     
     @abstractmethod

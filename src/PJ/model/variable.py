@@ -1,6 +1,5 @@
-from typing_extensions import Self
 from injectable import Injectable
-
+from __future__ import annotations
 '''
 This class model a varaible in the url
 '''
@@ -27,7 +26,7 @@ class Variable:
         return {self.__var_name : self.__content}
 
     @classmethod
-    def from_dict(value : dict) -> Self:
+    def from_dict(value : dict) -> Variable:
         name = list(value.keys())[0]
         content = list(value.values())[0]
 
@@ -43,7 +42,7 @@ class FixedVariable(Injectable, Variable):
         super().__init__(var_name, protocol, content)
 
     @classmethod
-    def by_variable(variable : Variable) -> Self:
+    def by_variable(variable : Variable) -> FixedVariable:
         return FixedVariable(variable.get_variable_name(), protocol=variable.get_protocol(), content=variable.get_content())
 
 
@@ -58,5 +57,5 @@ class InjectableVariable(Injectable, Variable):
         self._set_content(payload)
 
     @classmethod
-    def by_variable(variable : Variable) -> Self:
+    def by_variable(variable : Variable) -> InjectableVariable:
         return InjectableVariable(variable.get_variable_name(), protocol=variable.get_protocol(), content=variable.get_content())

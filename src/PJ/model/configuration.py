@@ -2,7 +2,7 @@ from enum import Enum
 from abc import abstractmethod
 from json import loads
 from PJ.controller.injector.injector import Injector
-from PJ.model.url import Url, from_dict as url_from_dict
+from PJ.model.url import Url
 from PJ.controller.injector.url.injector_list import InjectorList
 
 class InjectionType(Enum):
@@ -82,7 +82,7 @@ def by_file(filename : str) -> Configuration:
             files = set(data[ExportIdntifier.PAYLOAD_FILES.value])
             separetor = data[ExportIdntifier.PAYLOAD_FILE_SEPARETOR.value]
             raw_list = data[ExportIdntifier.URLS.value]
-            urls = [url_from_dict(u) for u in raw_list]
+            urls = [Url.from_dict(u) for u in raw_list]
 
             return UrlConfiguration(name, payloads=payloads, payload_files=files, payload_file_separetor=separetor, url=urls)
         

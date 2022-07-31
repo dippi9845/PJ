@@ -1,7 +1,7 @@
 from enum import Enum
-from typing_extensions import Self
 from PJ.utils.urls import url_parameters, remove_query as remove_params, unparse_url
 from PJ.model.variable import FixedVariable, InjectableVariable
+from __future__ import annotations
 
 class ExportIdentifier(Enum):
     URL = "url"
@@ -60,7 +60,7 @@ class Url:
         return {ExportIdentifier.URL.value : self.__url, ExportIdentifier.INJECTABLE_VARAIBLE.value : self.get_injectable_dict(), ExportIdentifier.FIXED_VARAIBLE.value : self.get_fixed_dict()}
 
     @classmethod
-    def from_dict(raw : dict) -> Self:
+    def from_dict(raw : dict) -> Url:
         injecatbles = [InjectableVariable(key, content=value) for key, value in raw[ExportIdentifier.INJECTABLE_VARAIBLE.value].items()]
         fixed = [FixedVariable(key, content=value) for key, value in raw[ExportIdentifier.FIXED_VARAIBLE.value].items()]
 

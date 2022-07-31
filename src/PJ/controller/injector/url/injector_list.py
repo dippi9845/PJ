@@ -1,5 +1,6 @@
 from PJ.model.url import Url
 from single_url_injector import SingleUrlInjector
+from __future__ import annotations
 
 # TODO : use injector
 
@@ -24,6 +25,13 @@ class InjectorList:
         rtr = [self.__injectors[x:x+num] for x in range(0, len(self.__injectors), num)]
         rtr = [InjectorList(x.copy()) for x in rtr]
         return rtr
+    
+    @classmethod
+    def by_values(urls : list[Url], payloads : list[str]) -> InjectorList:
+        '''
+        Create an Injector list by values, with payloads different by every Single Url Injector
+        '''
+        return InjectorList([SingleUrlInjector(x, payloads) for x in urls])
 
 
 class InjectorListIterator:
@@ -44,8 +52,4 @@ class InjectorListIterator:
             return injector
 
 
-'''
-    create an Injector list by values, with payloads different by every Single Url Injector
-'''
-def by_values(urls : list[Url], payloads : list[str]) -> InjectorList:
-    return InjectorList([SingleUrlInjector(x, payloads) for x in urls])
+
