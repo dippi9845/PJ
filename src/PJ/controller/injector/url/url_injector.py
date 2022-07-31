@@ -1,6 +1,6 @@
 from PJ.model.url import Url
 from PJ.utils.urls import get_request
-from PJ.controller.injector.injector import Injector, InjectorIterator
+from PJ.controller.injector.injector import Injector, InjectorIterator, InjectorList
 from __future__ import annotations
 
 class SingleUrlInjector(Injector):
@@ -50,37 +50,6 @@ class SingleUrlInjector(Injector):
         for payload in self.__payloads:
             self.__url.inject(payload)
             self.__request(self.__url.get_url(), self.__url.get_params())
-
-
-class SingleUrlInjectorIterator(InjectorIterator):
-    def __init__(self, url_injector: SingleUrlInjector) -> None:
-        super().__init__(url_injector, len(url_injector))
-
-
-class InjectorList(Injector):
-    def __init__(self, injectors : list[SingleUrlInjector]):
-        self.__injectors = injectors
-
-    def __iter__(self):
-        return InjectorListIterator(self)
-    
-    def _inject_by_index(self, index : int) -> None:
-        '''
-        Cant inject an injector, so do nothing
-        '''
-        pass
-
-    def _get_injection(self, index : int) -> SingleUrlInjector:
-        return self.__injectors[index]
-
-    def inject_all(self):
-        for i in self.__injectors:
-            i.inject_all()
-    
-    def split(self, num : int) -> list:
-        rtr = [self.__injectors[x:x+num] for x in range(0, len(self.__injectors), num)]
-        rtr = [InjectorList(x.copy()) for x in rtr]
-        return rtr
     
     @classmethod
     def from_values(urls : list[Url], payloads : list[str]) -> InjectorList:
@@ -90,6 +59,6 @@ class InjectorList(Injector):
         return InjectorList([SingleUrlInjector(x, payloads) for x in urls])
 
 
-class InjectorListIterator(InjectorIterator):
-    def __init__(self, injector: InjectorList) -> None:
-        super().__init__(injector, len(injector))
+class SingleUrlInjectorIterator(InjectorIterator):
+    def __init__(self, url_injector: SingleUrlInjector) -> None:
+        super().__init__(url_injector, len(url_injector))
