@@ -1,9 +1,11 @@
 from PJ.model.url import Url
 from PJ.utils.urls import get_request
+from PJ.controller.injector.injector import Injector, InjectorIterator
+from __future__ import annotations
 
 # TODO : use injector
 
-class SingleUrlInjector:
+class SingleUrlInjector(Injector):
 
     def __init__(self, url : Url, payloads : list[str], request: function=get_request) -> None:
         self.__url = url
@@ -13,8 +15,11 @@ class SingleUrlInjector:
     def get_url(self) -> str:
         return self.__url.get_url()
 
-    def __iter__(self):
+    def __iter__(self) -> SingleUrlInjectorIterator:
         return SingleUrlInjectorIterator(self)
+    
+    def __len__(self) -> int:
+        return len(self.__payloads)
 
     def _get_payload(self, index : int) -> str:
         '''
@@ -48,26 +53,7 @@ class SingleUrlInjector:
             self.__url.inject(payload)
             self.__request(self.__url.get_url(), self.__url.get_params())
 
-class SingleUrlInjectorIterator:
 
-    def __init__(self, url_injector : SingleUrlInjector) -> None:
-        self.__index = 0
-        self.__url_injector = url_injector
-    
-    def __is_over(self) -> bool:
-        self.__index < self.__url_injector._get_payload_num()
-    
-    def __get_payload_at_index(self) -> SingleUrlInjector:
-        return self.__url_injector._get_payload(self.__index)
-
-    def __inject(self, payload : str) -> None:
-        self.__url_injector._inject_payload(payload)
-
-    def __next__(self) -> str:
-        if self.__is_over():
-            payload = self.__get_payload_at_index()
-            self.__inject(payload)
-            self.__index += 1
-            return payload
-        else:
-            raise StopIteration
+class SingleUrlInjectorIterator(InjectorIterator):
+    def __init__(self, url_injector: SingleUrlInjector) -> None:
+        super().__init__(url_injector, len(url_injector))
