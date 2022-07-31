@@ -1,8 +1,9 @@
 from PJ.model.url import Url
 from PJ.view.main_view import MainView
 from PJ.model.variable import InjectableVariable, FixedVariable
-from configuration import InjectionType, Configuration, UrlConfiguration, by_file as config_by_file
+from PJ.model.configuration import InjectionType, Configuration, UrlConfiguration
 from injector.url.injector_list import InjectorList
+from __future__ import annotations
 
 class MainController:
 
@@ -81,5 +82,6 @@ class MainController:
         to_inject = self.__config.build_injector()
         to_inject.inject_all()
 
-def by_file(filename : str, view : MainView) -> MainController:
-    return MainController(view, option=config_by_file(filename))
+    @classmethod
+    def from_file(filename : str, view : MainView) -> MainController:
+        return MainController(view, option=Configuration.from_file(filename))

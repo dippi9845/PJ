@@ -2,8 +2,9 @@ from enum import Enum
 from abc import abstractmethod
 from json import loads
 from PJ.controller.injector.injector import Injector
-from PJ.model.url import Url, from_dict as url_from_dict
-from injector.url.injector_list import InjectorList
+from PJ.model.url import Url
+from PJ.controller.injector.url.injector_list import InjectorList
+from __future__ import annotations
 
 class InjectionType(Enum):
     URL = "1"
@@ -54,6 +55,35 @@ class Configuration:
     def to_dict(self) -> dict:
         return {ExportIdntifier.INJECTION_TYPE.value : None, ExportIdntifier.CONFIGURATION_NAME.value : self.config_name, ExportIdntifier.PAYLOADS.value : list(self.payloads), ExportIdntifier.PAYLOAD_FILES.value : list(self.payload_files), ExportIdntifier.PAYLOAD_FILE_SEPARETOR.value : self.payload_file_separetor}
 
+    @classmethod
+    def from_file(filename : str) -> Configuration:
+        with open(filename, "r") as f:
+            data = loads(f.read())
+            
+            if data[ExportIdntifier.INJECTION_TYPE.value] is InjectionType.URL.value:
+                
+                if not data.__contains__(ExportIdntifier.PAYLOADS.value) and not data.__contains__(ExportIdntifier.PAYLOAD_FILES.value):
+                    raise IOError("The configuration file doesn't contains any payloads to inject")
+                
+                elif not data.__contains__(ExportIdntifier.URLS.value):
+                    raise IOError("The configuration file doesn't contains any url to be injected")
+                
+                if data.__contains__(ExportIdntifier.CONFIGURATION_NAME.value):
+                    name = data[ExportIdntifier.CONFIGURATION_NAME.value]
+                
+                else:
+                    name = "Unamed url configuration"
+                
+                payloads = set(data[ExportIdntifier.PAYLOADS.value])
+                files = set(data[ExportIdntifier.PAYLOAD_FILES.value])
+                separetor = data[ExportIdntifier.PAYLOAD_FILE_SEPARETOR.value]
+                raw_list = data[ExportIdntifier.URLS.value]
+                urls = [Url.from_dict(u) for u in raw_list]
+
+                return UrlConfiguration(config_name=name, payloads=payloads, payload_files=files, payload_file_separetor=separetor, url=urls)
+            
+            elif data[ExportIdntifier.INJECTION_TYPE.value] is InjectionType.WEBDRIVER.value:
+                raise NotImplementedError("Web driver as injection type is not implemented yet")
 
 class UrlConfiguration(Configuration):
     
@@ -72,20 +102,5 @@ class UrlConfiguration(Configuration):
         return super().to_dict().update({ExportIdntifier.INJECTION_TYPE.value: InjectionType.URL.value, ExportIdntifier.URLS.value : [i.to_dict() for i in self.url]})
         
 
-def by_file(filename : str) -> Configuration:
-    with open(filename, "r") as f:
-        data = loads(f.read())
-        
-        if data[ExportIdntifier.INJECTION_TYPE.value] is InjectionType.URL.value:
-            name = data[ExportIdntifier.CONFIGURATION_NAME.value]
-            payloads = set(data[ExportIdntifier.PAYLOADS.value])
-            files = set(data[ExportIdntifier.PAYLOAD_FILES.value])
-            separetor = data[ExportIdntifier.PAYLOAD_FILE_SEPARETOR.value]
-            raw_list = data[ExportIdntifier.URLS.value]
-            urls = [url_from_dict(u) for u in raw_list]
 
-            return UrlConfiguration(name, payloads=payloads, payload_files=files, payload_file_separetor=separetor, url=urls)
-        
-        elif data[ExportIdntifier.INJECTION_TYPE.value] is InjectionType.WEBDRIVER.value:
-            raise NotImplementedError("Web driver as injection type is not implemented yet")
         

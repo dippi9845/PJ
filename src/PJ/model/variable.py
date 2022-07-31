@@ -1,10 +1,11 @@
 from injectable import Injectable
+from __future__ import annotations
 
-'''
-This class model a varaible in the url
-'''
+
 class Variable:
-
+    '''
+    This class model a varaible in the url
+    '''
     def __init__(self, var_name : str, protocol="GET", content="") -> None:
         self.__var_name =  var_name
         self.__protocol = protocol
@@ -25,28 +26,30 @@ class Variable:
     def to_dict(self) -> dict:
         return {self.__var_name : self.__content}
 
+    @classmethod
+    def from_dict(value : dict) -> Variable:
+        name = list(value.keys())[0]
+        content = list(value.values())[0]
 
-def from_dict(value : dict) -> Variable:
-    name = list(value.keys())[0]
-    content = list(value.values())[0]
-
-    return Variable(name, content=content)
+        return Variable(name, content=content)
 
 
-''' 
-This is a variable that can't be injected anything
-'''
 class FixedVariable(Injectable, Variable):
-
+    ''' 
+    This is a variable that can't be injected anything
+    '''
     def __init__(self, var_name : str, protocol="GET", content="") -> None:
         super().__init__(var_name, protocol, content)
 
-
-def fixed_by_variable(variable : Variable) -> FixedVariable:
-    return FixedVariable(variable.get_variable_name(), protocol=variable.get_protocol(), content=variable.get_content())
+    @classmethod
+    def from_variable(variable : Variable) -> FixedVariable:
+        return FixedVariable(variable.get_variable_name(), protocol=variable.get_protocol(), content=variable.get_content())
 
 
 class InjectableVariable(Injectable, Variable):
+    '''
+    A variable that can be injected a payload
+    '''
     def __init__(self, var_name : str, protocol="GET", content="") -> None:
         super().__init__(var_name, protocol, content)
 
@@ -56,5 +59,6 @@ class InjectableVariable(Injectable, Variable):
     def inject(self, payload : str) -> None:
         self._set_content(payload)
 
-def injectable_by_variable(variable : Variable) -> InjectableVariable:
-    return InjectableVariable(variable.get_variable_name(), protocol=variable.get_protocol(), content=variable.get_content())
+    @classmethod
+    def from_variable(variable : Variable) -> InjectableVariable:
+        return InjectableVariable(variable.get_variable_name(), protocol=variable.get_protocol(), content=variable.get_content())
