@@ -61,7 +61,10 @@ class Configuration:
             data = loads(f.read())
             
             if data[ExportIdntifier.INJECTION_TYPE.value] is InjectionType.URL.value:
-                name = data[ExportIdntifier.CONFIGURATION_NAME.value]
+                
+                if data.__contains__(ExportIdntifier.CONFIGURATION_NAME.value):
+                    name = data[ExportIdntifier.CONFIGURATION_NAME.value]
+                
                 payloads = set(data[ExportIdntifier.PAYLOADS.value])
                 files = set(data[ExportIdntifier.PAYLOAD_FILES.value])
                 separetor = data[ExportIdntifier.PAYLOAD_FILE_SEPARETOR.value]
