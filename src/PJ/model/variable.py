@@ -50,6 +50,12 @@ class FixedVariable(Injectable, Variable):
     '''
     def __init__(self, var_name : str, protocol="GET", content="") -> None:
         super().__init__(var_name, protocol, content)
+    
+    def inject(payload: str):
+        pass
+
+    def _clear():
+        pass
 
     @classmethod
     def from_variable(cls, variable : Variable) -> FixedVariable:
