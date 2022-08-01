@@ -52,11 +52,11 @@ class SingleUrlInjector(Injector):
             self.__request(self.__url.get_url(), self.__url.get_params())
     
     @classmethod
-    def from_values(urls : list[Url], payloads : list[str]) -> InjectorList:
+    def from_values(cls, urls : list[Url], payloads : list[str]) -> InjectorList:
         '''
         Create an Injector list by values, with payloads different by every Single Url Injector
         '''
-        return InjectorList([SingleUrlInjector(x, payloads) for x in urls])
+        return InjectorList([cls(x, payloads) for x in urls])
 
 
 class SingleUrlInjectorIterator(InjectorIterator):

@@ -31,12 +31,12 @@ class Variable:
         return {self.__var_name : self.__content}
 
     @classmethod
-    def from_dict(value : dict) -> Variable | list[Variable]:
+    def from_dict(cls, value : dict) -> Variable | list[Variable]:
         
         rtr = []
         
         for name, content in value.items():
-            rtr.append(Variable(name, content=content))
+            rtr.append(cls(name, content=content))
 
         if len(rtr) == 1:
             return rtr[0]
@@ -76,5 +76,5 @@ class InjectableVariable(Injectable, Variable):
         self._set_content(payload)
 
     @classmethod
-    def from_variable(variable : Variable) -> InjectableVariable:
-        return InjectableVariable(variable.get_variable_name(), protocol=variable.get_protocol(), content=variable.get_content())
+    def from_variable(cls, variable : Variable) -> InjectableVariable:
+        return cls(variable.get_variable_name(), protocol=variable.get_protocol(), content=variable.get_content())

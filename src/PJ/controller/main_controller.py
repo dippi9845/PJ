@@ -83,5 +83,5 @@ class MainController:
         to_inject.inject_all()
 
     @classmethod
-    def from_file(filename : str, view : MainView) -> MainController:
-        return MainController(view, option=Configuration.from_file(filename))
+    def from_file(cls, filename : str, view : MainView) -> MainController:
+        return cls(view, option=Configuration.from_file(filename))
