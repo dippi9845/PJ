@@ -3,7 +3,7 @@ from PJ.model.url import Url
 from PJ.view.main_view import MainView
 from PJ.model.variable import InjectableVariable, FixedVariable
 from PJ.model.configuration import InjectionType, Configuration, UrlConfiguration
-from injector.url.injector_list import InjectorList
+from injector.injector import InjectorList
 
 class MainController:
 
