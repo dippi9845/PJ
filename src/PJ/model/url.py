@@ -46,8 +46,8 @@ class Url:
         return rtr
 
     def get_params(self) -> dict:
-        vars = self.get_injectable_dict()
-        vars.update(self.get_fixed_dict())
+        vars = self.get_injectable()
+        vars.update(self.get_fixed())
         return vars
     
     def to_dict(self) -> dict:
