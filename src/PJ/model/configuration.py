@@ -4,13 +4,11 @@ from abc import abstractmethod
 from json import loads
 from PJ.controller.injector.injector import Injector
 from PJ.model.url import Url
-from PJ.controller.injector.url.injector_list import InjectorList
+from PJ.controller.injector.injector import InjectorList
 
 class InjectionType(Enum):
     URL = "1"
     WEBDRIVER = "2"
-
-# TODO : marcare come classmethod tutte le factory in tutti i moduli
 
 class ExportIdntifier(Enum):
     INJECTION_TYPE = "Injection Type"
@@ -56,7 +54,7 @@ class Configuration:
         return {ExportIdntifier.INJECTION_TYPE.value : None, ExportIdntifier.CONFIGURATION_NAME.value : self.config_name, ExportIdntifier.PAYLOADS.value : list(self.payloads), ExportIdntifier.PAYLOAD_FILES.value : list(self.payload_files), ExportIdntifier.PAYLOAD_FILE_SEPARETOR.value : self.payload_file_separetor}
 
     @classmethod
-    def from_file(filename : str) -> Configuration:
+    def from_file(cls, filename : str) -> Configuration:
         with open(filename, "r") as f:
             data = loads(f.read())
             
