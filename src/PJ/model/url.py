@@ -35,7 +35,7 @@ class Url:
     def get_url(self) -> str:
         return self.__url
 
-    def get_injectable_list(self) -> list:
+    def get_injectable_list(self) -> list[dict]:
         return [x.to_dict() for x in self.__variable]
     
     def get_injectable_dict(self) -> dict:
@@ -43,7 +43,7 @@ class Url:
         map(lambda x : rtr.update(x), self.get_injectable_list())
         return rtr
     
-    def get_fixed_list(self) -> list:
+    def get_fixed_list(self) -> list[dict]:
         return [x.to_dict() for x in self.__fixed_vars]
     
     def get_fixed_dict(self) -> dict:
