@@ -1,6 +1,6 @@
 from __future__ import annotations
 from enum import Enum
-from PJ.utils.urls import url_parameters, remove_query as remove_params, unparse_url
+from PJ.utils.urls import Urls
 from PJ.model.variable import FixedVariable, InjectableVariable
 
 class ExportIdentifier(Enum):
@@ -10,8 +10,8 @@ class ExportIdentifier(Enum):
 
 class Url:
     def __init__(self, url : str, injectable_varaible : list[InjectableVariable]=[], fixed_variable : list[FixedVariable]=[] ,vars_in_url_are_fixed=True) -> None:
-        parameters = url_parameters(url)
-        self.__url = remove_params(url)
+        parameters = Urls.url_parameters(url)
+        self.__url = Urls.remove_query(url)
         self.__fixed_vars = fixed_variable
         self.__variable = injectable_varaible
 
@@ -30,7 +30,7 @@ class Url:
         return self.__str__
     
     def __str__(self) -> str:
-        return unparse_url(self.get_url(), self.get_params())
+        return Urls.unparse_url(self.get_url(), self.get_params())
 
     def get_url(self) -> str:
         return self.__url
