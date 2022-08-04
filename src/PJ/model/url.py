@@ -16,11 +16,11 @@ class Url:
         self.__variable = injectable_varaible
 
         if vars_in_url_are_fixed is True:
-            for name, value in zip(parameters):
+            for name, value in parameters.items():
                 self.__fixed_vars.append(FixedVariable(name, content=value))
         
         elif vars_in_url_are_fixed is False:
-            for name, value in zip(parameters):
+            for name, value in parameters.items():
                 self.__variable.append(InjectableVariable(name))
     
     def inject(self, payload : str) -> str:
