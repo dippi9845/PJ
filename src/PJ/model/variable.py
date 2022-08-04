@@ -60,6 +60,16 @@ class FixedVariable(Injectable, Variable):
     @classmethod
     def from_variable(cls, variable : Variable) -> FixedVariable:
         return cls(variable.get_variable_name(), protocol=variable.get_protocol(), content=variable.get_content())
+    
+    @classmethod
+    def from_dict(cls, value : dict) -> FixedVariable | list[FixedVariable]:
+        rtr = Variable.from_dict(value)
+        
+        if type(rtr) == list:
+            return list(map(lambda x: cls.from_variable(x), rtr))
+
+        else:
+            return FixedVariable.from_variable(rtr)
 
 
 class InjectableVariable(Injectable, Variable):
@@ -78,3 +88,13 @@ class InjectableVariable(Injectable, Variable):
     @classmethod
     def from_variable(cls, variable : Variable) -> InjectableVariable:
         return cls(variable.get_variable_name(), protocol=variable.get_protocol(), content=variable.get_content())
+    
+    @classmethod
+    def from_dict(cls, value : dict) -> InjectableVariable | list[InjectableVariable]:
+        rtr = Variable.from_dict(value)
+        
+        if type(rtr) == list:
+            return list(map(lambda x: cls.from_variable(x), rtr))
+
+        else:
+            return FixedVariable.from_variable(rtr)
