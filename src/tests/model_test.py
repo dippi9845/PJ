@@ -78,7 +78,9 @@ class TestUrl(unittest.TestCase):
         expected = {var2.get_variable_name() : var2.get_content()}
         self.assertEqual(url3.get_fixed(), expected, f"injectable dict is not the same. Expected : {expected} actual {url3.get_fixed()}")
 
-    def test_to_dict(self):
+    def test_dict(self):
+        # test from dict
+        # test to dict
         pass
 
 
