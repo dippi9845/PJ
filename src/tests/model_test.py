@@ -140,5 +140,8 @@ class VaraibleTest(unittest.TestCase):
         var.inject(empty)
         self.assertEqual(var.get_content(), empty, f"Inject be able to set the content empty")
 
+class ConfigurationTest(unittest.TestCase):
+    pass
+
 if __name__ == "__main__":
     unittest.main()
