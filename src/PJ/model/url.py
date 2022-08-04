@@ -34,21 +34,15 @@ class Url:
 
     def get_url(self) -> str:
         return self.__url
-
-    def get_injectable_list(self) -> list[dict]:
-        return [x.to_dict() for x in self.__variable]
     
-    def get_injectable_dict(self) -> dict:
+    def get_injectable(self) -> dict:
         rtr = {}
-        map(lambda x : rtr.update(x), self.get_injectable_list())
+        map(lambda x : rtr.update({x.get_variable_name() : x.get_content()}), self.__variable)
         return rtr
     
-    def get_fixed_list(self) -> list[dict]:
-        return [x.to_dict() for x in self.__fixed_vars]
-    
-    def get_fixed_dict(self) -> dict:
+    def get_fixed(self) -> dict:
         rtr = {}
-        map(lambda x : rtr.update(x), self.get_fixed_list())
+        map(lambda x : rtr.update({x.get_variable_name() : x.get_content()}), self.__fixed_vars)
         return rtr
 
     def get_params(self) -> dict:
