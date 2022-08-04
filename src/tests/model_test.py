@@ -1,10 +1,82 @@
 import unittest
 from ..PJ.model.variable import Variable, FixedVariable, InjectableVariable
-
+from ..PJ.model.url import Url
 
 class TestUrl(unittest.TestCase):
-    def test1(self):
-        pass
+
+    def test_gettes_default_fixed(self):
+        domain = "https://domain"
+        default_name = "default"
+        default_value = "k"
+        domani_p = domain + f"?{default_name}={default_value}"
+        
+        var1 = InjectableVariable("ciao", content="q")
+        var2 = FixedVariable("hey", content="g")
+        url1 = Url(domani_p, injectable_varaible=[var1], fixed_variable=[var2], vars_in_url_are_fixed=True)
+
+        # test the removing of the parameters in the constructor
+        self.assertEqual(url1.get_url(), domain, f"at the construction all the parameters need to be removed, {url1.get_url()} != {domain}")
+        
+        # test get_params()
+        expected = {var1.get_variable_name() : var1.get_content(), var2.get_variable_name(): var2.get_content(), default_name : default_value}
+        self.assertEqual(url1.get_params(), expected, f"Parameters are not the same. expected {expected} actual {url1.get_params()}")
+
+        # test get_injectable_dict()
+        expected = {var1.get_variable_name() : var1.get_content()}
+        self.assertEqual(url1.get_injectable(), expected, f"injectable dict is not the same. Expected : {expected} actual {url1.get_injectable()}")
+        
+        # test get_fixed_dict()
+        expected = {var2.get_variable_name() : var2.get_content(), default_name : default_value}
+        self.assertEqual(url1.get_fixed(), expected, f"injectable dict is not the same. Expected : {expected} actual {url1.get_fixed()}")
+
+    def test_gettes_default_injectable(self):
+        domain = "https://domain"
+        default_name = "default"
+        default_value = "k"
+        domani_p = domain + f"?{default_name}={default_value}"
+        var1 = InjectableVariable("ciao", content="q")
+        var2 = FixedVariable("hey", content="g")
+
+        url2 = Url(domani_p, injectable_varaible=[var1], fixed_variable=[var2], vars_in_url_are_fixed=False)
+
+        # test the removing of the parameters in the constructor
+        self.assertEqual(url2.get_url(), domain, f"at the construction all the parameters need to be removed, {url2.get_url()} != {domain}")
+        
+        # test get_params()
+        expected = {var1.get_variable_name() : var1.get_content(), var2.get_variable_name(): var2.get_content(), default_name : default_value}
+        self.assertEqual(url2.get_params(), expected, f"Parameters are not the same. expected {expected} actual {url2.get_params()}")
+
+        # test get_injectable_dict()
+        expected = {var1.get_variable_name() : var1.get_content(), default_name : default_value}
+        self.assertEqual(url2.get_injectable(), expected, f"injectable dict is not the same. Expected : {expected} actual {url2.get_injectable()}")
+        
+        # test get_fixed_dict()
+        expected = {var2.get_variable_name() : var2.get_content()}
+        self.assertEqual(url2.get_fixed(), expected, f"injectable dict is not the same. Expected : {expected} actual {url2.get_fixed()}")
+    
+    def test_gettes_default_ignored(self):
+        domain = "https://domain"
+        default_name = "default"
+        default_value = "k"
+        domani_p = domain + f"?{default_name}={default_value}"
+        var1 = InjectableVariable("ciao", content="q")
+        var2 = FixedVariable("hey", content="g")
+        url3 = Url(domani_p, injectable_varaible=[var1], fixed_variable=[var2], vars_in_url_are_fixed=None)
+
+        # test the removing of the parameters in the constructor
+        self.assertEqual(url3.get_url(), domain, f"at the construction all the parameters need to be removed, {url3.get_url()} != {domain}")
+        
+        # test get_params()
+        expected = {var1.get_variable_name() : var1.get_content(), var2.get_variable_name(): var2.get_content()}
+        self.assertEqual(url3.get_params(), expected, f"Parameters are not the same. expected {expected} actual {url3.get_params()}")
+
+        # test get_injectable_dict()
+        expected = {var1.get_variable_name() : var1.get_content()}
+        self.assertEqual(url3.get_injectable(), expected, f"injectable dict is not the same. Expected : {expected} actual {url3.get_injectable()}")
+        
+        # test get_fixed_dict()
+        expected = {var2.get_variable_name() : var2.get_content()}
+        self.assertEqual(url3.get_fixed(), expected, f"injectable dict is not the same. Expected : {expected} actual {url3.get_fixed()}")
 
     def test2(self):
         pass
