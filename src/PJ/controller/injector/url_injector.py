@@ -1,11 +1,12 @@
 from __future__ import annotations
 from PJ.model.url import Url
-from PJ.utils.urls import get_request
+from PJ.utils.urls import Urls
 from PJ.controller.injector.injector import Injector, InjectorIterator, InjectorList
+from typing import Callable
 
 class SingleUrlInjector(Injector):
 
-    def __init__(self, url : Url, payloads : list[str], request: function=get_request) -> None:
+    def __init__(self, url : Url, payloads : list[str], request: Callable=Urls.get_request) -> None:
         self.__url = url
         self.__payloads = payloads
         self.__request = request
