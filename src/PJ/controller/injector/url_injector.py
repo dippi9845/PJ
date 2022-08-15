@@ -4,7 +4,7 @@ from PJ.utils.urls import Urls
 from PJ.controller.injector.injector import Injector, InjectorIterator, InjectorList
 from typing import Callable
 
-class SingleUrlInjector(Injector):
+class UrlInjector(Injector):
 
     def __init__(self, url : Url, payloads : list[str], request: Callable=Urls.get_request) -> None:
         self.__url = url
@@ -61,5 +61,5 @@ class SingleUrlInjector(Injector):
 
 
 class SingleUrlInjectorIterator(InjectorIterator):
-    def __init__(self, url_injector: SingleUrlInjector) -> None:
+    def __init__(self, url_injector: UrlInjector) -> None:
         super().__init__(url_injector, len(url_injector))
