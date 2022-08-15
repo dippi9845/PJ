@@ -14,8 +14,8 @@ class UrlInjector(Injector):
     def get_url(self) -> str:
         return self.__url.get_url()
 
-    def __iter__(self) -> SingleUrlInjectorIterator:
-        return SingleUrlInjectorIterator(self)
+    def __iter__(self) -> UrlInjectorIterator:
+        return UrlInjectorIterator(self)
     
     def __len__(self) -> int:
         return len(self.__payloads)
@@ -60,6 +60,6 @@ class UrlInjector(Injector):
         return InjectorList([cls(x, payloads) for x in urls])
 
 
-class SingleUrlInjectorIterator(InjectorIterator):
+class UrlInjectorIterator(InjectorIterator):
     def __init__(self, url_injector: UrlInjector) -> None:
         super().__init__(url_injector, len(url_injector))
