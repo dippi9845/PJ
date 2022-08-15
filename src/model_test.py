@@ -1,6 +1,6 @@
 import unittest
-from ..PJ.model.variable import Variable, FixedVariable, InjectableVariable
-from ..PJ.model.url import Url
+from PJ.model.variable import Variable, FixedVariable, InjectableVariable
+from PJ.model.url import Url
 
 class TestUrl(unittest.TestCase):
 

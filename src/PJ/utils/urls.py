@@ -31,7 +31,7 @@ class Urls(ABC):
         '''
         Remove the query part from given url
         '''
-        return urljoin(url, urlparse(url).path)
+        return url.split("?")[0]
 
     @staticmethod
     def unparse_url(url: str, params : dict) -> str:

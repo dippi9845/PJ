@@ -1,5 +1,5 @@
 from __future__ import annotations
-from injectable import Injectable
+from .injectable import Injectable
 
 
 class Variable:

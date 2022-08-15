@@ -21,7 +21,7 @@ class Url:
         
         elif vars_in_url_are_fixed is False:
             for name, value in parameters.items():
-                self.__variable.append(InjectableVariable(name))
+                self.__variable.append(InjectableVariable(name, content=value))
     
     def inject(self, payload : str) -> str:
         for i in self.__variable:
@@ -37,12 +37,18 @@ class Url:
     
     def get_injectable(self) -> dict:
         rtr = {}
-        map(lambda x : rtr.update({x.get_variable_name() : x.get_content()}), self.__variable)
+        
+        for i in self.__variable:
+            rtr.update({i.get_variable_name() : i.get_content()})
+        
         return rtr
     
     def get_fixed(self) -> dict:
         rtr = {}
-        map(lambda x : rtr.update({x.get_variable_name() : x.get_content()}), self.__fixed_vars)
+        
+        for i in self.__fixed_vars:
+            rtr.update({i.get_variable_name() : i.get_content()})
+        
         return rtr
 
     def get_params(self) -> dict:
