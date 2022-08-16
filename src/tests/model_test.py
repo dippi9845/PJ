@@ -141,6 +141,36 @@ class TestUrl(unittest.TestCase):
         possibilty = [f"{domain}?ciao=q&hey=g", f"{domain}?hey=g&ciao=q"]
         
         self.assertIn(str(url3), possibilty)
+    
+    def test_wrong_from_dict(self):
+        domain = "https://domain"
+        
+        possible_dict = {
+            ExportIdentifier.INJECTABLE_VARAIBLE.value : {"ciao": "q"},
+            ExportIdentifier.FIXED_VARAIBLE.value : {"hey": "g"}
+        }
+
+        self.assertRaises(ValueError, Url.from_dict(possible_dict))
+
+        possible_dict_1 = {
+            ExportIdentifier.URL.value : domain,
+            ExportIdentifier.FIXED_VARAIBLE.value : {"hey": "g"}
+        }
+
+        self.assertRaises(ValueError, Url.from_dict(possible_dict_1, not_present_to_empty=False))
+
+        possible_dict_2 = {
+            ExportIdentifier.URL.value : domain,
+            ExportIdentifier.INJECTABLE_VARAIBLE.value : {"ciao": "q"}
+        }
+
+        self.assertRaises(ValueError, Url.from_dict(possible_dict_2, not_present_to_empty=False))
+
+        url1 = Url.from_dict(possible_dict_1)
+        self.assertDictEqual(url1.get_injectable(), {})
+
+        url2 = Url.from_dict(possible_dict_2)
+        self.assertDictEqual(url2.get_injectable(), {})
 
 
 class VaraibleTest(unittest.TestCase):
