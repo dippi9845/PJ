@@ -150,27 +150,27 @@ class TestUrl(unittest.TestCase):
             ExportIdentifier.FIXED_VARAIBLE.value : {"hey": "g"}
         }
 
-        self.assertRaises(ValueError, Url.from_dict(possible_dict))
+        self.assertRaises(ValueError, Url.from_dict, (possible_dict))
 
         possible_dict_1 = {
             ExportIdentifier.URL.value : domain,
             ExportIdentifier.FIXED_VARAIBLE.value : {"hey": "g"}
         }
 
-        self.assertRaises(ValueError, Url.from_dict(possible_dict_1, not_present_to_empty=False))
+        self.assertRaises(ValueError, Url.from_dict, (possible_dict_1, False))
 
         possible_dict_2 = {
             ExportIdentifier.URL.value : domain,
             ExportIdentifier.INJECTABLE_VARAIBLE.value : {"ciao": "q"}
         }
 
-        self.assertRaises(ValueError, Url.from_dict(possible_dict_2, not_present_to_empty=False))
+        self.assertRaises(ValueError, Url.from_dict, (possible_dict_2, False))
 
         url1 = Url.from_dict(possible_dict_1)
         self.assertDictEqual(url1.get_injectable(), {})
 
         url2 = Url.from_dict(possible_dict_2)
-        self.assertDictEqual(url2.get_injectable(), {})
+        self.assertDictEqual(url2.get_fixed(), {})
 
 
 class VaraibleTest(unittest.TestCase):
