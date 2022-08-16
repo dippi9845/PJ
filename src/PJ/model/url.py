@@ -57,7 +57,13 @@ class Url:
         return vars
     
     def to_dict(self) -> dict:
-        return {ExportIdentifier.URL.value : self.__url, ExportIdentifier.INJECTABLE_VARAIBLE.value : self.get_injectable_dict(), ExportIdentifier.FIXED_VARAIBLE.value : self.get_fixed_dict()}
+        return {
+            ExportIdentifier.URL.value : {
+                ExportIdentifier.URL.value : self.__url,
+                ExportIdentifier.INJECTABLE_VARAIBLE.value : self.get_injectable(),
+                ExportIdentifier.FIXED_VARAIBLE.value : self.get_fixed()
+            }
+        }
 
     @classmethod
     def from_dict(cls, raw : dict) -> Url:
