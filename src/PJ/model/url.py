@@ -67,7 +67,20 @@ class Url:
 
     @classmethod
     def from_dict(cls, raw : dict) -> Url:
-        injecatbles = [InjectableVariable(key, content=value) for key, value in raw[ExportIdentifier.INJECTABLE_VARAIBLE.value].items()]
-        fixed = [FixedVariable(key, content=value) for key, value in raw[ExportIdentifier.FIXED_VARAIBLE.value].items()]
+        if not raw.__contains__(ExportIdentifier.URL.value):
+            raise TypeError(f"Dict passed hasn't the ExportIdentifier.URL.value: {ExportIdentifier.URL.value} as first key")
+        
+        raw = raw[ExportIdentifier.URL.value]
+        
+        if not raw.__contains__(ExportIdentifier.URL.value):
+            raise TypeError(f"No key {ExportIdentifier.URL.value} found that specify the actual url to inject")
 
-        return cls(raw[ExportIdentifier.URL], injectable_varaible=injecatbles, fixed_variable=fixed)
+        if not raw.__contains__(ExportIdentifier.INJECTABLE_VARAIBLE.value):
+            raise TypeError(f"No key {ExportIdentifier.INJECTABLE_VARAIBLE.value} found that specify the injectables varaibles")
+
+        if not raw.__contains__(ExportIdentifier.FIXED_VARAIBLE.value):
+            raise TypeError(f"No key {ExportIdentifier.FIXED_VARAIBLE.value} found that specify the fixed varaibles")
+
+        injectables = InjectableVariable.from_dict(raw[ExportIdentifier.INJECTABLE_VARAIBLE.value], force_to_list=True)
+        fixed = FixedVariable.from_dict(raw[ExportIdentifier.FIXED_VARAIBLE.value], force_to_list=True)
+        return cls(raw[ExportIdentifier.URL.value], injectable_varaible=injectables, fixed_variable=fixed)
