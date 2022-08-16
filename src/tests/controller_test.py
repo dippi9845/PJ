@@ -144,7 +144,7 @@ class InjectorListTests(unittest.TestCase):
         self.assertListEqual(combinations1, [])
         self.assertListEqual(combinations2, [])
     
-    def test_wrong_split_1(self):
+    def test_wrongs_split(self):
         domain1 = "http://blablabla?ada=null&kl=null"
         payloads1 = ["1", "2", "3", "4", "5", "6"]
         
@@ -166,27 +166,6 @@ class InjectorListTests(unittest.TestCase):
         injector = InjectorList([injector1, injector2])
 
         self.assertRaises(ValueError, injector.split, (3))
-    
-    def test_wrong_split_2(self):
-        domain1 = "http://blablabla?ada=null&kl=null"
-        payloads1 = ["1", "2", "3", "4", "5", "6"]
-        
-        url1 = Url(domain1, vars_in_url_are_fixed=False)
-        combinations1 = list(map(lambda x: domain1.replace("null", x), payloads1))
-        to_call1 = partial(self.check_by_list_of_combos, combinations1)
-
-        injector1 = UrlInjector(url1, payloads1, request=to_call1)
-
-        domain2 = "http://ablaabla?dad=null&frenci=null"
-        payloads2 = ["7", "8", "9", "10", "11", "12"]
-        
-        url2 = Url(domain2, vars_in_url_are_fixed=False)
-        combinations2 = list(map(lambda x: domain2.replace("null", x), payloads2))
-        to_call2 = partial(self.check_by_list_of_combos, combinations2)
-
-        injector2 = UrlInjector(url2, payloads2, request=to_call2)
-
-        injector = InjectorList([injector1, injector2])
 
         self.assertRaises(ZeroDivisionError, injector.split, (0))
 
