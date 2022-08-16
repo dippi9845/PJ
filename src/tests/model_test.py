@@ -120,7 +120,17 @@ class TestUrl(unittest.TestCase):
         self.fail("not implemented")
     
     def test_str(self):
-        self.fail("not implemented")
+        domain = "https://domain"
+        default_name = "default"
+        default_value = "k"
+        domani_p = domain + f"?{default_name}={default_value}"
+        var1 = InjectableVariable("ciao", content="q")
+        var2 = FixedVariable("hey", content="g")
+        url3 = Url(domani_p, injectable_varaible=[var1], fixed_variable=[var2], vars_in_url_are_fixed=None)
+
+        possibilty = [f"{domain}?ciao=q&hey=g", f"{domain}?hey=g&ciao=q"]
+        
+        self.assertIn(str(url3), possibilty)
 
 
 class VaraibleTest(unittest.TestCase):
