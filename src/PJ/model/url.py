@@ -67,7 +67,7 @@ class Url:
     def from_dict(cls, raw : dict, not_present_to_empty=True) -> Url:
         
         if not raw.__contains__(ExportIdentifier.URL.value):
-            raise TypeError(f"No key {ExportIdentifier.URL.value} found that specify the actual url to inject")
+            raise ValueError(f"No key {ExportIdentifier.URL.value} found that specify the actual url to inject")
 
         if not raw.__contains__(ExportIdentifier.INJECTABLE_VARAIBLE.value):
             
@@ -75,7 +75,7 @@ class Url:
                 injectables = []
             
             else:
-                raise TypeError(f"No key {ExportIdentifier.INJECTABLE_VARAIBLE.value} found that specify the injectables varaibles")
+                raise ValueError(f"No key {ExportIdentifier.INJECTABLE_VARAIBLE.value} found that specify the injectables varaibles")
         
         else:
             injectables = InjectableVariable.from_dict(raw[ExportIdentifier.INJECTABLE_VARAIBLE.value], force_to_list=True)
@@ -86,7 +86,7 @@ class Url:
                 fixed = []
             
             else:
-                raise TypeError(f"No key {ExportIdentifier.FIXED_VARAIBLE.value} found that specify the fixed varaibles")
+                raise ValueError(f"No key {ExportIdentifier.FIXED_VARAIBLE.value} found that specify the fixed varaibles")
 
         else:
             fixed = FixedVariable.from_dict(raw[ExportIdentifier.FIXED_VARAIBLE.value], force_to_list=True)
