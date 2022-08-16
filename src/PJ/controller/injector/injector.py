@@ -1,5 +1,6 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
+from math import floor
 
 class Injector(ABC):
     
@@ -41,6 +42,9 @@ class InjectorList(Injector):
     def __init__(self, injectors : list[Injector]):
         self.__injectors = injectors
 
+    def __len__(self):
+        return len(self.__injectors)
+
     def __iter__(self):
         return InjectorListIterator(self)
     
@@ -57,8 +61,9 @@ class InjectorList(Injector):
         for i in self.__injectors:
             i.inject_all()
     
-    def split(self, num : int) -> list:
-        rtr = [self.__injectors[x:x+num] for x in range(0, len(self.__injectors), num)]
+    def split(self, num : int) -> list[InjectorList]:
+        step = floor(len(self.__injectors)/num)
+        rtr = [self.__injectors[x:x+step] for x in range(0, len(self.__injectors), step)]
         rtr = [InjectorList(x.copy()) for x in rtr]
         return rtr
 
