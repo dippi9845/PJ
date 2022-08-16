@@ -12,8 +12,8 @@ class Url:
     def __init__(self, url : str, injectable_varaible : list[InjectableVariable]=[], fixed_variable : list[FixedVariable]=[] ,vars_in_url_are_fixed=True) -> None:
         parameters = Urls.url_parameters(url)
         self.__url = Urls.remove_query(url)
-        self.__fixed_vars = fixed_variable
-        self.__variable = injectable_varaible
+        self.__fixed_vars = fixed_variable.copy()
+        self.__variable = injectable_varaible.copy()
 
         if vars_in_url_are_fixed is True:
             for name, value in parameters.items():
