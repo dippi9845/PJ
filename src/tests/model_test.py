@@ -121,6 +121,10 @@ class VaraibleTest(unittest.TestCase):
 
         self.assertEqual(var[1].get_variable_name(), second_name, f"name should be {second_name}")
         self.assertEqual(var[1].get_content(), second_content,  f"content should be {second_content}")
+    
+    def test_to_dict(self):
+        var = Variable(self.VAR_NAME, content=self.CONTENT)
+        self.assertEqual(var.to_dict(), {self.VAR_NAME : self.CONTENT})
 
     def test_fixed(self):
         var = FixedVariable.from_variable(Variable(self.VAR_NAME, content=self.CONTENT))
