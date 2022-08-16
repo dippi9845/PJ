@@ -27,7 +27,7 @@ class Url:
         for i in self.__variable:
             i.inject(payload)
         
-        return self.__str__
+        return str(self)
     
     def __str__(self) -> str:
         return Urls.unparse_url(self.get_url(), self.get_params())
