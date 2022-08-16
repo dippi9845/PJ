@@ -31,14 +31,14 @@ class Variable:
         return {self.__var_name : self.__content}
 
     @classmethod
-    def from_dict(cls, value : dict) -> Variable | list[Variable]:
+    def from_dict(cls, value : dict, force_to_list=False) -> Variable | list[Variable]:
         
         rtr = []
         
         for name, content in value.items():
             rtr.append(cls(name, content=content))
 
-        if len(rtr) == 1:
+        if len(rtr) == 1 and force_to_list is False:
             return rtr[0]
         else:
             return rtr
@@ -62,8 +62,8 @@ class FixedVariable(Injectable, Variable):
         return cls(variable.get_variable_name(), protocol=variable.get_protocol(), content=variable.get_content())
     
     @classmethod
-    def from_dict(cls, value : dict) -> FixedVariable | list[FixedVariable]:
-        rtr = Variable.from_dict(value)
+    def from_dict(cls, value : dict, force_to_list=False) -> FixedVariable | list[FixedVariable]:
+        rtr = Variable.from_dict(value, force_to_list=force_to_list)
         
         if type(rtr) == list:
             return list(map(lambda x: cls.from_variable(x), rtr))
@@ -90,8 +90,8 @@ class InjectableVariable(Injectable, Variable):
         return cls(variable.get_variable_name(), protocol=variable.get_protocol(), content=variable.get_content())
     
     @classmethod
-    def from_dict(cls, value : dict) -> InjectableVariable | list[InjectableVariable]:
-        rtr = Variable.from_dict(value)
+    def from_dict(cls, value : dict, force_to_list=False) -> InjectableVariable | list[InjectableVariable]:
+        rtr = Variable.from_dict(value, force_to_list=force_to_list)
         
         if type(rtr) == list:
             return list(map(lambda x: cls.from_variable(x), rtr))
