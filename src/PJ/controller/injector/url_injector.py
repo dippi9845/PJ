@@ -43,6 +43,10 @@ class UrlInjector(Injector):
         Inject the payload, in the position given by the parameter
         '''
         self.__url.inject(self._get_payload(payload_inedex))
+        self.__request(self.__url.get_url(), self.__url.get_params())
+    
+    def _get_injection(self, index: int) -> str:
+        return self._get_payload(index)
 
     def inject_all(self):
         '''
