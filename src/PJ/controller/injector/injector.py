@@ -22,7 +22,7 @@ class InjectorIterator:
         self.__index = 0
     
     def _is_over(self) -> bool:
-        self.__index < self.__injection_num
+        return self.__index < self.__injection_num
 
     def _get_injector_at_index(self) -> str | Injector:
         return self.__injector._get_injection(self.__index)
@@ -30,8 +30,9 @@ class InjectorIterator:
     def __next__(self) -> str | Injector:
         if self._is_over():
             self.__injector._inject_by_index(self.__index)
+            rtr = self._get_injector_at_index()
             self.__index += 1
-            return self._get_injector_at_index()
+            return rtr
         else:
             raise StopIteration
 
