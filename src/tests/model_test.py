@@ -98,7 +98,23 @@ class TestUrl(unittest.TestCase):
         self.assertDictEqual(expected, url3.to_dict())
     
     def test_from_dict(self):
-        self.fail("not implemented")
+        domain = "https://domain"
+        
+        expected = {
+            ExportIdentifier.URL.value : {
+                ExportIdentifier.URL.value : domain,
+                ExportIdentifier.INJECTABLE_VARAIBLE.value : {"ciao": "q"},
+                ExportIdentifier.FIXED_VARAIBLE.value : {"hey": "g"}
+            }
+        }
+
+        url = Url.from_dict(expected)
+
+        self.assertDictEqual(url.get_fixed(), {"hey": "g"})
+        self.assertDictEqual(url.get_injectable(), {"ciao": "q"})
+        self.assertEqual(url.get_url(), domain)
+        self.assertEqual(url.get_params(), {"ciao": "q", "hey": "g"})
+
     
     def test_inject(self):
         self.fail("not implemented")
