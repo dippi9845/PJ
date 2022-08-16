@@ -88,11 +88,9 @@ class TestUrl(unittest.TestCase):
         url3 = Url(domani_p, injectable_varaible=[var1], fixed_variable=[var2], vars_in_url_are_fixed=None)
 
         expected = {
-            ExportIdentifier.URL.value : {
-                ExportIdentifier.URL.value : domain,
-                ExportIdentifier.INJECTABLE_VARAIBLE.value : {"ciao": "q"},
-                ExportIdentifier.FIXED_VARAIBLE.value : {"hey": "g"}
-            }
+            ExportIdentifier.URL.value : domain,
+            ExportIdentifier.INJECTABLE_VARAIBLE.value : {"ciao": "q"},
+            ExportIdentifier.FIXED_VARAIBLE.value : {"hey": "g"}
         }
 
         self.assertDictEqual(expected, url3.to_dict())
@@ -101,11 +99,9 @@ class TestUrl(unittest.TestCase):
         domain = "https://domain"
         
         expected = {
-            ExportIdentifier.URL.value : {
-                ExportIdentifier.URL.value : domain,
-                ExportIdentifier.INJECTABLE_VARAIBLE.value : {"ciao": "q"},
-                ExportIdentifier.FIXED_VARAIBLE.value : {"hey": "g"}
-            }
+            ExportIdentifier.URL.value : domain,
+            ExportIdentifier.INJECTABLE_VARAIBLE.value : {"ciao": "q"},
+            ExportIdentifier.FIXED_VARAIBLE.value : {"hey": "g"}
         }
 
         url = Url.from_dict(expected)

@@ -58,19 +58,13 @@ class Url:
     
     def to_dict(self) -> dict:
         return {
-            ExportIdentifier.URL.value : {
-                ExportIdentifier.URL.value : self.__url,
-                ExportIdentifier.INJECTABLE_VARAIBLE.value : self.get_injectable(),
-                ExportIdentifier.FIXED_VARAIBLE.value : self.get_fixed()
-            }
+            ExportIdentifier.URL.value : self.__url,
+            ExportIdentifier.INJECTABLE_VARAIBLE.value : self.get_injectable(),
+            ExportIdentifier.FIXED_VARAIBLE.value : self.get_fixed()
         }
 
     @classmethod
     def from_dict(cls, raw : dict) -> Url:
-        if not raw.__contains__(ExportIdentifier.URL.value):
-            raise TypeError(f"Dict passed hasn't the ExportIdentifier.URL.value: {ExportIdentifier.URL.value} as first key")
-        
-        raw = raw[ExportIdentifier.URL.value]
         
         if not raw.__contains__(ExportIdentifier.URL.value):
             raise TypeError(f"No key {ExportIdentifier.URL.value} found that specify the actual url to inject")
