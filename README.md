@@ -3,4 +3,4 @@
 </h1>
 
 ### Payload Injection Tool
-A generic, automated, payload injection tool, for websites, written in python, inspired by [sqlmap](https://github.com/sqlmapproject/sqlmap)
+A generic, automated, payload injection tool, written in python
