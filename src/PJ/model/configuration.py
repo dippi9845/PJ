@@ -55,6 +55,8 @@ class Configuration:
 
     @classmethod
     def from_file(cls, filename : str) -> Configuration:
+        # TODO : finire l'implementazione
+        # TODO : testare
         with open(filename, "r") as f:
             data = loads(f.read())
             
