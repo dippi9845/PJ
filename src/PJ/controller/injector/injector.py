@@ -57,6 +57,9 @@ class InjectorList(Injector):
     def _get_injection(self, index : int) -> Injector:
         return self.__injectors[index]
 
+    def add_injector(self, injector : Injector):
+        self.__injectors.append(injector)
+
     def inject_all(self):
         for i in self.__injectors:
             i.inject_all()
@@ -66,6 +69,8 @@ class InjectorList(Injector):
         rtr = [self.__injectors[x:x+step] for x in range(0, len(self.__injectors), step)]
         rtr = [InjectorList(x.copy()) for x in rtr]
         return rtr
+
+INJECTORLIST_EMPTY = InjectorList([])
 
 class InjectorListIterator(InjectorIterator):
     def __init__(self, injector: InjectorList) -> None:
