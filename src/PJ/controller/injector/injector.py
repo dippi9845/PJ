@@ -15,6 +15,15 @@ class Injector(ABC):
     @abstractmethod
     def inject_all(self) -> None:
         pass
+    
+    @abstractmethod
+    def to_dict(self) -> dict:
+        pass
+    
+    @classmethod
+    @abstractmethod
+    def from_dict(cls, dict) -> Injector:
+        pass
 
 class InjectorIterator:
     def __init__(self, injector : Injector, injection_num : int) -> None:
@@ -50,9 +59,9 @@ class InjectorList(Injector):
     
     def _inject_by_index(self, index : int) -> None:
         '''
-        Cant inject an injector, so do nothing
+        Can't inject an injector, so do nothing
         '''
-        pass
+        raise NotImplementedError("This function can not be called, it can't be implemented")
 
     def _get_injection(self, index : int) -> Injector:
         return self.__injectors[index]
