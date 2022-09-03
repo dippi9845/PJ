@@ -9,7 +9,7 @@ class InjectionType(Enum):
     URL = "url"
     WEBDRIVER = "webdriver"
 
-class ExportIdntifier(Enum):
+class ExportIdentifier(Enum):
     VERSION = "Config version"
     CONFIGURATION_NAME = "Name"
     GLOBAL_PAYLOADS = "Global Payloads"
@@ -89,12 +89,12 @@ class Configuration:
             global_payload_files_list[key] = list(value)
         
         return {
-                ExportIdntifier.VERSION.value : self.config_version.value,
-                ExportIdntifier.CONFIGURATION_NAME.value : self.config_name,
-                ExportIdntifier.GLOBAL_PAYLOADS.value : global_payloads_list,
-                ExportIdntifier.GLOBAL_PAYLOAD_FILES.value : global_payload_files_list,
-                ExportIdntifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value : self.payload_file_separetor,
-                ExportIdntifier.INJECTORS.value : self.injectors_serialized
+                ExportIdentifier.VERSION.value : self.config_version.value,
+                ExportIdentifier.CONFIGURATION_NAME.value : self.config_name,
+                ExportIdentifier.GLOBAL_PAYLOADS.value : global_payloads_list,
+                ExportIdentifier.GLOBAL_PAYLOAD_FILES.value : global_payload_files_list,
+                ExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value : self.payload_file_separetor,
+                ExportIdentifier.INJECTORS.value : self.injectors_serialized
             }
 
     @classmethod
@@ -102,34 +102,34 @@ class Configuration:
         with open(filename, "r") as f:
             data = loads(f.read())
             
-            if not data.__contains__(ExportIdntifier.VERSION.value):
+            if not data.__contains__(ExportIdentifier.VERSION.value):
                 raise ValueError(f"{filename} doesn't contains the version")
             
-            config_version = data[ExportIdntifier.VERSION.value]
+            config_version = data[ExportIdentifier.VERSION.value]
             config_name = filename
             
-            if data.__contains__(ExportIdntifier.CONFIGURATION_NAME.value):
-                config_name = data[ExportIdntifier.CONFIGURATION_NAME.value]
+            if data.__contains__(ExportIdentifier.CONFIGURATION_NAME.value):
+                config_name = data[ExportIdentifier.CONFIGURATION_NAME.value]
             
             global_payloads = {}
             
-            if data.__contains__(ExportIdntifier.GLOBAL_PAYLOADS.value):
-                global_payloads = data[ExportIdntifier.GLOBAL_PAYLOADS.value]
+            if data.__contains__(ExportIdentifier.GLOBAL_PAYLOADS.value):
+                global_payloads = data[ExportIdentifier.GLOBAL_PAYLOADS.value]
             
             global_payloads_files = {}
             
-            if data.__contains__(ExportIdntifier.GLOBAL_PAYLOAD_FILES.value):
-                global_payloads_files = set(data[ExportIdntifier.GLOBAL_PAYLOAD_FILES.value])
+            if data.__contains__(ExportIdentifier.GLOBAL_PAYLOAD_FILES.value):
+                global_payloads_files = set(data[ExportIdentifier.GLOBAL_PAYLOAD_FILES.value])
             
             global_payloads_file_separetor = "\n"
             
-            if data.__contains__(ExportIdntifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value):
-                global_payloads_file_separetor = data[ExportIdntifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value]
+            if data.__contains__(ExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value):
+                global_payloads_file_separetor = data[ExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value]
             
-            if not data.__contains__(ExportIdntifier.INJECTORS.value):
+            if not data.__contains__(ExportIdentifier.INJECTORS.value):
                 raise ValueError(f"{filename} doesn't contains any injector")
 
-            injectors = data[ExportIdntifier.INJECTORS.value]
+            injectors = data[ExportIdentifier.INJECTORS.value]
             
             return cls(config_name=config_name, config_version=config_version, global_payloads=global_payloads, global_payload_files=global_payloads_files, global_payload_file_separetor=global_payloads_file_separetor, injectors_serialized=injectors)
 
