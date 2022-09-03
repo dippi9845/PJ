@@ -21,8 +21,11 @@ class Injector(ABC):
         pass
     
     @abstractmethod
-    def to_dict(self) -> dict:
+    def _to_dict(self) -> dict:
         pass
+    
+    def serialize(self) -> dict:
+        return self._to_dict().update(self._get_dict_with_type())
     
     @classmethod
     @abstractmethod
@@ -84,7 +87,7 @@ class InjectorList(Injector):
         return rtr
     
     def to_dict(self) -> list[dict]:
-        return list(map(lambda i: i.to_dict(), self.__injectors))
+        return list(map(lambda i: i.serialize(), self.__injectors))
     
     @classmethod
     def from_dict(cls, dictionary : list[dict]) -> Injector:
