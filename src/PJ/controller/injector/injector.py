@@ -61,7 +61,7 @@ class InjectorList(Injector):
         '''
         Can't inject an injector, so do nothing
         '''
-        raise NotImplementedError("This function can not be called, it can't be implemented")
+        pass
 
     def _get_injection(self, index : int) -> Injector:
         return self.__injectors[index]
@@ -79,11 +79,8 @@ class InjectorList(Injector):
         rtr = [InjectorList(x.copy()) for x in rtr]
         return rtr
     
-    def _to_dict(self) -> list[dict]:
+    def to_dict(self) -> list[dict]:
         return list(map(lambda i: i.to_dict(), self.__injectors))
-    
-    def serialize(self) -> list[dict]:
-        return self._to_dict()
     
     @classmethod
     def from_dict(cls, dictionary : list[dict]) -> Injector:
