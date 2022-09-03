@@ -86,8 +86,11 @@ class InjectorList(Injector):
         rtr = [InjectorList(x.copy()) for x in rtr]
         return rtr
     
-    def to_dict(self) -> list[dict]:
+    def _to_dict(self) -> list[dict]:
         return list(map(lambda i: i.serialize(), self.__injectors))
+    
+    def serialize(self) -> list[dict]:
+        return self._to_dict()
     
     @classmethod
     def from_dict(cls, dictionary : list[dict]) -> Injector:
