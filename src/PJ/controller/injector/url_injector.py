@@ -1,6 +1,5 @@
 from __future__ import annotations
 from enum import Enum
-from urllib import request
 from PJ.model.url import Url
 from PJ.utils.urls import Urls
 from PJ.controller.injector.injector import Injector, InjectorIterator, InjectorList
