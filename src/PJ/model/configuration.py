@@ -66,10 +66,10 @@ class Configuration:
     def add_injector(self, injector : Injector | InjectorList | dict) -> None:
         
         if isinstance(injector, InjectorList):
-            pass
+            self.injectors_serialized += injector.to_dict()
         
         elif isinstance(injector, Injector):
-            pass
+            self.injectors_serialized.append(injector.to_dict())
         
         elif type(injector) is dict:
             self.injectors_serialized.append(injector)
@@ -80,11 +80,19 @@ class Configuration:
     # self.global_payloads è un dizionario non una lista
     # self.global_payload_files è un dizionario non una lista
     def to_dict(self) -> dict:
+        global_payloads_list = {}
+        for key, value in self.global_payloads:
+            global_payloads_list[key] = list(value)
+        
+        global_payload_files_list = {}
+        for key, value in self.global_payload_files:
+            global_payload_files_list[key] = list(value)
+        
         return {
                 ExportIdntifier.VERSION.value : self.config_version.value,
                 ExportIdntifier.CONFIGURATION_NAME.value : self.config_name,
-                ExportIdntifier.GLOBAL_PAYLOADS.value : list(self.global_payloads),
-                ExportIdntifier.GLOBAL_PAYLOAD_FILES.value : list(self.global_payload_files),
+                ExportIdntifier.GLOBAL_PAYLOADS.value : global_payloads_list,
+                ExportIdntifier.GLOBAL_PAYLOAD_FILES.value : global_payload_files_list,
                 ExportIdntifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value : self.payload_file_separetor,
                 ExportIdntifier.INJECTORS.value : self.injectors_serialized
             }
