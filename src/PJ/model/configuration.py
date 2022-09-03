@@ -47,7 +47,7 @@ class SerializeableInjector:
 
 
 class Configuration:
-    def __init__(self, config_version : ConfigVersion=ConfigVersion.FIRST_VERSION.value, config_name : str="Default Config", global_payloads : dict[str, set]={}, global_payload_files : dict[str, set]={}, payload_file_separetor : str="\n", injectors_serialized : list[dict]=[], injector_list : InjectorList=INJECTORLIST_EMPTY) -> None:
+    def __init__(self, config_version : ConfigVersion=ConfigVersion.FIRST_VERSION.value, config_name : str="Default Config", global_payloads : dict[str, set]={}, global_payload_files : dict[str, set]={}, global_payload_file_separetor : str="\n", injectors_serialized : list[dict]=[], injector_list : InjectorList=INJECTORLIST_EMPTY) -> None:
         self.config_name = config_name
         self.config_version = config_version
         
@@ -55,7 +55,7 @@ class Configuration:
         self.global_payloads = global_payloads
         
         self.payload_files_to_add = global_payload_files
-        self.payload_file_separetor = payload_file_separetor
+        self.payload_file_separetor = global_payload_file_separetor
         
         self.injectors_serialized = injectors_serialized + list(map(lambda x: SerializeableInjector(x).to_dict(), injector_list))
 
