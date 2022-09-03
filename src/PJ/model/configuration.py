@@ -77,6 +77,8 @@ class Configuration:
     def build_injectors(self) -> InjectorList:
         pass
 
+    # self.global_payloads è un dizionario non una lista
+    # self.global_payload_files è un dizionario non una lista
     def to_dict(self) -> dict:
         return {
                 ExportIdntifier.VERSION.value : self.config_version.value,
