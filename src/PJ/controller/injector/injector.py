@@ -22,7 +22,7 @@ class Injector(ABC):
     
     @classmethod
     @abstractmethod
-    def from_dict(cls, dict) -> Injector:
+    def from_dict(cls, dictionary : dict) -> Injector:
         pass
 
 class InjectorIterator:
@@ -78,6 +78,14 @@ class InjectorList(Injector):
         rtr = [self.__injectors[x:x+step] for x in range(0, len(self.__injectors), step)]
         rtr = [InjectorList(x.copy()) for x in rtr]
         return rtr
+    
+    def to_dict(self) -> list[dict]:
+        return list(map(lambda i: i.to_dict(), self.__injectors))
+    
+    @classmethod
+    def from_dict(cls, dictionary : list[dict]) -> Injector:
+        cls(list(map(lambda x: Injector.from_dict(x), dictionary)))
+    
 
 INJECTORLIST_EMPTY = InjectorList([])
 
