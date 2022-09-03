@@ -1,8 +1,12 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from math import floor
+from PJ.model.configuration import INJECTOR_TO_INJECTORTYPE, ExportIdentifier
 
 class Injector(ABC):
+    
+    def _get_dict_with_type(self):
+        return {ExportIdentifier.INJECTOR_TYPE.value: INJECTOR_TO_INJECTORTYPE[type(self)]}
     
     @abstractmethod
     def _get_injection(self, index : int) -> str | Injector:
