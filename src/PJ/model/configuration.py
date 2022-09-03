@@ -74,10 +74,10 @@ class Configuration:
     def add_injector(self, injector : Injector | InjectorList | dict) -> None:
         
         if isinstance(injector, InjectorList):
-            self.injectors_serialized += injector.serialize()
+            self.injectors_serialized += injector.to_dict()
         
         elif isinstance(injector, Injector):
-            self.injectors_serialized.append(injector.serialize())
+            self.injectors_serialized.append(injector.to_dict())
         
         elif type(injector) is dict:
             self.injectors_serialized.append(injector)
