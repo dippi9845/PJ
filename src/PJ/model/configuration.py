@@ -8,6 +8,7 @@ class InjectionType(Enum):
     URL = "url"
     WEBDRIVER = "webdriver"
 
+
 class ExportIdentifier(Enum):
     VERSION = "Config version"
     CONFIGURATION_NAME = "Name"
@@ -23,8 +24,10 @@ class ExportIdentifier(Enum):
     PAYLOAD_FILE_SEPARETOR = "Payload File Separetor"
     IGNORE_GLOBAL_PAYLOADS = "Ignore global payload"
 
+
 class ConfigVersion(Enum):
     FIRST_VERSION = "1.0.0"
+
 
 INJECTORTYPE_TO_INJECTOR = {
     InjectionType.URL.value : UrlInjector
@@ -34,8 +37,17 @@ INJECTOR_TO_INJECTORTYPE = {
    UrlInjector: InjectionType.URL.value
 }
 
+
+class SerializeableInjector:
+    def __init__(self, injector : Injector) -> None:
+        self.injector = injector
+    
+    def to_dict(self):
+        return self.injector.to_dict().update({ExportIdentifier.INJECTOR_TYPE.value: INJECTOR_TO_INJECTORTYPE[type(self.injector)]})
+
+
 class Configuration:
-    def __init__(self, config_version : ConfigVersion=ConfigVersion.FIRST_VERSION.value, config_name : str="Default Config", global_payloads : dict[str, set]={}, global_payload_files : dict[str, set]={}, payload_file_separetor : str="\n", injectors_serialized : list=[dict], injector_list : InjectorList=INJECTORLIST_EMPTY) -> None:
+    def __init__(self, config_version : ConfigVersion=ConfigVersion.FIRST_VERSION.value, config_name : str="Default Config", global_payloads : dict[str, set]={}, global_payload_files : dict[str, set]={}, payload_file_separetor : str="\n", injectors_serialized : list[dict]=[], injector_list : InjectorList=INJECTORLIST_EMPTY) -> None:
         self.config_name = config_name
         self.config_version = config_version
         
@@ -45,7 +57,7 @@ class Configuration:
         self.payload_files_to_add = global_payload_files
         self.payload_file_separetor = payload_file_separetor
         
-        self.injectors_serialized = injectors_serialized + injector_list.serialize()
+        self.injectors_serialized = injectors_serialized + list(map(lambda x: SerializeableInjector(x).to_dict(), injector_list))
 
         self.load_payload_file()
     
@@ -74,10 +86,10 @@ class Configuration:
     def add_injector(self, injector : Injector | InjectorList | dict) -> None:
         
         if isinstance(injector, InjectorList):
-            self.injectors_serialized += injector.to_dict()
+            self.injectors_serialized += list(map(lambda x: SerializeableInjector(x).to_dict(), injector))
         
         elif isinstance(injector, Injector):
-            self.injectors_serialized.append(injector.to_dict())
+            self.injectors_serialized.append(SerializeableInjector(injector).to_dict())
         
         elif type(injector) is dict:
             self.injectors_serialized.append(injector)
