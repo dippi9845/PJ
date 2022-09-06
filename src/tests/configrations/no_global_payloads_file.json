@@ -2,5 +2,6 @@
     "Config version": "1.0.0",
     "Name": "blabla",
     "Global Payload Files" : {},
-    "Global Payload File Separetor": "\n"
+    "Global Payload File Separetor": "\n",
+    "Injectors": []
 }
