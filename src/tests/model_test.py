@@ -1,6 +1,7 @@
 import unittest
 from PJ.model.variable import Variable, FixedVariable, InjectableVariable
 from PJ.model.url import Url, ExportIdentifier
+from PJ.model.configuration import Configuration
 
 class TestUrl(unittest.TestCase):
 
@@ -235,8 +236,42 @@ class VaraibleTest(unittest.TestCase):
 
 
 class ConfigurationTest(unittest.TestCase):
-    pass
+    def test_missing_version_fd(self):
+        relative_path = "src/tests/configrations/no_version_config.json"
+        fd = open(relative_path)
+        self.assertRaises(ValueError, Configuration.from_file, (fd))
+    
+    def test_missing_Injector_fd(self):
+        relative_path = "src/tests/configrations/no_injector_config.json"
+        fd = open(relative_path)
+        self.assertRaises(ValueError, Configuration.from_file, (fd))
+    
+    def test_missing_name_fd(self):
+        relative_path = "src/tests/configrations/no_name_config.json"
+        fd = open(relative_path)
+        cnf = Configuration.from_file(fd)
+        self.assertEqual(cnf.config_name, "no_name_config.json")
+    
+    def test_missing_global_payloads_fd(self):
+        relative_path = "src/tests/configrations/no_global_payloads.json"
+        fd = open(relative_path)
+        cnf = Configuration.from_file(fd)
+        self.assertEqual({}, cnf.global_payloads)
+    
+    def test_missing_global_payloads_file_fd(self):
+        relative_path = "src/tests/configrations/no_global_payloads_file.json"
+        fd = open(relative_path)
+        cnf = Configuration.from_file(fd)
+        self.assertEqual({}, cnf.global_payload_files)
+        
+    def test_missing_global_payloads_file_separetor_fd(self):
+        relative_path = "src/tests/configrations/no_global_payload_file separetor.json"
+        fd = open(relative_path)
+        cnf = Configuration.from_file(fd)
+        self.assertEqual("\n", cnf.payload_file_separetor)
 
+    def test_build_injector(self):
+        self.fail("Not implemented")
 
 if __name__ == "__main__":
     unittest.main()
