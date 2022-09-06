@@ -239,35 +239,35 @@ class ConfigurationTest(unittest.TestCase):
     def test_missing_version_fd(self):
         relative_path = "src/tests/configrations/no_version_config.json"
         fd = open(relative_path)
-        self.assertRaises(ValueError, Configuration.from_file, (fd))
+        self.assertRaises(ValueError, Configuration.from_file_descriptor, (fd))
     
     def test_missing_Injector_fd(self):
         relative_path = "src/tests/configrations/no_injector_config.json"
         fd = open(relative_path)
-        self.assertRaises(ValueError, Configuration.from_file, (fd))
+        self.assertRaises(ValueError, Configuration.from_file_descriptor, (fd))
     
     def test_missing_name_fd(self):
         relative_path = "src/tests/configrations/no_name_config.json"
         fd = open(relative_path)
-        cnf = Configuration.from_file(fd)
+        cnf = Configuration.from_file_descriptor(fd)
         self.assertEqual(cnf.config_name, "no_name_config.json")
     
     def test_missing_global_payloads_fd(self):
         relative_path = "src/tests/configrations/no_global_payloads.json"
         fd = open(relative_path)
-        cnf = Configuration.from_file(fd)
+        cnf = Configuration.from_file_descriptor(fd)
         self.assertEqual({}, cnf.global_payloads)
     
     def test_missing_global_payloads_file_fd(self):
         relative_path = "src/tests/configrations/no_global_payloads_file.json"
         fd = open(relative_path)
-        cnf = Configuration.from_file(fd)
+        cnf = Configuration.from_file_descriptor(fd)
         self.assertEqual({}, cnf.global_payload_files)
         
     def test_missing_global_payloads_file_separetor_fd(self):
         relative_path = "src/tests/configrations/no_global_payload_file separetor.json"
         fd = open(relative_path)
-        cnf = Configuration.from_file(fd)
+        cnf = Configuration.from_file_descriptor(fd)
         self.assertEqual("\n", cnf.payload_file_separetor)
 
     def test_build_injector(self):
