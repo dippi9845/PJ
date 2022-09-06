@@ -128,31 +128,31 @@ class Configuration:
         
     @classmethod
     def from_dict(cls, data : dict, default_name="unamed config"):
-        if not data.__contains__(ExportIdentifier.VERSION.value):
+        if not ExportIdentifier.VERSION.value in data:
             raise ValueError(f"{default_name} doesn't contains the version")
         
         config_version = data[ExportIdentifier.VERSION.value]
         config_name = default_name
         
-        if data.__contains__(ExportIdentifier.CONFIGURATION_NAME.value):
+        if ExportIdentifier.CONFIGURATION_NAME.value in data:
             config_name = data[ExportIdentifier.CONFIGURATION_NAME.value]
         
         global_payloads = {}
         
-        if data.__contains__(ExportIdentifier.GLOBAL_PAYLOADS.value):
+        if ExportIdentifier.GLOBAL_PAYLOADS.value in data:
             global_payloads = data[ExportIdentifier.GLOBAL_PAYLOADS.value]
         
         global_payloads_files = {}
         
-        if data.__contains__(ExportIdentifier.GLOBAL_PAYLOAD_FILES.value):
+        if ExportIdentifier.GLOBAL_PAYLOAD_FILES.value in data:
             global_payloads_files = data[ExportIdentifier.GLOBAL_PAYLOAD_FILES.value]
         
         global_payloads_file_separetor = "\n"
         
-        if data.__contains__(ExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value):
+        if ExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value in data:
             global_payloads_file_separetor = data[ExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value]
         
-        if not data.__contains__(ExportIdentifier.INJECTORS.value):
+        if not ExportIdentifier.INJECTORS.value in data:
             raise ValueError(f"{default_name} doesn't contains any injector")
 
         injectors = data[ExportIdentifier.INJECTORS.value]
