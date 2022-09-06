@@ -1,7 +1,7 @@
 {
     "Config version": "1.0.0",
-    "Global Payloads": [],
-    "Global Payload Files" : [],
+    "Global Payloads": {},
+    "Global Payload Files" : {},
     "Global Payload File Separetor": "\n",
     "Injectors": []
 }
