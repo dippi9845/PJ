@@ -1,8 +1,12 @@
 from __future__ import annotations
 from enum import Enum
+from io import TextIOWrapper
 from json import loads
+from unicodedata import name
 from PJ.controller.injector.url_injector import UrlInjector
 from PJ.controller.injector.injector import InjectorList, Injector, INJECTORLIST_EMPTY
+from os.path import basename
+from os import getcwd
 
 class InjectionType(Enum):
     URL = "url"
@@ -116,38 +120,46 @@ class Configuration:
             }
 
     @classmethod
-    def from_file(cls, filename : str) -> Configuration:
-        with open(filename, "r") as f:
-            data = loads(f.read())
-            
-            if not data.__contains__(ExportIdentifier.VERSION.value):
-                raise ValueError(f"{filename} doesn't contains the version")
-            
-            config_version = data[ExportIdentifier.VERSION.value]
-            config_name = filename
-            
-            if data.__contains__(ExportIdentifier.CONFIGURATION_NAME.value):
-                config_name = data[ExportIdentifier.CONFIGURATION_NAME.value]
-            
-            global_payloads = {}
-            
-            if data.__contains__(ExportIdentifier.GLOBAL_PAYLOADS.value):
-                global_payloads = data[ExportIdentifier.GLOBAL_PAYLOADS.value]
-            
-            global_payloads_files = {}
-            
-            if data.__contains__(ExportIdentifier.GLOBAL_PAYLOAD_FILES.value):
-                global_payloads_files = set(data[ExportIdentifier.GLOBAL_PAYLOAD_FILES.value])
-            
-            global_payloads_file_separetor = "\n"
-            
-            if data.__contains__(ExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value):
-                global_payloads_file_separetor = data[ExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value]
-            
-            if not data.__contains__(ExportIdentifier.INJECTORS.value):
-                raise ValueError(f"{filename} doesn't contains any injector")
+    def from_file_descriptor(cls, file_descriptor: TextIOWrapper) -> Configuration:
+        data = loads(file_descriptor.read())
+        name = basename(file_descriptor.name).split('/')[-1] # only the file name
+        
+        return cls.from_dict(data, default_name=name)
+        
+    @classmethod
+    def from_dict(cls, data : dict, default_name="unamed config"):
+        if not data.__contains__(ExportIdentifier.VERSION.value):
+            raise ValueError(f"{default_name} doesn't contains the version")
+        
+        config_version = data[ExportIdentifier.VERSION.value]
+        config_name = default_name
+        
+        if data.__contains__(ExportIdentifier.CONFIGURATION_NAME.value):
+            config_name = data[ExportIdentifier.CONFIGURATION_NAME.value]
+        
+        global_payloads = {}
+        
+        if data.__contains__(ExportIdentifier.GLOBAL_PAYLOADS.value):
+            global_payloads = data[ExportIdentifier.GLOBAL_PAYLOADS.value]
+        
+        global_payloads_files = {}
+        
+        if data.__contains__(ExportIdentifier.GLOBAL_PAYLOAD_FILES.value):
+            global_payloads_files = data[ExportIdentifier.GLOBAL_PAYLOAD_FILES.value]
+        
+        global_payloads_file_separetor = "\n"
+        
+        if data.__contains__(ExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value):
+            global_payloads_file_separetor = data[ExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value]
+        
+        if not data.__contains__(ExportIdentifier.INJECTORS.value):
+            raise ValueError(f"{default_name} doesn't contains any injector")
 
-            injectors = data[ExportIdentifier.INJECTORS.value]
-            
-            return cls(config_name=config_name, config_version=config_version, global_payloads=global_payloads, global_payload_files=global_payloads_files, global_payload_file_separetor=global_payloads_file_separetor, injectors_serialized=injectors)
+        injectors = data[ExportIdentifier.INJECTORS.value]
+        
+        return cls(config_name=config_name, config_version=config_version, global_payloads=global_payloads, global_payload_files=global_payloads_files, global_payload_file_separetor=global_payloads_file_separetor, injectors_serialized=injectors)
 
+    @classmethod
+    def from_file(cls, filename):
+        with open(filename, "r") as fd:
+            return cls.from_file_descriptor(fd)
