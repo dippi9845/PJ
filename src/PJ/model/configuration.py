@@ -6,7 +6,6 @@ from unicodedata import name
 from PJ.controller.injector.url_injector import UrlInjector
 from PJ.controller.injector.injector import InjectorList, Injector, INJECTORLIST_EMPTY
 from os.path import basename
-from os import getcwd
 
 class InjectionType(Enum):
     URL = "url"
@@ -55,10 +54,23 @@ class Configuration:
         self.config_name = config_name
         self.config_version = config_version
         
-        self.global_payload_files = global_payload_files
-        self.global_payloads = global_payloads
+        self.global_payload_files = self.get_empty_payload_dict(type=list)
+        self.global_payloads = self.get_empty_payload_dict()
         
-        self.payload_files_to_add = global_payload_files
+        if global_payloads != {}:
+            for key, value in global_payloads.items():
+                global_payloads[key] = set(value)
+            
+            self.global_payloads = global_payloads
+        
+        self.payload_files_to_add = self.get_empty_payload_dict()
+        
+        if global_payload_files != {}:
+            for key, value in global_payload_files.items():
+                global_payload_files[key] = set(value)
+            
+            self.payload_files_to_add = global_payload_files
+        
         self.payload_file_separetor = global_payload_file_separetor
         
         self.injectors_serialized = injectors_serialized + list(map(lambda x: SerializeableInjector(x).to_dict(), injector_list))
@@ -82,10 +94,11 @@ class Configuration:
     def load_payload_file(self) -> None:
         for key, values in self.payload_files_to_add.items():
             for file in values:
+                self.global_payload_files[key].append(file)
                 with open(file, "r") as f:
                     self.global_payloads[key].update(set(f.read().split(self.payload_file_separetor)))
         
-        self.payload_files_to_add = {}
+        self.payload_files_to_add = self.get_empty_payload_dict()
     
     def add_injector(self, injector : Injector | InjectorList | dict) -> None:
         
@@ -118,7 +131,14 @@ class Configuration:
                 ExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value : self.payload_file_separetor,
                 ExportIdentifier.INJECTORS.value : self.injectors_serialized
             }
-
+    
+    @staticmethod
+    def get_empty_payload_dict(type=set) -> dict[str, set | list]:
+        rtr = {}
+        for i in [member.value for member in InjectionType]:
+            rtr[i] = type()
+        return rtr
+    
     @classmethod
     def from_file_descriptor(cls, file_descriptor: TextIOWrapper) -> Configuration:
         data = loads(file_descriptor.read())
