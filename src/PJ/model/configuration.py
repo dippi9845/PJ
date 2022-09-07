@@ -113,17 +113,21 @@ class Configuration:
     def build_injectors(self) -> InjectorList:
         pass
 
-    def to_dict(self) -> dict:
+    def to_dict(self, export_to_add_files=True) -> dict:
         global_payloads_list = {}
-        for key, value in self.global_payloads:
+        for key, value in self.global_payloads.items():
             global_payloads_list[key] = list(value)
         
         global_payload_files_list = {}
-        for key, value in self.global_payload_files:
-            global_payload_files_list[key] = list(value)
+        for key, value in self.global_payload_files.items():
+            global_payload_files_list[key] = value
+        
+        if export_to_add_files:
+            for key, value in self.payload_files_to_add.items():
+                global_payload_files_list[key] += list(value)
         
         return {
-                ExportIdentifier.VERSION.value : self.config_version.value,
+                ExportIdentifier.VERSION.value : self.config_version,
                 ExportIdentifier.CONFIGURATION_NAME.value : self.config_name,
                 ExportIdentifier.GLOBAL_PAYLOADS.value : global_payloads_list,
                 ExportIdentifier.GLOBAL_PAYLOAD_FILES.value : global_payload_files_list,
