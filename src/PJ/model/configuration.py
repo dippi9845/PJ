@@ -122,6 +122,8 @@ class Configuration:
         for key, value in self.payload_files_to_add.items():
                 global_payload_files_list[key] = list(value)
         
+        # TODO: risolvere enorme problema quando importo i payloads da un file!
+        
         if export_aldready_added:
             for key, value in self.global_payload_files.items():
                 global_payload_files_list[key] += value
