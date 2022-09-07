@@ -41,14 +41,6 @@ INJECTOR_TO_INJECTORTYPE = {
 }
 
 
-class SerializeableInjector:
-    def __init__(self, injector : Injector) -> None:
-        self.injector = injector
-    
-    def to_dict(self):
-        return self.injector.to_dict().update({ExportIdentifier.INJECTOR_TYPE.value: INJECTOR_TO_INJECTORTYPE[type(self.injector)]})
-
-
 class Configuration:
     def __init__(self, config_version : ConfigVersion=ConfigVersion.FIRST_VERSION.value, config_name : str="Default Config", global_payloads : dict[str, set]={}, global_payload_files : dict[str, set]={}, global_payload_file_separetor : str="\n", injectors_serialized : list[dict]=[], injector_list : InjectorList=INJECTORLIST_EMPTY) -> None:
         self.config_name = config_name
@@ -73,7 +65,7 @@ class Configuration:
         
         self.payload_file_separetor = global_payload_file_separetor
         
-        self.injectors_serialized = injectors_serialized + list(map(lambda x: SerializeableInjector(x).to_dict(), injector_list))
+        self.injectors_serialized = injectors_serialized + list(map(lambda x: self.serialize_injector(x), injector_list))
 
         self.load_payload_file()
     
@@ -107,12 +99,15 @@ class Configuration:
     def add_injector(self, injector : Injector | InjectorList | dict) -> None:
         
         if isinstance(injector, InjectorList):
-            self.injectors_serialized += list(map(lambda x: SerializeableInjector(x).to_dict(), injector))
+            self.injectors_serialized += list(map(lambda x: self.serialize_injector(x), injector))
         
         elif isinstance(injector, Injector):
-            self.injectors_serialized.append(SerializeableInjector(injector).to_dict())
+            self.injectors_serialized.append(self.serialize_injector(injector))
         
         elif type(injector) is dict:
+            if not ExportIdentifier.INJECTOR_TYPE.value in injector:
+                raise ValueError("Injector type is not specified")
+            
             self.injectors_serialized.append(injector)
     
     def build_injectors(self) -> InjectorList:
@@ -142,6 +137,10 @@ class Configuration:
         for i in [member.value for member in InjectionType]:
             rtr[i] = type()
         return rtr
+
+    @staticmethod
+    def serialize_injector(injector : Injector) -> dict:
+        return injector.to_dict().update({ExportIdentifier.INJECTOR_TYPE.value: INJECTOR_TO_INJECTORTYPE[type(injector)]})
     
     @classmethod
     def from_file_descriptor(cls, file_descriptor: TextIOWrapper) -> Configuration:
