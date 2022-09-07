@@ -94,6 +94,10 @@ class Configuration:
     def load_payload_file(self) -> None:
         for key, values in self.payload_files_to_add.items():
             for file in values:
+                
+                if file in self.global_payload_files[key]:
+                    continue
+                
                 self.global_payload_files[key].append(file)
                 with open(file, "r") as f:
                     self.global_payloads[key].update(set(f.read().split(self.payload_file_separetor)))
