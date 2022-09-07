@@ -470,6 +470,201 @@ class ConfigurationTest(unittest.TestCase):
         
             self.assertListEqual(cnf.global_payload_files[key], expected[key])
 
+    def test_add_payload_file_by_dict_list(self):
+        list_to_add = [self.RELATIVE_PATH + "to_add1.txt", self.RELATIVE_PATH + "to_add2.txt"]
+        
+        to_add = {
+            InjectionType.URL.value: list_to_add,
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        expected = {
+            InjectionType.URL.value: list_to_add,
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        cnf = Configuration(config_name="test add payload file by key config")
+        cnf.add_payload_file_by_dict(to_add)
+        cnf.load_payload_file()
+        
+        for key in expected.keys():
+            expected[key].sort()
+            cnf.global_payload_files[key].sort()
+        
+            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+        
+        initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
+        
+        initial = {
+            InjectionType.URL.value: initial_list,
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        expected = {
+            InjectionType.URL.value: initial_list + list_to_add,
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        cnf = Configuration(config_name="test add payload file by key config", global_payload_files=initial)
+        cnf.add_payload_file_by_dict(to_add)
+        cnf.load_payload_file()
+        
+        for key in expected.keys():
+            expected[key].sort()
+            cnf.global_payload_files[key].sort()
+        
+            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+
+    def test_add_payload_file_by_dict_set(self):
+        set_to_add = {self.RELATIVE_PATH + "to_add1.txt", self.RELATIVE_PATH + "to_add2.txt"}
+        
+        to_add = {
+            InjectionType.URL.value: set_to_add,
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        expected = {
+            InjectionType.URL.value: list(set_to_add),
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        cnf = Configuration(config_name="test add payload file by key config")
+        cnf.add_payload_file_by_dict(to_add)
+        cnf.load_payload_file()
+        
+        for key in expected.keys():
+            expected[key].sort()
+            cnf.global_payload_files[key].sort()
+        
+            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+        
+        initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
+        
+        initial = {
+            InjectionType.URL.value: initial_list,
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        expected = {
+            InjectionType.URL.value: initial_list + list(set_to_add),
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        cnf = Configuration(config_name="test add payload file by key config", global_payload_files=initial)
+        cnf.add_payload_file_by_dict(to_add)
+        cnf.load_payload_file()
+        
+        for key in expected.keys():
+            expected[key].sort()
+            cnf.global_payload_files[key].sort()
+        
+            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+    
+    def test_add_payload_file_by_dict_single(self):
+        single_to_add = self.RELATIVE_PATH + "to_add1.txt"
+        
+        to_add = {
+            InjectionType.URL.value: single_to_add,
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        expected = {
+            InjectionType.URL.value: [single_to_add],
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        cnf = Configuration(config_name="test add payload file by key config")
+        cnf.add_payload_file_by_dict(to_add)
+        cnf.load_payload_file()
+        
+        for key in expected.keys():
+            expected[key].sort()
+            cnf.global_payload_files[key].sort()
+        
+            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+        
+        initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
+        
+        initial = {
+            InjectionType.URL.value: initial_list,
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        expected = {
+            InjectionType.URL.value: initial_list + [single_to_add],
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        cnf = Configuration(config_name="test add payload file by key config", global_payload_files=initial)
+        cnf.add_payload_file_by_dict(to_add)
+        cnf.load_payload_file()
+        
+        for key in expected.keys():
+            expected[key].sort()
+            cnf.global_payload_files[key].sort()
+        
+            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+    
+    def test_add_payload_file_by_dict_single_duplicate(self):
+        single_to_add = self.RELATIVE_PATH + "initial1.txt"
+        
+        to_add = {
+            InjectionType.URL.value: single_to_add,
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
+        
+        initial = {
+            InjectionType.URL.value: initial_list,
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        expected = {
+            InjectionType.URL.value: initial_list,
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        cnf = Configuration(config_name="test add payload file by key config", global_payload_files=initial)
+        cnf.add_payload_file_by_dict(to_add)
+        cnf.load_payload_file()
+        
+        for key in expected.keys():
+            expected[key].sort()
+            cnf.global_payload_files[key].sort()
+        
+            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+    
+    def test_add_payload_file_by_key_dict_duplicate(self):
+        list_to_add = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
+        
+        to_add = {
+            InjectionType.URL.value: list_to_add,
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
+        
+        initial = {
+            InjectionType.URL.value: initial_list,
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        expected = {
+            InjectionType.URL.value: initial_list,
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        cnf = Configuration(config_name="test add payload file by key config", global_payload_files=initial)
+        cnf.add_payload_file_by_key(InjectionType.URL.value, to_add)
+        cnf.load_payload_file()
+        
+        for key in expected.keys():
+            expected[key].sort()
+            cnf.global_payload_files[key].sort()
+        
+            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+    
     def test_build_injector(self):
         self.fail("Not implemented")
 
