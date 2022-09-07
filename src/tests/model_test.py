@@ -665,6 +665,8 @@ class ConfigurationTest(unittest.TestCase):
         
             self.assertListEqual(cnf.global_payload_files[key], expected[key])
     
+    
+    
     def test_build_injector(self):
         self.fail("Not implemented")
 
