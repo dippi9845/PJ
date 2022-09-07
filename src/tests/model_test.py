@@ -1,7 +1,7 @@
 import unittest
 from PJ.model.variable import Variable, FixedVariable, InjectableVariable
 from PJ.model.url import Url, ExportIdentifier
-from PJ.model.configuration import Configuration
+from PJ.model.configuration import Configuration, InjectionType
 
 class TestUrl(unittest.TestCase):
 
@@ -236,68 +236,109 @@ class VaraibleTest(unittest.TestCase):
 
 
 class ConfigurationTest(unittest.TestCase):
+    RELATIVE_PATH = "src/tests/configrations/"
     
     def test_missing_version_fd(self):
-        relative_path = "src/tests/configrations/no_version_config.json"
+        relative_path = self.RELATIVE_PATH + "no_version_config.json"
         fd = open(relative_path)
         self.assertRaises(ValueError, Configuration.from_file_descriptor, (fd))
     
     def test_missing_Injector_fd(self):
-        relative_path = "src/tests/configrations/no_injector_config.json"
+        relative_path = self.RELATIVE_PATH + "no_injector_config.json"
         fd = open(relative_path)
         self.assertRaises(ValueError, Configuration.from_file_descriptor, (fd))
     
     def test_missing_name_fd(self):
-        relative_path = "src/tests/configrations/no_name_config.json"
+        relative_path = self.RELATIVE_PATH + "no_name_config.json"
         fd = open(relative_path)
         cnf = Configuration.from_file_descriptor(fd)
         self.assertEqual(cnf.config_name, "no_name_config.json")
     
     def test_missing_global_payloads_fd(self):
-        relative_path = "src/tests/configrations/no_global_payloads.json"
+        relative_path = self.RELATIVE_PATH + "no_global_payloads.json"
         fd = open(relative_path)
         cnf = Configuration.from_file_descriptor(fd)
-        self.assertEqual({}, cnf.global_payloads)
+        self.assertEqual(Configuration.get_empty_payload_dict(), cnf.global_payloads)
     
     def test_missing_global_payloads_file_fd(self):
-        relative_path = "src/tests/configrations/no_global_payloads_file.json"
+        relative_path = self.RELATIVE_PATH + "no_global_payloads_file.json"
         fd = open(relative_path)
         cnf = Configuration.from_file_descriptor(fd)
-        self.assertEqual({}, cnf.global_payload_files)
+        self.assertEqual(Configuration.get_empty_payload_dict(type=list), cnf.global_payload_files)
         
     def test_missing_global_payloads_file_separetor_fd(self):
-        relative_path = "src/tests/configrations/no_global_payload_file separetor.json"
+        relative_path = self.RELATIVE_PATH + "no_global_payload_file separetor.json"
         fd = open(relative_path)
         cnf = Configuration.from_file_descriptor(fd)
         self.assertEqual("\n", cnf.payload_file_separetor)
     
     def test_missing_version_fn(self):
-        relative_path = "src/tests/configrations/no_version_config.json"
+        relative_path = self.RELATIVE_PATH + "no_version_config.json"
         self.assertRaises(ValueError, Configuration.from_file, (relative_path))
     
     def test_missing_Injector_fn(self):
-        relative_path = "src/tests/configrations/no_injector_config.json"
+        relative_path = self.RELATIVE_PATH + "no_injector_config.json"
         self.assertRaises(ValueError, Configuration.from_file, (relative_path))
     
     def test_missing_name_fn(self):
-        relative_path = "src/tests/configrations/no_name_config.json"
+        relative_path = self.RELATIVE_PATH + "no_name_config.json"
         cnf = Configuration.from_file(relative_path)
         self.assertEqual(cnf.config_name, "no_name_config.json")
     
     def test_missing_global_payloads_fn(self):
-        relative_path = "src/tests/configrations/no_global_payloads.json"
+        relative_path = self.RELATIVE_PATH + "no_global_payloads.json"
         cnf = Configuration.from_file(relative_path)
-        self.assertEqual({}, cnf.global_payloads)
+        self.assertEqual(Configuration.get_empty_payload_dict(), cnf.global_payloads)
     
     def test_missing_global_payloads_file_fn(self):
-        relative_path = "src/tests/configrations/no_global_payloads_file.json"
+        relative_path = self.RELATIVE_PATH + "no_global_payloads_file.json"
         cnf = Configuration.from_file(relative_path)
-        self.assertEqual({}, cnf.global_payload_files)
+        self.assertEqual(Configuration.get_empty_payload_dict(type=list), cnf.global_payload_files)
         
     def test_missing_global_payloads_file_separetor_fn(self):
-        relative_path = "src/tests/configrations/no_global_payload_file separetor.json"
+        relative_path = self.RELATIVE_PATH + "no_global_payload_file separetor.json"
         cnf = Configuration.from_file(relative_path)
         self.assertEqual("\n", cnf.payload_file_separetor)
+    
+    def test_add_payload_file_by_key_list(self):
+        to_add = [self.RELATIVE_PATH + "to_add1.txt", self.RELATIVE_PATH + "to_add2.txt"]
+        
+        expected = {
+            InjectionType.URL.value: to_add,
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        cnf = Configuration(config_name="test add payload file by key config")
+        cnf.add_payload_file_by_key(InjectionType.URL.value, to_add)
+        cnf.load_payload_file()
+        
+        for key in expected.keys():
+            expected[key].sort()
+            cnf.global_payload_files[key].sort()
+        
+            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+        
+        initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
+        
+        initial = {
+            InjectionType.URL.value: initial_list,
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        expected = {
+            InjectionType.URL.value: initial_list + to_add,
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        cnf = Configuration(config_name="test add payload file by key config", global_payload_files=initial)
+        cnf.add_payload_file_by_key(InjectionType.URL.value, to_add)
+        cnf.load_payload_file()
+        
+        for key in expected.keys():
+            expected[key].sort()
+            cnf.global_payload_files[key].sort()
+        
+            self.assertListEqual(cnf.global_payload_files[key], expected[key])
 
     def test_build_injector(self):
         self.fail("Not implemented")
