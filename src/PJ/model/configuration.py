@@ -113,14 +113,14 @@ class Configuration:
     def build_injectors(self) -> InjectorList:
         pass
 
-    def to_dict(self, export_aldready_added=True) -> dict:
+    def to_dict(self, export_aldready_added=False) -> dict:
         global_payloads_list = {}
         for key, value in self.global_payloads.items():
             global_payloads_list[key] = list(value)
         
         global_payload_files_list = {}
         for key, value in self.payload_files_to_add.items():
-                global_payload_files_list[key] += list(value)
+                global_payload_files_list[key] = list(value)
         
         if export_aldready_added:
             for key, value in self.global_payload_files.items():

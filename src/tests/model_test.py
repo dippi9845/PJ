@@ -1,7 +1,9 @@
 import unittest
+from PJ.controller.injector.injector import InjectorList
+from PJ.controller.injector.url_injector import UrlInjector
 from PJ.model.variable import Variable, FixedVariable, InjectableVariable
-from PJ.model.url import Url, ExportIdentifier
-from PJ.model.configuration import Configuration, InjectionType
+from PJ.model.url import Url, ExportIdentifier as UrlExportIdentifier
+from PJ.model.configuration import Configuration, ExportIdentifier as ConfigurationExportIdentifier, InjectionType
 
 class TestUrl(unittest.TestCase):
 
@@ -89,9 +91,9 @@ class TestUrl(unittest.TestCase):
         url3 = Url(domani_p, injectable_varaible=[var1], fixed_variable=[var2], vars_in_url_are_fixed=None)
 
         expected = {
-            ExportIdentifier.URL.value : domain,
-            ExportIdentifier.INJECTABLE_VARAIBLE.value : {"ciao": "q"},
-            ExportIdentifier.FIXED_VARAIBLE.value : {"hey": "g"}
+            UrlExportIdentifier.URL.value : domain,
+            UrlExportIdentifier.INJECTABLE_VARAIBLE.value : {"ciao": "q"},
+            UrlExportIdentifier.FIXED_VARAIBLE.value : {"hey": "g"}
         }
 
         self.assertDictEqual(expected, url3.to_dict())
@@ -100,9 +102,9 @@ class TestUrl(unittest.TestCase):
         domain = "https://domain"
         
         expected = {
-            ExportIdentifier.URL.value : domain,
-            ExportIdentifier.INJECTABLE_VARAIBLE.value : {"ciao": "q"},
-            ExportIdentifier.FIXED_VARAIBLE.value : {"hey": "g"}
+            UrlExportIdentifier.URL.value : domain,
+            UrlExportIdentifier.INJECTABLE_VARAIBLE.value : {"ciao": "q"},
+            UrlExportIdentifier.FIXED_VARAIBLE.value : {"hey": "g"}
         }
 
         url = Url.from_dict(expected)
@@ -147,22 +149,22 @@ class TestUrl(unittest.TestCase):
         domain = "https://domain"
         
         possible_dict = {
-            ExportIdentifier.INJECTABLE_VARAIBLE.value : {"ciao": "q"},
-            ExportIdentifier.FIXED_VARAIBLE.value : {"hey": "g"}
+            UrlExportIdentifier.INJECTABLE_VARAIBLE.value : {"ciao": "q"},
+            UrlExportIdentifier.FIXED_VARAIBLE.value : {"hey": "g"}
         }
 
         self.assertRaises(ValueError, Url.from_dict, (possible_dict))
 
         possible_dict_1 = {
-            ExportIdentifier.URL.value : domain,
-            ExportIdentifier.FIXED_VARAIBLE.value : {"hey": "g"}
+            UrlExportIdentifier.URL.value : domain,
+            UrlExportIdentifier.FIXED_VARAIBLE.value : {"hey": "g"}
         }
 
         self.assertRaises(ValueError, Url.from_dict, (possible_dict_1, False))
 
         possible_dict_2 = {
-            ExportIdentifier.URL.value : domain,
-            ExportIdentifier.INJECTABLE_VARAIBLE.value : {"ciao": "q"}
+            UrlExportIdentifier.URL.value : domain,
+            UrlExportIdentifier.INJECTABLE_VARAIBLE.value : {"ciao": "q"}
         }
 
         self.assertRaises(ValueError, Url.from_dict, (possible_dict_2, False))
@@ -754,6 +756,92 @@ class ConfigurationTest(unittest.TestCase):
             actual.sort()
         
             self.assertListEqual(actual, expected[key])
+        
+    def test_serialize_injector(self):
+        url_str = "https://sjdahfbakhs"
+        
+        expected = {
+            ConfigurationExportIdentifier.INJECTOR_TYPE.value : InjectionType.URL.value
+        }
+        
+        url1 = UrlInjector(Url(url_str), [])
+
+        expected.update(url1.to_dict())
+        
+        self.assertDictEqual(Configuration.serialize_injector(url1), expected)
+    
+    def test_add_injector(self):
+        url_str1 = "https://sjdahfbakhs"
+        url_str2 = "https://sjdahfsdafasdfbakhs"
+        
+        url1 = UrlInjector(Url(url_str1), [])
+        url2 = UrlInjector(Url(url_str2), [])
+        
+        expected = [
+            {
+                ConfigurationExportIdentifier.INJECTOR_TYPE.value : InjectionType.URL.value
+            },
+            {
+                ConfigurationExportIdentifier.INJECTOR_TYPE.value : InjectionType.URL.value
+            }
+        ]
+        expected[0].update(Configuration.serialize_injector(url1))
+        expected[1].update(Configuration.serialize_injector(url2))
+        
+        cnf = Configuration(injector_list=InjectorList([url1]))
+        cnf.add_injector(url2)
+        
+        self.assertListEqual(cnf.injectors_serialized, expected)
+    
+    def test_export_configuration_one_injector(self):
+        url_str1 = "https://sjdahfbakhs"
+        url1 = UrlInjector(Url(url_str1), [])
+        to_add = [self.RELATIVE_PATH + "to_add1.txt", self.RELATIVE_PATH + "to_add2.txt"]
+        payloads = []
+        
+        for i in to_add:
+            with open(i, "r") as f:
+                payloads += f.read().split("\n")
+                
+        cnf = Configuration(injector_list=InjectorList([url1]))
+        cnf.add_payload_file_by_key(InjectionType.URL.value, to_add)
+        cnf.load_payload_file()
+        
+        expected = {
+            ConfigurationExportIdentifier.VERSION.value : cnf.config_version,
+            ConfigurationExportIdentifier.CONFIGURATION_NAME.value : cnf.config_name,
+            ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value : {
+                InjectionType.URL.value : payloads,
+                InjectionType.WEBDRIVER.value : []
+            },
+            ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILES.value : {
+                InjectionType.URL.value : to_add,
+                InjectionType.WEBDRIVER.value : []
+            },
+            ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value : cnf.payload_file_separetor,
+            ConfigurationExportIdentifier.INJECTORS.value : cnf.injectors_serialized
+        }
+        actual = cnf.to_dict()
+        self.maxDiff = None
+        self.assertEqual(expected[ConfigurationExportIdentifier.VERSION.value], actual[ConfigurationExportIdentifier.VERSION.value])
+        self.assertEqual(expected[ConfigurationExportIdentifier.CONFIGURATION_NAME.value], actual[ConfigurationExportIdentifier.CONFIGURATION_NAME.value])
+        
+        expected[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value].sort()
+        expected[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value].pop(0) # this element can't be here
+        actual[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value].sort()
+        self.assertListEqual(expected[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value], actual[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value])
+        
+        expected[ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILES.value][InjectionType.URL.value].sort()
+        actual[ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILES.value][InjectionType.URL.value].sort()
+        expected[ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILES.value][InjectionType.URL.value].pop(0) # this element can't be here
+        self.assertListEqual(expected[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value], actual[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value])
+        
+        self.assertEqual(expected[ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value], actual[ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value])
+        self.assertEqual(expected[ConfigurationExportIdentifier.INJECTORS.value], actual[ConfigurationExportIdentifier.INJECTORS.value])
+        
+        
+        # valori non ordinati nelle liste
+        
     
     def test_build_injector(self):
         self.fail("Not implemented")
