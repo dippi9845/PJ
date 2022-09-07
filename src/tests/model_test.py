@@ -340,6 +340,86 @@ class ConfigurationTest(unittest.TestCase):
         
             self.assertListEqual(cnf.global_payload_files[key], expected[key])
 
+    def test_add_payload_file_by_key_set(self):
+        to_add = {self.RELATIVE_PATH + "to_add1.txt", self.RELATIVE_PATH + "to_add2.txt"}
+        
+        expected = {
+            InjectionType.URL.value: list(to_add),
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        cnf = Configuration(config_name="test add payload file by key config")
+        cnf.add_payload_file_by_key(InjectionType.URL.value, to_add)
+        cnf.load_payload_file()
+        
+        for key in expected.keys():
+            expected[key].sort()
+            cnf.global_payload_files[key].sort()
+        
+            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+        
+        initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
+        
+        initial = {
+            InjectionType.URL.value: initial_list,
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        expected = {
+            InjectionType.URL.value: initial_list + list(to_add),
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        cnf = Configuration(config_name="test add payload file by key config", global_payload_files=initial)
+        cnf.add_payload_file_by_key(InjectionType.URL.value, to_add)
+        cnf.load_payload_file()
+        
+        for key in expected.keys():
+            expected[key].sort()
+            cnf.global_payload_files[key].sort()
+        
+            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+    
+    def test_add_payload_file_by_key_single(self):
+        to_add = self.RELATIVE_PATH + "to_add1.txt"
+        
+        expected = {
+            InjectionType.URL.value: [to_add],
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        cnf = Configuration(config_name="test add payload file by key config")
+        cnf.add_payload_file_by_key(InjectionType.URL.value, to_add)
+        cnf.load_payload_file()
+        
+        for key in expected.keys():
+            expected[key].sort()
+            cnf.global_payload_files[key].sort()
+        
+            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+        
+        initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
+        
+        initial = {
+            InjectionType.URL.value: initial_list,
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        expected = {
+            InjectionType.URL.value: initial_list + [to_add],
+            InjectionType.WEBDRIVER.value : []
+        }
+        
+        cnf = Configuration(config_name="test add payload file by key config", global_payload_files=initial)
+        cnf.add_payload_file_by_key(InjectionType.URL.value, to_add)
+        cnf.load_payload_file()
+        
+        for key in expected.keys():
+            expected[key].sort()
+            cnf.global_payload_files[key].sort()
+        
+            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+
     def test_build_injector(self):
         self.fail("Not implemented")
 
