@@ -140,7 +140,9 @@ class Configuration:
 
     @staticmethod
     def serialize_injector(injector : Injector) -> dict:
-        return injector.to_dict().update({ExportIdentifier.INJECTOR_TYPE.value: INJECTOR_TO_INJECTORTYPE[type(injector)]})
+        rtr = injector.to_dict()
+        rtr.update({ExportIdentifier.INJECTOR_TYPE.value: INJECTOR_TO_INJECTORTYPE[type(injector)]})
+        return rtr
     
     @classmethod
     def from_file_descriptor(cls, file_descriptor: TextIOWrapper) -> Configuration:
