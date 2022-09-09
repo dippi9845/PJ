@@ -827,14 +827,13 @@ class ConfigurationTest(unittest.TestCase):
         self.assertEqual(expected[ConfigurationExportIdentifier.CONFIGURATION_NAME.value], actual[ConfigurationExportIdentifier.CONFIGURATION_NAME.value])
         
         expected[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value].sort()
-        expected[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value].pop(0) # this element can't be here
+        #expected[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value].pop(0) # this element can't be here
         actual[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value].sort()
         self.assertListEqual(expected[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value], actual[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value])
         
         expected[ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILES.value][InjectionType.URL.value].sort()
         actual[ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILES.value][InjectionType.URL.value].sort()
-        expected[ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILES.value][InjectionType.URL.value].pop(0) # this element can't be here
-        self.assertListEqual(expected[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value], actual[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value])
+        self.assertListEqual(expected[ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILES.value][InjectionType.URL.value], actual[ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILES.value][InjectionType.URL.value])
         
         self.assertEqual(expected[ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value], actual[ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value])
         self.assertEqual(expected[ConfigurationExportIdentifier.INJECTORS.value], actual[ConfigurationExportIdentifier.INJECTORS.value])
