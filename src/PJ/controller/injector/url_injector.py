@@ -2,7 +2,7 @@ from __future__ import annotations
 from enum import Enum
 from PJ.model.url import Url
 from PJ.utils.urls import Urls
-from PJ.controller.injector.injector import Injector, InjectorIterator, InjectorList
+from PJ.controller.injector.injector import Injector, InjectorIterable, InjectorList
 from typing import Callable
 
 class ExportUtils(Enum):
@@ -26,8 +26,8 @@ class UrlInjector(Injector):
     def get_url(self) -> str:
         return self.__url.get_url()
 
-    def __iter__(self) -> UrlInjectorIterator:
-        return UrlInjectorIterator(self)
+    def __iter__(self) -> UrlInjectorIterable:
+        return UrlInjectorIterable(self)
     
     def __len__(self) -> int:
         return len(self.__payloads)
@@ -87,6 +87,6 @@ class UrlInjector(Injector):
         return InjectorList([cls(x, payloads) for x in urls])
 
 
-class UrlInjectorIterator(InjectorIterator):
+class UrlInjectorIterable(InjectorIterable):
     def __init__(self, url_injector: UrlInjector) -> None:
         super().__init__(url_injector, len(url_injector))

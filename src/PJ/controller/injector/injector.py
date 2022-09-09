@@ -25,7 +25,7 @@ class Injector(ABC):
     def from_dict(cls, dictionary : dict) -> Injector:
         pass
 
-class InjectorIterator:
+class InjectorIterable:
     def __init__(self, injector : Injector, injection_num : int) -> None:
         self.__injector = injector
         self.__injection_num = injection_num
@@ -89,6 +89,6 @@ class InjectorList(Injector):
 
 INJECTORLIST_EMPTY = InjectorList([])
 
-class InjectorListIterator(InjectorIterator):
+class InjectorListIterator(InjectorIterable):
     def __init__(self, injector: InjectorList) -> None:
         super().__init__(injector, len(injector))
