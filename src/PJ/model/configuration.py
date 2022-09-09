@@ -46,14 +46,8 @@ class Configuration:
         self.config_name = config_name
         self.config_version = config_version
         
-        self.global_payload_files = self.get_empty_payload_dict(type=list)
+        self.global_payload_files = self.get_empty_payload_dict()
         self.global_payloads = self.get_empty_payload_dict()
-        
-        if global_payloads != {}:
-            for key, value in global_payloads.items():
-                global_payloads[key] = set(value)
-            
-            self.global_payloads = global_payloads
         
         self.payload_files_to_add = self.get_empty_payload_dict()
         
@@ -71,13 +65,13 @@ class Configuration:
     
     def add_payload_file_by_key(self, key : str, payload_file : str | list[str] | set[str]) -> None:
         if type(payload_file) is str:
-            self.payload_files_to_add[key].add(payload_file)
+            self.payload_files_to_add[key].append(payload_file)
 
         elif type(payload_file) is list:
-            self.payload_files_to_add[key].update(set(payload_file))
+            self.payload_files_to_add[key] += payload_file
         
         elif type(payload_file) is set:
-            self.payload_files_to_add[key].update(payload_file)
+            self.payload_files_to_add[key]  += set(payload_file)
         
     def add_payload_file_by_dict(self, payload_dict : dict) -> None:
         for key, value in payload_dict.items():
@@ -92,7 +86,7 @@ class Configuration:
                 
                 self.global_payload_files[key].append(file)
                 with open(file, "r") as f:
-                    self.global_payloads[key].update(set(f.read().split(self.payload_file_separetor)))
+                    self.global_payloads[key] += f.read().split(self.payload_file_separetor)
         
         self.payload_files_to_add = self.get_empty_payload_dict()
     
@@ -138,7 +132,7 @@ class Configuration:
             }
     
     @staticmethod
-    def get_empty_payload_dict(type=set) -> dict[str, set | list]:
+    def get_empty_payload_dict(type=list) -> dict[str, set | list]:
         rtr = {}
         for i in [member.value for member in InjectionType]:
             rtr[i] = type()
