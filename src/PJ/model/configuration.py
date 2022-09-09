@@ -107,19 +107,18 @@ class Configuration:
     def build_injectors(self) -> InjectorList:
         pass
 
-    def to_dict(self, export_aldready_added=False) -> dict:
+    def to_dict(self) -> dict:
         global_payloads_list = {}
         for key, value in self.global_payloads.items():
-            global_payloads_list[key] = list(value)
+            global_payloads_list[key] = value
         
         global_payload_files_list = {}
         for key, value in self.payload_files_to_add.items():
-                global_payload_files_list[key] = list(value)
+                global_payload_files_list[key] = value
         
         # TODO: risolvere enorme problema quando importo i payloads da un file!
         
-        if export_aldready_added:
-            for key, value in self.global_payload_files.items():
+        for key, value in self.global_payload_files.items():
                 global_payload_files_list[key] += value
         
         return {
