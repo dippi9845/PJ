@@ -793,7 +793,50 @@ class ConfigurationTest(unittest.TestCase):
         
         self.assertListEqual(cnf.injectors_serialized, expected)
     
-    def test_export_configuration_one_injector(self):
+    def test_export_configuration_one_injector_no_load(self):
+        url_str1 = "https://sjdahfbakhs"
+        url1 = UrlInjector(Url(url_str1), [])
+        to_add = [self.RELATIVE_PATH + "to_add1.txt", self.RELATIVE_PATH + "to_add2.txt"]
+        payloads = []
+        
+        for i in to_add:
+            with open(i, "r") as f:
+                payloads += f.read().split("\n")
+                
+        cnf = Configuration(injector_list=InjectorList([url1]))
+        cnf.add_payload_file_by_key(InjectionType.URL.value, to_add)
+        
+        expected = {
+            ConfigurationExportIdentifier.VERSION.value : cnf.config_version,
+            ConfigurationExportIdentifier.CONFIGURATION_NAME.value : cnf.config_name,
+            ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value : {
+                InjectionType.URL.value : [],
+                InjectionType.WEBDRIVER.value : []
+            },
+            ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILES.value : {
+                InjectionType.URL.value : to_add,
+                InjectionType.WEBDRIVER.value : []
+            },
+            ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value : cnf.payload_file_separetor,
+            ConfigurationExportIdentifier.INJECTORS.value : cnf.injectors_serialized
+        }
+        actual = cnf.to_dict()
+        self.maxDiff = None
+        self.assertEqual(expected[ConfigurationExportIdentifier.VERSION.value], actual[ConfigurationExportIdentifier.VERSION.value])
+        self.assertEqual(expected[ConfigurationExportIdentifier.CONFIGURATION_NAME.value], actual[ConfigurationExportIdentifier.CONFIGURATION_NAME.value])
+        
+        expected[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value].sort()
+        actual[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value].sort()
+        self.assertListEqual(expected[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value], actual[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value])
+        
+        expected[ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILES.value][InjectionType.URL.value].sort()
+        actual[ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILES.value][InjectionType.URL.value].sort()
+        self.assertListEqual(expected[ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILES.value][InjectionType.URL.value], actual[ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILES.value][InjectionType.URL.value])
+        
+        self.assertEqual(expected[ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value], actual[ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value])
+        self.assertEqual(expected[ConfigurationExportIdentifier.INJECTORS.value], actual[ConfigurationExportIdentifier.INJECTORS.value])
+    
+    def test_export_configuration_one_injector_with_load(self):
         url_str1 = "https://sjdahfbakhs"
         url1 = UrlInjector(Url(url_str1), [])
         to_add = [self.RELATIVE_PATH + "to_add1.txt", self.RELATIVE_PATH + "to_add2.txt"]
@@ -815,7 +858,7 @@ class ConfigurationTest(unittest.TestCase):
                 InjectionType.WEBDRIVER.value : []
             },
             ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILES.value : {
-                InjectionType.URL.value : to_add,
+                InjectionType.URL.value : [],
                 InjectionType.WEBDRIVER.value : []
             },
             ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value : cnf.payload_file_separetor,
@@ -827,7 +870,6 @@ class ConfigurationTest(unittest.TestCase):
         self.assertEqual(expected[ConfigurationExportIdentifier.CONFIGURATION_NAME.value], actual[ConfigurationExportIdentifier.CONFIGURATION_NAME.value])
         
         expected[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value].sort()
-        #expected[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value].pop(0) # this element can't be here
         actual[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value].sort()
         self.assertListEqual(expected[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value], actual[ConfigurationExportIdentifier.GLOBAL_PAYLOADS.value][InjectionType.URL.value])
         
@@ -837,7 +879,6 @@ class ConfigurationTest(unittest.TestCase):
         
         self.assertEqual(expected[ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value], actual[ConfigurationExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value])
         self.assertEqual(expected[ConfigurationExportIdentifier.INJECTORS.value], actual[ConfigurationExportIdentifier.INJECTORS.value])
-        
         
         # valori non ordinati nelle liste
         
