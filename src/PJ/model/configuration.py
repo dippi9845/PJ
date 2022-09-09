@@ -108,24 +108,14 @@ class Configuration:
         pass
 
     def to_dict(self) -> dict:
-        global_payloads_list = {}
-        for key, value in self.global_payloads.items():
-            global_payloads_list[key] = value
-        
-        global_payload_files_list = {}
-        for key, value in self.payload_files_to_add.items():
-                global_payload_files_list[key] = value
         
         # TODO: risolvere enorme problema quando importo i payloads da un file!
-        
-        for key, value in self.global_payload_files.items():
-                global_payload_files_list[key] += value
         
         return {
                 ExportIdentifier.VERSION.value : self.config_version,
                 ExportIdentifier.CONFIGURATION_NAME.value : self.config_name,
-                ExportIdentifier.GLOBAL_PAYLOADS.value : global_payloads_list,
-                ExportIdentifier.GLOBAL_PAYLOAD_FILES.value : global_payload_files_list,
+                ExportIdentifier.GLOBAL_PAYLOADS.value : self.global_payloads,
+                ExportIdentifier.GLOBAL_PAYLOAD_FILES.value : self.payload_files_to_add,
                 ExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value : self.payload_file_separetor,
                 ExportIdentifier.INJECTORS.value : self.injectors_serialized
             }
