@@ -32,29 +32,17 @@ class UrlInjector(Injector):
     def __len__(self) -> int:
         return len(self.__payloads)
 
-    def _get_payload(self, index : int) -> str:
-        '''
-        Returns the payload at the given position
-        '''
-        return self.__payloads[index]
-
-    def _get_payload_num(self) -> int:
-        '''
-        Return the number of payloads stored
-        '''
-        return len(self.__payloads)
-
     def _inject_payload(self, payload : str):
         '''
         Inject to url the given, the specified payload
         '''
         self.__url.inject(payload)
     
-    def _inject_by_index(self, payload_inedex : int):
+    def _inject(self, payload : str):
         '''
         Inject the payload, in the position given by the parameter
         '''
-        self.__url.inject(self._get_payload(payload_inedex))
+        self.__url.inject(payload)
         self.__request(self.__url.get_url(), self.__url.get_params())
     
     def _get_injection(self, index: int) -> str:
