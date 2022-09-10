@@ -429,12 +429,12 @@ class ConfigurationTest(unittest.TestCase):
         initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
         
         initial = {
-            InjectionType.URL.value: initial_list,
+            InjectionType.URL.value: initial_list.copy(),
             InjectionType.WEBDRIVER.value : []
         }
         
         expected = {
-            InjectionType.URL.value: initial_list + [to_add],
+            InjectionType.URL.value: initial_list,
             InjectionType.WEBDRIVER.value : []
         }
         
@@ -456,7 +456,7 @@ class ConfigurationTest(unittest.TestCase):
         initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
         
         initial = {
-            InjectionType.URL.value: initial_list,
+            InjectionType.URL.value: initial_list.copy(),
             InjectionType.WEBDRIVER.value : []
         }
         
@@ -624,7 +624,7 @@ class ConfigurationTest(unittest.TestCase):
         initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
         
         initial = {
-            InjectionType.URL.value: initial_list,
+            InjectionType.URL.value: initial_list.copy(),
             InjectionType.WEBDRIVER.value : []
         }
         
@@ -734,7 +734,7 @@ class ConfigurationTest(unittest.TestCase):
         initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
         
         initial = {
-            InjectionType.URL.value: initial_list,
+            InjectionType.URL.value: initial_list.copy(),
             InjectionType.WEBDRIVER.value : []
         }
         
@@ -746,7 +746,7 @@ class ConfigurationTest(unittest.TestCase):
                 payloads += f.read().split("\n")
         
         expected = {
-            InjectionType.URL.value: payloads,
+            InjectionType.URL.value: payloads + ["initial1_4", "to_add1_4"],
             InjectionType.WEBDRIVER.value : []
         }
         
