@@ -62,7 +62,7 @@ class Configuration:
             self.payload_files_to_add[key] += payload_file
         
         elif type(payload_file) is set:
-            self.payload_files_to_add[key]  += set(payload_file)
+            self.payload_files_to_add[key] += list(payload_file)
         
     def add_payload_file_by_dict(self, payload_dict : dict) -> None:
         for key, value in payload_dict.items():
