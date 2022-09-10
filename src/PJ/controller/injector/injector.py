@@ -1,28 +1,44 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from math import floor
+from typing import Iterator
 
 class Injector(ABC):
     
     @abstractmethod
-    def _get_injection(self, index : int) -> str | Injector:
+    def __iter__(self) -> Iterator[str | Injector]:
+        '''
+        return iterator for pyaloads or injector
+        '''
         pass
     
     @abstractmethod
-    def _inject_by_index(self, index : int) -> None:
+    def _inject(self, payload : str) -> None:
+        '''
+        Inject the given payload to the injector
+        '''
         pass
     
     @abstractmethod
     def inject_all(self) -> None:
+        '''
+        Perform a total injection
+        '''
         pass
     
     @abstractmethod
     def to_dict(self) -> dict:
+        '''
+        Export injector to a dict
+        '''
         pass
     
     @classmethod
     @abstractmethod
     def from_dict(cls, dictionary : dict) -> Injector:
+        '''
+        Build an injector from dict
+        '''
         pass
 
 class InjectorIterable:
@@ -39,7 +55,7 @@ class InjectorIterable:
 
     def __next__(self) -> str | Injector:
         if self._is_over():
-            self.__injector._inject_by_index(self.__index)
+            self.__injector._inject(self.__index)
             rtr = self._get_injector_at_index()
             self.__index += 1
             return rtr
@@ -57,7 +73,7 @@ class InjectorList(Injector):
     def __iter__(self):
         return InjectorListIterator(self)
     
-    def _inject_by_index(self, index : int) -> None:
+    def _inject(self, payload : int) -> None:
         '''
         Can't inject an injector, so do nothing
         '''
