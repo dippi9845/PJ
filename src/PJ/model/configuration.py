@@ -48,20 +48,11 @@ class Configuration:
         
         self.global_payload_files = self.get_empty_payload_dict()
         self.global_payloads = self.get_empty_payload_dict()
-        
         self.payload_files_to_add = self.get_empty_payload_dict()
-        
-        if global_payload_files != {}:
-            for key, value in global_payload_files.items():
-                global_payload_files[key] = set(value)
-            
-            self.payload_files_to_add = global_payload_files
-        
         self.payload_file_separetor = global_payload_file_separetor
         
         self.injectors_serialized = injectors_serialized + list(map(lambda x: self.serialize_injector(x), injector_list))
 
-        self.load_payload_file()
     
     def add_payload_file_by_key(self, key : str, payload_file : str | list[str] | set[str]) -> None:
         if type(payload_file) is str:
