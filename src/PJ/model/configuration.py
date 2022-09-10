@@ -46,9 +46,9 @@ class Configuration:
         self.config_name = config_name
         self.config_version = config_version
         
+        self.global_payloads = self.get_empty_payload_dict() if global_payloads == {} else global_payloads
         self.global_payload_files = self.get_empty_payload_dict()
-        self.global_payloads = self.get_empty_payload_dict()
-        self.payload_files_to_add = self.get_empty_payload_dict()
+        self.payload_files_to_add = self.get_empty_payload_dict() if global_payload_files == {} else global_payload_files
         self.payload_file_separetor = global_payload_file_separetor
         
         self.injectors_serialized = injectors_serialized + list(map(lambda x: self.serialize_injector(x), injector_list))
