@@ -3,7 +3,7 @@ from enum import Enum
 from PJ.model.url import Url
 from PJ.utils.urls import Urls
 from PJ.controller.injector.injector import Injector, InjectorIterable, InjectorList
-from typing import Callable, Iterable
+from typing import Callable, Iterable, Iterator
 
 class ExportUtils(Enum):
     PAYLOADS = "Payloads"
@@ -20,6 +20,10 @@ class UrlInjector(Injector):
 
     def __init__(self, url : Url, payloads : Iterable[str], request: Callable=Urls.get_request) -> None:
         self.__url = url
+        
+        if not isinstance(payloads, Iterator):
+            payloads = iter(payloads)
+        
         self.__payloads = payloads
         self.__request = request
     
@@ -27,7 +31,7 @@ class UrlInjector(Injector):
         return self.__url.get_url()
 
     def __iter__(self) -> UrlInjectorIterable:
-        return UrlInjectorIterable(self)
+        return UrlInjectorIterable(self, self.__payloads)
     
     def _inject(self, payload : str):
         '''
