@@ -50,7 +50,7 @@ class UrlInjector(Injector):
     
     def to_dict(self):
         return {
-            ExportUtils.PAYLOADS.value : self.__payloads,
+            ExportUtils.PAYLOADS.value : list(self.__payloads),
             ExportUtils.URL.value : self.__url.to_dict(),
             ExportUtils.REUQEST_TYPE.value: ExportUtils.FUNC_REQUESTS.value[self.__request]
         }

@@ -2,8 +2,7 @@ from __future__ import annotations
 from enum import Enum
 from io import TextIOWrapper
 from json import loads
-from unicodedata import name
-from PJ.controller.injector.url_injector import UrlInjector
+from PJ.controller.injector.url_injector import UrlInjector, ExportUtils as URLExport
 from PJ.controller.injector.injector import InjectorList, Injector, INJECTORLIST_EMPTY
 from os.path import basename
 
@@ -34,6 +33,12 @@ class ConfigVersion(Enum):
 
 INJECTORTYPE_TO_INJECTOR = {
     InjectionType.URL.value : UrlInjector
+}
+
+INJECTORTYPE_TO_EXPORT = {
+    InjectionType.URL.value : {
+        ExportIdentifier.PAYLOADS.value : URLExport.PAYLOADS.value
+    }
 }
 
 INJECTOR_TO_INJECTORTYPE = {
@@ -72,6 +77,7 @@ class Configuration:
         for key, values in self.payload_files_to_add.items():
             for file in values:
                 
+                # this duplicate check sucks
                 if file in self.global_payload_files_added[key]:
                     continue
                 
@@ -96,20 +102,37 @@ class Configuration:
             self.injectors_serialized.append(injector)
     
     def build_injectors(self) -> InjectorList:
-        pass
+        ilist = []
+        payloads_to_load = self.get_empty_payload_dict()
+        
+        for key, values in self.payload_files_to_add.items():
+            for file in values:
+                
+                # this duplicate check sucks
+                if file in self.global_payload_files_added[key]:
+                    continue
+                
+                with open(file, "r") as f:
+                    payloads_to_load[key] += f.read().split(self.payload_file_separetor)
+        
+        for i in self.injectors_serialized:
+            injector_type = i[ExportIdentifier.INJECTOR_TYPE.value]
+            payload_idn = INJECTORTYPE_TO_EXPORT[injector_type][ExportIdentifier.PAYLOADS.value]
+            
+            i[payload_idn] += self.global_payloads[injector_type] + payloads_to_load[injector_type]
+            ilist.append(INJECTORTYPE_TO_INJECTOR[injector_type].from_dict(i))
+            
+        return InjectorList(ilist)
 
     def to_dict(self) -> dict:
-        
-        # TODO: risolvere enorme problema quando importo i payloads da un file!
-        
         return {
-                ExportIdentifier.VERSION.value : self.config_version,
-                ExportIdentifier.CONFIGURATION_NAME.value : self.config_name,
-                ExportIdentifier.GLOBAL_PAYLOADS.value : self.global_payloads,
-                ExportIdentifier.GLOBAL_PAYLOAD_FILES.value : self.payload_files_to_add,
-                ExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value : self.payload_file_separetor,
-                ExportIdentifier.INJECTORS.value : self.injectors_serialized
-            }
+            ExportIdentifier.VERSION.value : self.config_version,
+            ExportIdentifier.CONFIGURATION_NAME.value : self.config_name,
+            ExportIdentifier.GLOBAL_PAYLOADS.value : self.global_payloads,
+            ExportIdentifier.GLOBAL_PAYLOAD_FILES.value : self.payload_files_to_add,
+            ExportIdentifier.GLOBAL_PAYLOAD_FILE_SEPARETOR.value : self.payload_file_separetor,
+            ExportIdentifier.INJECTORS.value : self.injectors_serialized
+        }
     
     @staticmethod
     def get_empty_payload_dict(type=list) -> dict[str, set | list]:

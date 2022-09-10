@@ -893,7 +893,21 @@ class ConfigurationTest(unittest.TestCase):
         
     
     def test_build_injector(self):
-        self.fail("Not implemented")
+        url_str1 = "https://sjdahfbakhs"
+        url1 = UrlInjector(Url(url_str1), [])
+        to_add = [self.RELATIVE_PATH + "to_add1.txt", self.RELATIVE_PATH + "to_add2.txt"]
+        payloads = []
+        
+        for i in to_add:
+            with open(i, "r") as f:
+                payloads += f.read().split("\n")
+                
+        cnf = Configuration(injector_list=InjectorList([url1]))
+        cnf.add_payload_file_by_key(InjectionType.URL.value, to_add)
+        
+        injectors = cnf.build_injectors()
+        self.fail("test on injector are missing")
+        
 
 if __name__ == "__main__":
     unittest.main()
