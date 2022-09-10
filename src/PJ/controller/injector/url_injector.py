@@ -3,7 +3,7 @@ from enum import Enum
 from PJ.model.url import Url
 from PJ.utils.urls import Urls
 from PJ.controller.injector.injector import Injector, InjectorIterable, InjectorList
-from typing import Callable
+from typing import Callable, Iterable
 
 class ExportUtils(Enum):
     PAYLOADS = "Payloads"
@@ -18,7 +18,7 @@ class ExportUtils(Enum):
 
 class UrlInjector(Injector):
 
-    def __init__(self, url : Url, payloads : list[str], request: Callable=Urls.get_request) -> None:
+    def __init__(self, url : Url, payloads : Iterable[str], request: Callable=Urls.get_request) -> None:
         self.__url = url
         self.__payloads = payloads
         self.__request = request
@@ -29,24 +29,12 @@ class UrlInjector(Injector):
     def __iter__(self) -> UrlInjectorIterable:
         return UrlInjectorIterable(self)
     
-    def __len__(self) -> int:
-        return len(self.__payloads)
-
-    def _inject_payload(self, payload : str):
-        '''
-        Inject to url the given, the specified payload
-        '''
-        self.__url.inject(payload)
-    
     def _inject(self, payload : str):
         '''
         Inject the payload, in the position given by the parameter
         '''
         self.__url.inject(payload)
         self.__request(self.__url.get_url(), self.__url.get_params())
-    
-    def _get_injection(self, index: int) -> str:
-        return self._get_payload(index)
 
     def inject_all(self):
         '''
@@ -76,5 +64,5 @@ class UrlInjector(Injector):
 
 
 class UrlInjectorIterable(InjectorIterable):
-    def __init__(self, url_injector: UrlInjector) -> None:
-        super().__init__(url_injector, len(url_injector))
+    def __init__(self, url_injector: UrlInjector, payloads : Iterable) -> None:
+        super().__init__(url_injector, payloads)

@@ -1,7 +1,7 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from math import floor
-from typing import Iterator
+from typing import Iterable, Iterator
 
 class Injector(ABC):
     
@@ -42,25 +42,14 @@ class Injector(ABC):
         pass
 
 class InjectorIterable:
-    def __init__(self, injector : Injector, injection_num : int) -> None:
+    def __init__(self, injector : Injector, payloads : Iterable) -> None:
         self.__injector = injector
-        self.__injection_num = injection_num
-        self.__index = 0
-    
-    def _is_over(self) -> bool:
-        return self.__index < self.__injection_num
-
-    def _get_injector_at_index(self) -> str | Injector:
-        return self.__injector._get_injection(self.__index)
+        self.__iter = payloads
 
     def __next__(self) -> str | Injector:
-        if self._is_over():
-            self.__injector._inject(self.__index)
-            rtr = self._get_injector_at_index()
-            self.__index += 1
-            return rtr
-        else:
-            raise StopIteration
+        pld = next(self.__iter)
+        self.__injector._inject(pld)
+        return pld
 
 
 class InjectorList(Injector):
@@ -106,5 +95,5 @@ class InjectorList(Injector):
 INJECTORLIST_EMPTY = InjectorList([])
 
 class InjectorListIterator(InjectorIterable):
-    def __init__(self, injector: InjectorList) -> None:
-        super().__init__(injector, len(injector))
+    def __init__(self, injector: InjectorList, payloads : Iterable) -> None:
+        super().__init__(injector, payloads)
