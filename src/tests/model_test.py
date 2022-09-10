@@ -423,6 +423,7 @@ class ConfigurationTest(unittest.TestCase):
             self.assertListEqual(cnf.global_payload_files[key], expected[key])
     
     def test_add_payload_file_by_key_single_duplicate(self):
+        # for now there's no check to duplicated files
         to_add = self.RELATIVE_PATH + "initial1.txt"
         
         initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
@@ -433,7 +434,7 @@ class ConfigurationTest(unittest.TestCase):
         }
         
         expected = {
-            InjectionType.URL.value: initial_list,
+            InjectionType.URL.value: initial_list + [to_add],
             InjectionType.WEBDRIVER.value : []
         }
         
@@ -448,6 +449,8 @@ class ConfigurationTest(unittest.TestCase):
             self.assertListEqual(cnf.global_payload_files[key], expected[key])
     
     def test_add_payload_file_by_key_list_duplicate(self):
+        # for now there's no check to duplicated files
+        
         to_add = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
         
         initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
@@ -608,6 +611,9 @@ class ConfigurationTest(unittest.TestCase):
             self.assertListEqual(cnf.global_payload_files[key], expected[key])
     
     def test_add_payload_file_by_dict_single_duplicate(self):
+        
+        # for now there's no check to duplicated files
+        
         single_to_add = self.RELATIVE_PATH + "initial1.txt"
         
         to_add = {
@@ -720,6 +726,9 @@ class ConfigurationTest(unittest.TestCase):
             self.assertListEqual(actual, expected[key])
     
     def test_load_payload_file_duplicated(self):
+        
+        # for now there's no check to duplicated files
+        
         to_add = self.RELATIVE_PATH + "to_add1.txt"
         
         initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
