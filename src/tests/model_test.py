@@ -266,7 +266,7 @@ class ConfigurationTest(unittest.TestCase):
         relative_path = self.RELATIVE_PATH + "no_global_payloads_file.json"
         fd = open(relative_path)
         cnf = Configuration.from_file_descriptor(fd)
-        self.assertEqual(Configuration.get_empty_payload_dict(type=list), cnf.global_payload_files)
+        self.assertEqual(Configuration.get_empty_payload_dict(type=list), cnf.global_payload_files_added)
         
     def test_missing_global_payloads_file_separetor_fd(self):
         relative_path = self.RELATIVE_PATH + "no_global_payload_file separetor.json"
@@ -295,7 +295,7 @@ class ConfigurationTest(unittest.TestCase):
     def test_missing_global_payloads_file_fn(self):
         relative_path = self.RELATIVE_PATH + "no_global_payloads_file.json"
         cnf = Configuration.from_file(relative_path)
-        self.assertEqual(Configuration.get_empty_payload_dict(type=list), cnf.global_payload_files)
+        self.assertEqual(Configuration.get_empty_payload_dict(type=list), cnf.global_payload_files_added)
         
     def test_missing_global_payloads_file_separetor_fn(self):
         relative_path = self.RELATIVE_PATH + "no_global_payload_file separetor.json"
@@ -316,9 +316,9 @@ class ConfigurationTest(unittest.TestCase):
         
         for key in expected.keys():
             expected[key].sort()
-            cnf.global_payload_files[key].sort()
+            cnf.global_payload_files_added[key].sort()
         
-            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+            self.assertListEqual(cnf.global_payload_files_added[key], expected[key])
         
         initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
         
@@ -338,9 +338,9 @@ class ConfigurationTest(unittest.TestCase):
         
         for key in expected.keys():
             expected[key].sort()
-            cnf.global_payload_files[key].sort()
+            cnf.global_payload_files_added[key].sort()
         
-            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+            self.assertListEqual(cnf.global_payload_files_added[key], expected[key])
 
     def test_add_payload_file_by_key_set(self):
         to_add = {self.RELATIVE_PATH + "to_add1.txt", self.RELATIVE_PATH + "to_add2.txt"}
@@ -356,9 +356,9 @@ class ConfigurationTest(unittest.TestCase):
         
         for key in expected.keys():
             expected[key].sort()
-            cnf.global_payload_files[key].sort()
+            cnf.global_payload_files_added[key].sort()
         
-            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+            self.assertListEqual(cnf.global_payload_files_added[key], expected[key])
         
         initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
         
@@ -378,9 +378,9 @@ class ConfigurationTest(unittest.TestCase):
         
         for key in expected.keys():
             expected[key].sort()
-            cnf.global_payload_files[key].sort()
+            cnf.global_payload_files_added[key].sort()
         
-            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+            self.assertListEqual(cnf.global_payload_files_added[key], expected[key])
     
     def test_add_payload_file_by_key_single(self):
         to_add = self.RELATIVE_PATH + "to_add1.txt"
@@ -396,9 +396,9 @@ class ConfigurationTest(unittest.TestCase):
         
         for key in expected.keys():
             expected[key].sort()
-            cnf.global_payload_files[key].sort()
+            cnf.global_payload_files_added[key].sort()
         
-            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+            self.assertListEqual(cnf.global_payload_files_added[key], expected[key])
         
         initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
         
@@ -418,9 +418,9 @@ class ConfigurationTest(unittest.TestCase):
         
         for key in expected.keys():
             expected[key].sort()
-            cnf.global_payload_files[key].sort()
+            cnf.global_payload_files_added[key].sort()
         
-            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+            self.assertListEqual(cnf.global_payload_files_added[key], expected[key])
     
     def test_add_payload_file_by_key_single_duplicate(self):
         # for now there's no check to duplicated files
@@ -444,9 +444,9 @@ class ConfigurationTest(unittest.TestCase):
         
         for key in expected.keys():
             expected[key].sort()
-            cnf.global_payload_files[key].sort()
+            cnf.global_payload_files_added[key].sort()
         
-            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+            self.assertListEqual(cnf.global_payload_files_added[key], expected[key])
     
     def test_add_payload_file_by_key_list_duplicate(self):
         # for now there's no check to duplicated files
@@ -471,9 +471,9 @@ class ConfigurationTest(unittest.TestCase):
         
         for key in expected.keys():
             expected[key].sort()
-            cnf.global_payload_files[key].sort()
+            cnf.global_payload_files_added[key].sort()
         
-            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+            self.assertListEqual(cnf.global_payload_files_added[key], expected[key])
 
     def test_add_payload_file_by_dict_list(self):
         list_to_add = [self.RELATIVE_PATH + "to_add1.txt", self.RELATIVE_PATH + "to_add2.txt"]
@@ -494,9 +494,9 @@ class ConfigurationTest(unittest.TestCase):
         
         for key in expected.keys():
             expected[key].sort()
-            cnf.global_payload_files[key].sort()
+            cnf.global_payload_files_added[key].sort()
         
-            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+            self.assertListEqual(cnf.global_payload_files_added[key], expected[key])
         
         initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
         
@@ -516,9 +516,9 @@ class ConfigurationTest(unittest.TestCase):
         
         for key in expected.keys():
             expected[key].sort()
-            cnf.global_payload_files[key].sort()
+            cnf.global_payload_files_added[key].sort()
         
-            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+            self.assertListEqual(cnf.global_payload_files_added[key], expected[key])
 
     def test_add_payload_file_by_dict_set(self):
         set_to_add = {self.RELATIVE_PATH + "to_add1.txt", self.RELATIVE_PATH + "to_add2.txt"}
@@ -539,9 +539,9 @@ class ConfigurationTest(unittest.TestCase):
         
         for key in expected.keys():
             expected[key].sort()
-            cnf.global_payload_files[key].sort()
+            cnf.global_payload_files_added[key].sort()
         
-            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+            self.assertListEqual(cnf.global_payload_files_added[key], expected[key])
         
         initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
         
@@ -561,9 +561,9 @@ class ConfigurationTest(unittest.TestCase):
         
         for key in expected.keys():
             expected[key].sort()
-            cnf.global_payload_files[key].sort()
+            cnf.global_payload_files_added[key].sort()
         
-            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+            self.assertListEqual(cnf.global_payload_files_added[key], expected[key])
     
     def test_add_payload_file_by_dict_single(self):
         single_to_add = self.RELATIVE_PATH + "to_add1.txt"
@@ -584,9 +584,9 @@ class ConfigurationTest(unittest.TestCase):
         
         for key in expected.keys():
             expected[key].sort()
-            cnf.global_payload_files[key].sort()
+            cnf.global_payload_files_added[key].sort()
         
-            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+            self.assertListEqual(cnf.global_payload_files_added[key], expected[key])
         
         initial_list = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
         
@@ -606,9 +606,9 @@ class ConfigurationTest(unittest.TestCase):
         
         for key in expected.keys():
             expected[key].sort()
-            cnf.global_payload_files[key].sort()
+            cnf.global_payload_files_added[key].sort()
         
-            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+            self.assertListEqual(cnf.global_payload_files_added[key], expected[key])
     
     def test_add_payload_file_by_dict_single_duplicate(self):
         
@@ -639,9 +639,9 @@ class ConfigurationTest(unittest.TestCase):
         
         for key in expected.keys():
             expected[key].sort()
-            cnf.global_payload_files[key].sort()
+            cnf.global_payload_files_added[key].sort()
         
-            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+            self.assertListEqual(cnf.global_payload_files_added[key], expected[key])
     
     def test_add_payload_file_by_key_dict_duplicate(self):
         list_to_add = [self.RELATIVE_PATH + "initial1.txt", self.RELATIVE_PATH + "initial2.txt"]
@@ -669,9 +669,9 @@ class ConfigurationTest(unittest.TestCase):
         
         for key in expected.keys():
             expected[key].sort()
-            cnf.global_payload_files[key].sort()
+            cnf.global_payload_files_added[key].sort()
         
-            self.assertListEqual(cnf.global_payload_files[key], expected[key])
+            self.assertListEqual(cnf.global_payload_files_added[key], expected[key])
     
     def test_load_payload_file(self):
         to_add = self.RELATIVE_PATH + "to_add1.txt"

@@ -47,7 +47,7 @@ class Configuration:
         self.config_version = config_version
         
         self.global_payloads = self.get_empty_payload_dict() if global_payloads == {} else global_payloads
-        self.global_payload_files = self.get_empty_payload_dict()
+        self.global_payload_files_added = self.get_empty_payload_dict()
         self.payload_files_to_add = self.get_empty_payload_dict() if global_payload_files == {} else global_payload_files
         self.payload_file_separetor = global_payload_file_separetor
         
@@ -72,10 +72,10 @@ class Configuration:
         for key, values in self.payload_files_to_add.items():
             for file in values:
                 
-                if file in self.global_payload_files[key]:
+                if file in self.global_payload_files_added[key]:
                     continue
                 
-                self.global_payload_files[key].append(file)
+                self.global_payload_files_added[key].append(file)
                 with open(file, "r") as f:
                     self.global_payloads[key] += f.read().split(self.payload_file_separetor)
         
