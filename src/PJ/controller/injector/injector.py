@@ -60,7 +60,7 @@ class InjectorList(Injector):
         return len(self.__injectors)
 
     def __iter__(self):
-        return InjectorListIterator(self)
+        return InjectorListIterator(self, iter(self.__injectors))
     
     def _inject(self, payload : int) -> None:
         '''
