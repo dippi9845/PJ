@@ -1,9 +1,11 @@
+from functools import partial
 import unittest
 from PJ.controller.injector.injector import InjectorList
-from PJ.controller.injector.url_injector import UrlInjector
+from PJ.controller.injector.url_injector import UrlInjector, ExportUtils as UrlInjectorExportIdentifier
 from PJ.model.variable import Variable, FixedVariable, InjectableVariable
 from PJ.model.url import Url, ExportIdentifier as UrlExportIdentifier
 from PJ.model.configuration import Configuration, ExportIdentifier as ConfigurationExportIdentifier, InjectionType
+from PJ.utils.urls import Urls
 
 class TestUrl(unittest.TestCase):
 
@@ -890,24 +892,129 @@ class ConfigurationTest(unittest.TestCase):
         self.assertEqual(expected[ConfigurationExportIdentifier.INJECTORS.value], actual[ConfigurationExportIdentifier.INJECTORS.value])
         
         # valori non ordinati nelle liste
-        
     
-    def test_build_injector(self):
-        url_str1 = "https://sjdahfbakhs"
-        url1 = UrlInjector(Url(url_str1), [])
+    def check_by_list_of_combos(self, combos : list[str], url : str, params : dict):
+        actual = Urls.unparse_url(url, params)
+        self.assertIn(actual, combos)
+        combos.remove(actual)
+    
+    def test_build_injector_one_url_injector_by_initial_payloads(self):
+        url_str1 = "https://sjdahfbakhs?a=null&b=null"
         to_add = [self.RELATIVE_PATH + "to_add1.txt", self.RELATIVE_PATH + "to_add2.txt"]
+        
         payloads = []
         
         for i in to_add:
             with open(i, "r") as f:
                 payloads += f.read().split("\n")
+        
+        
+        combinations = list(map(lambda x: url_str1.replace("null", x), payloads))
+        to_call = partial(self.check_by_list_of_combos, combinations)
+        
+        url1 = UrlInjector(Url(url_str1, vars_in_url_are_fixed=False), payloads)
+                
+        cnf = Configuration(injector_list=InjectorList([url1]))
+        #cnf.add_payload_file_by_key(InjectionType.URL.value, to_add)
+        
+        injectors = cnf.build_injectors()
+        for i in injectors:
+            tmp = i.to_dict()
+            real_injnector = UrlInjector(Url.from_dict(tmp[UrlInjectorExportIdentifier.URL.value]), tmp[UrlInjectorExportIdentifier.PAYLOADS.value], request=to_call)
+            real_injnector.inject_all()
+        
+        self.assertListEqual(combinations, [])
+        
+    def test_build_injector_one_url_injector_by_adding_next(self):
+        url_str1 = "https://sjdahfbakhs?a=null&b=null"
+        to_add = [self.RELATIVE_PATH + "to_add1.txt", self.RELATIVE_PATH + "to_add2.txt"]
+        
+        payloads = []
+        
+        for i in to_add:
+            with open(i, "r") as f:
+                payloads += f.read().split("\n")
+        
+        
+        combinations = list(map(lambda x: url_str1.replace("null", x), payloads))
+        to_call = partial(self.check_by_list_of_combos, combinations)
+        
+        url1 = UrlInjector(Url(url_str1, vars_in_url_are_fixed=False), [])
                 
         cnf = Configuration(injector_list=InjectorList([url1]))
         cnf.add_payload_file_by_key(InjectionType.URL.value, to_add)
         
         injectors = cnf.build_injectors()
-        self.fail("test on injector are missing")
+        for i in injectors:
+            tmp = i.to_dict()
+            real_injnector = UrlInjector(Url.from_dict(tmp[UrlInjectorExportIdentifier.URL.value]), tmp[UrlInjectorExportIdentifier.PAYLOADS.value], request=to_call)
+            real_injnector.inject_all()
         
+        self.assertListEqual(combinations, [])
+    
+    def test_build_injector_two_url_injector_by_initial_payloads(self):
+        url_str = [Url("https://sjdahfbakhs?a=null&b=null", vars_in_url_are_fixed=False), Url("https://sjdahdsadasdfbakhs?a=null&b=null", vars_in_url_are_fixed=False)]
+        to_add = [self.RELATIVE_PATH + "to_add1.txt", self.RELATIVE_PATH + "to_add2.txt"]
+        
+        payloads = []
+        
+        for i in to_add:
+            with open(i, "r") as f:
+                payloads += f.read().split("\n")
+        
+        
+        combinations = []
+        
+        for i in payloads:
+            for j in url_str:
+                combinations.append(j.inject(i))
+        
+        to_call = partial(self.check_by_list_of_combos, combinations)
+        
+        url = UrlInjector.from_values(url_str, payloads)
+                
+        cnf = Configuration(injector_list=url)
+        #cnf.add_payload_file_by_key(InjectionType.URL.value, to_add)
+        
+        injectors = cnf.build_injectors()
+        for i in injectors:
+            tmp = i.to_dict()
+            real_injnector = UrlInjector(Url.from_dict(tmp[UrlInjectorExportIdentifier.URL.value]), tmp[UrlInjectorExportIdentifier.PAYLOADS.value], request=to_call)
+            real_injnector.inject_all()
+        
+        self.assertListEqual(combinations, [])
+    
+    def test_build_injector_two_url_injector_by_adding_next(self):
+        url_str = [Url("https://sjdahfbakhs?a=null&b=null", vars_in_url_are_fixed=False), Url("https://sjdahdsadasdfbakhs?a=null&b=null", vars_in_url_are_fixed=False)]
+        to_add = [self.RELATIVE_PATH + "to_add1.txt", self.RELATIVE_PATH + "to_add2.txt"]
+        
+        payloads = []
+        
+        for i in to_add:
+            with open(i, "r") as f:
+                payloads += f.read().split("\n")
+        
+        
+        combinations = []
+        
+        for i in payloads:
+            for j in url_str:
+                combinations.append(j.inject(i))
+        
+        to_call = partial(self.check_by_list_of_combos, combinations)
+        
+        url = UrlInjector.from_values(url_str, [])
+                
+        cnf = Configuration(injector_list=url)
+        cnf.add_payload_file_by_key(InjectionType.URL.value, to_add)
+        
+        injectors = cnf.build_injectors()
+        for i in injectors:
+            tmp = i.to_dict()
+            real_injnector = UrlInjector(Url.from_dict(tmp[UrlInjectorExportIdentifier.URL.value]), tmp[UrlInjectorExportIdentifier.PAYLOADS.value], request=to_call)
+            real_injnector.inject_all()
+        
+        self.assertListEqual(combinations, [])
 
 if __name__ == "__main__":
     unittest.main()
