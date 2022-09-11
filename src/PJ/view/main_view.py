@@ -24,6 +24,10 @@ class MainView:
     @abstractmethod
     def log(self, string : str, end='\n'):
         pass
+    
+    @abstractmethod
+    def ask_for_multiple(self, message: str, elements : list) -> dict:
+        pass
 
     def ask_yes_no(self, question : str, yes : str = "y", no : str = "n", suggested : str = "y", case_sensitive : bool = False, yes_to_bool : bool = True) -> bool:
         ch = self.ask_input(question)
@@ -42,18 +46,6 @@ class MainView:
         
         else:
             return None
-    
-    def ask_for_multiple(self, question : str) -> list:
-        tmp = " "
-        rtr = []
-        
-        while tmp is not "":
-            tmp = self.__view.ask_input(question)
-            rtr.append(tmp)
-        
-        rtr.pop()
-        
-        return rtr
 
     def log_info(self, string : str, level_of_log=3):
         if self.__level_of_log >= level_of_log:

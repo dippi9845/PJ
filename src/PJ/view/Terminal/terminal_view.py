@@ -34,3 +34,15 @@ class TerminalView(MainView):
             return super().log_info(self.INFO_SEGNALATION + string, level_of_log)
         else:
             return super().log_info(string, level_of_log)
+        
+    def ask_for_multiple(self, message: str, elements: list) -> dict:
+        tmp = " "
+        rtr = {}
+        
+        for i in elements:
+            while tmp is not "":
+                tmp = self.ask_input(message + " " + i)
+            
+            rtr[i] = tmp
+        
+        return rtr
