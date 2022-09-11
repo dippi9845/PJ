@@ -1,5 +1,6 @@
+from __future__ import annotations
 from enum import Enum
-from PJ.utils.urls import url_parameters, remove_query as remove_params, unparse_url
+from PJ.utils.urls import Urls
 from PJ.model.variable import FixedVariable, InjectableVariable
 
 class ExportIdentifier(Enum):
@@ -9,57 +10,85 @@ class ExportIdentifier(Enum):
 
 class Url:
     def __init__(self, url : str, injectable_varaible : list[InjectableVariable]=[], fixed_variable : list[FixedVariable]=[] ,vars_in_url_are_fixed=True) -> None:
-        parameters = url_parameters(url)
-        self.__url = remove_params(url)
-        self.__fixed_vars = fixed_variable
-        self.__variable = injectable_varaible
+        parameters = Urls.url_parameters(url)
+        self.__url = Urls.remove_query(url)
+        self.__fixed_vars = fixed_variable.copy()
+        self.__variable = injectable_varaible.copy()
 
         if vars_in_url_are_fixed is True:
-            for name, value in zip(parameters):
+            for name, value in parameters.items():
                 self.__fixed_vars.append(FixedVariable(name, content=value))
         
         elif vars_in_url_are_fixed is False:
-            for name, value in zip(parameters):
-                self.__variable.append(InjectableVariable(name))
+            for name, value in parameters.items():
+                self.__variable.append(InjectableVariable(name, content=value))
     
     def inject(self, payload : str) -> str:
         for i in self.__variable:
             i.inject(payload)
         
-        return self.__str__
+        return str(self)
     
     def __str__(self) -> str:
-        return unparse_url(self.get_url(), self.get_params())
+        return Urls.unparse_url(self.get_url(), self.get_params())
 
     def get_url(self) -> str:
         return self.__url
-
-    def get_injectable_list(self) -> list:
-        return [x.to_dict() for x in self.__variable]
     
-    def get_injectable_dict(self) -> dict:
+    def get_injectable(self) -> dict:
         rtr = {}
-        map(lambda x : rtr.update(x), self.get_injectable_list())
+        
+        for i in self.__variable:
+            rtr.update({i.get_variable_name() : i.get_content()})
+        
         return rtr
     
-    def get_fixed_list(self) -> list:
-        return [x.to_dict() for x in self.__fixed_vars]
-    
-    def get_fixed_dict(self) -> dict:
+    def get_fixed(self) -> dict:
         rtr = {}
-        map(lambda x : rtr.update(x), self.get_fixed_list())
+        
+        for i in self.__fixed_vars:
+            rtr.update({i.get_variable_name() : i.get_content()})
+        
         return rtr
 
     def get_params(self) -> dict:
-        vars = self.get_injectable_dict()
-        vars.update(self.get_fixed_dict())
+        vars = self.get_injectable()
+        vars.update(self.get_fixed())
         return vars
     
     def to_dict(self) -> dict:
-        return {ExportIdentifier.URL.value : self.__url, ExportIdentifier.INJECTABLE_VARAIBLE.value : self.get_injectable_dict(), ExportIdentifier.FIXED_VARAIBLE.value : self.get_fixed_dict()}
+        return {
+            ExportIdentifier.URL.value : self.__url,
+            ExportIdentifier.INJECTABLE_VARAIBLE.value : self.get_injectable(),
+            ExportIdentifier.FIXED_VARAIBLE.value : self.get_fixed()
+        }
 
-def from_dict(raw : dict) -> Url:
-    injecatbles = [InjectableVariable(key, content=value) for key, value in raw[ExportIdentifier.INJECTABLE_VARAIBLE.value].items()]
-    fixed = [FixedVariable(key, content=value) for key, value in raw[ExportIdentifier.FIXED_VARAIBLE.value].items()]
+    @classmethod
+    def from_dict(cls, raw : dict, not_present_to_empty=True) -> Url:
+        
+        if not raw.__contains__(ExportIdentifier.URL.value):
+            raise ValueError(f"No key {ExportIdentifier.URL.value} found that specify the actual url to inject")
 
-    return Url(raw[ExportIdentifier.URL], injectable_varaible=injecatbles, fixed_variable=fixed)
+        if not raw.__contains__(ExportIdentifier.INJECTABLE_VARAIBLE.value):
+            
+            if not_present_to_empty:
+                injectables = []
+            
+            else:
+                raise ValueError(f"No key {ExportIdentifier.INJECTABLE_VARAIBLE.value} found that specify the injectables varaibles")
+        
+        else:
+            injectables = InjectableVariable.from_dict(raw[ExportIdentifier.INJECTABLE_VARAIBLE.value], force_to_list=True)
+
+        if not raw.__contains__(ExportIdentifier.FIXED_VARAIBLE.value):
+            
+            if not_present_to_empty:
+                fixed = []
+            
+            else:
+                raise ValueError(f"No key {ExportIdentifier.FIXED_VARAIBLE.value} found that specify the fixed varaibles")
+
+        else:
+            fixed = FixedVariable.from_dict(raw[ExportIdentifier.FIXED_VARAIBLE.value], force_to_list=True)
+        
+        return cls(raw[ExportIdentifier.URL.value], injectable_varaible=injectables, fixed_variable=fixed)
