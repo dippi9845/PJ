@@ -46,3 +46,6 @@ class TerminalView(MainView):
             rtr[i] = tmp
         
         return rtr
+    
+    def main_menu(self):
+        pass

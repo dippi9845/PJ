@@ -28,7 +28,11 @@ class MainView:
     @abstractmethod
     def ask_for_multiple(self, message: str, elements : list) -> dict:
         pass
-
+    
+    @abstractmethod
+    def main_menu(self):
+        pass
+    
     def ask_yes_no(self, question : str, yes : str = "y", no : str = "n", suggested : str = "y", case_sensitive : bool = False, yes_to_bool : bool = True) -> bool:
         ch = self.ask_input(question)
         
