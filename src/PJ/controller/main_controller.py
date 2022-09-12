@@ -1,10 +1,7 @@
 from __future__ import annotations
 from PJ.controller.injector.injector import Injector
-from PJ.model.url import Url
 from PJ.view.main_view import MainView
-from PJ.model.variable import InjectableVariable, FixedVariable
-from PJ.model.configuration import Configuration, ExportIdentifier as ConfigurationExport, InjectionType
-from injector.injector import InjectorList
+from PJ.model.configuration import Configuration, InjectionType
 from typing import Optional
 
 class MainController:
@@ -25,14 +22,14 @@ class MainController:
     def add_injector(self, injector : Injector) -> None:
         self.__config.add_injector(injector)
 
-    def add_global_payload(self, key : InjectionType | str, payload : str) -> None:
+    def add_global_payload(self, key : InjectionType | str, payload : str | list[str] | set[str]) -> None:
         
         if type(key) is InjectionType:
             key = key.value
         
-        self.__config[ConfigurationExport.GLOBAL_PAYLOADS.value][key].append(payload)
+        self.__config.add_global_payload(key, payload)
     
-    def add_global_payload_file(self, key : InjectionType | str, filename : str | list[str]) -> None:
+    def add_global_payload_file(self, key : InjectionType | str, filename : str | list[str] | set[str]) -> None:
         
         if type(key) is InjectionType:
             key = key.value
@@ -50,11 +47,10 @@ class MainController:
             for payload in single:
                 self.__view.log_info("Tryied this payload: " + payload, level_of_log=6)
         
-    
     def inject_all(self):
         to_inject = self.__config.build_injectors()
         to_inject.inject_all()
 
     @classmethod
-    def from_file(cls, filename : str, view : MainView) -> MainController:
+    def from_file(cls, view : MainView, filename : str) -> MainController:
         return cls(view, option=Configuration.from_file(filename))
