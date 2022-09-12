@@ -16,7 +16,7 @@ class TerminalView(MainView):
         with open(self.INTRODUCTION_FILE) as file:
             print(file.read())
 
-    def ask_input(string : str) -> str:
+    def ask_input(self, string : str) -> str:
         return input(string)
 
     def log(self, string: str, end='\n'):
@@ -47,5 +47,13 @@ class TerminalView(MainView):
         
         return rtr
     
-    def main_menu(self):
-        pass
+    def menu(self, message : str, choices : list[str], description : list[str]) -> str:
+        print(message)
+        for i,j in zip(choices, description):
+            print(i, "- for", j)
+        
+        ch = None
+        while not ch in choices:
+            ch = self.ask_input("Insert your choise -> ")
+        
+        return ch

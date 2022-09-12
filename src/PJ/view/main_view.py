@@ -30,7 +30,7 @@ class MainView:
         pass
     
     @abstractmethod
-    def main_menu(self):
+    def menu(self, message : str, choices : list[str]) -> str:
         pass
     
     def ask_yes_no(self, question : str, yes : str = "y", no : str = "n", suggested : str = "y", case_sensitive : bool = False, yes_to_bool : bool = True) -> bool:
