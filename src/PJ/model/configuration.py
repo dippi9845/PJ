@@ -58,6 +58,16 @@ class Configuration:
         
         self.injectors_serialized = injectors_serialized + list(map(lambda x: self.serialize_injector(x), injector_list))
 
+    def add_global_payload(self, key : str, payload : str | list[str] | set[str]) -> None:
+        # to test
+        if type(payload) is str:
+            self.global_payloads[key].append(payload)
+
+        elif type(payload) is list:
+            self.global_payloads[key] += payload
+        
+        elif type(payload) is set:
+            self.global_payloads[key] += list(payload)
     
     def add_payload_file_by_key(self, key : str, payload_file : str | list[str] | set[str]) -> None:
         if type(payload_file) is str:
