@@ -8,7 +8,7 @@ from typing import Callable, Iterable, Iterator
 class ExportUtils(Enum):
     PAYLOADS = "Payloads"
     URL = "Url"
-    REUQEST_TYPE = "Request"
+    REQUEST_TYPE = "Request"
     
     POST_REQUEST = "POST"
     GET_REQUEST = "GET"
@@ -52,12 +52,12 @@ class UrlInjector(Injector):
         return {
             ExportUtils.PAYLOADS.value : list(self.__payloads),
             ExportUtils.URL.value : self.__url.to_dict(),
-            ExportUtils.REUQEST_TYPE.value: ExportUtils.FUNC_REQUESTS.value[self.__request]
+            ExportUtils.REQUEST_TYPE.value: ExportUtils.FUNC_REQUESTS.value[self.__request]
         }
     
     @classmethod
     def from_dict(cls, dictionary: dict) -> Injector:
-        return cls(Url.from_dict(dictionary[ExportUtils.URL.value]), dictionary[ExportUtils.PAYLOADS.value], request=ExportUtils.REQUESTS_FUNC.value[dictionary[ExportUtils.REUQEST_TYPE.value]])
+        return cls(Url.from_dict(dictionary[ExportUtils.URL.value]), dictionary[ExportUtils.PAYLOADS.value], request=ExportUtils.REQUESTS_FUNC.value[dictionary[ExportUtils.REQUEST_TYPE.value]])
     
     @classmethod
     def from_values(cls, urls : list[Url], payloads : list[str]) -> InjectorList:
