@@ -85,7 +85,8 @@ class MainController:
         self._add_injector(injector)
     
     def _build_url_injector(self) -> UrlInjector:
-        pass
+        # missing a way to create url
+        url_params = ["Url", ]
     
     def _set_configuration(self, config : Configuration=None) -> Configuration:
         if config == None:
