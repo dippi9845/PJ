@@ -35,7 +35,7 @@ class TerminalView(MainView):
         else:
             return super().log_info(string, level_of_log)
         
-    def ask_for_multiple(self, message: str, elements: list) -> dict:
+    def ask_for_multiple(self, message: str, elements: list[str]) -> dict:
         tmp = " "
         rtr = {}
         
