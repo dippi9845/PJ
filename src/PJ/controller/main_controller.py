@@ -91,7 +91,7 @@ class MainController:
     
     
     def get_config_property(self, key : str) -> str | list | dict:
-        return deepcopy(self.__config[key])
+        return self.__config.to_dict()[key]
     
     
     def get_config(self) -> Configuration:
@@ -117,8 +117,13 @@ class MainController:
         
         ch = self.__view.menu("Variable in the url are they Fixed, Varaible, or ignore them ?", ["f", "v", "i"], ["Fixed varaibles", "Variables", "Ignore them"])
         vinurl = True if ch == "f" else False if ch == "v" else None
+
+        payloads = [] # starts with global payloads
+        self.__view.ask_yes_no("Do you want to add a payload to the url ?")
+        if ch == "y":
+            pass # TODO ask for payloads
         
-        return UrlInjector(Url(url, injectable_varaible=variables, fixed_variable=fixed, vars_in_url_are_fixed=vinurl), self.__config)
+        return UrlInjector(Url(url, injectable_varaible=variables, fixed_variable=fixed, vars_in_url_are_fixed=vinurl), payloads)
     
     
     def _set_configuration(self, config : Configuration=None) -> Configuration:
@@ -172,7 +177,6 @@ class MainController:
     
     def exit(self):
         self.__view.log_info("Bye bye")
-        del self
     
     
     def __del__(self):
