@@ -1,5 +1,5 @@
 from __future__ import annotations
-from main_view import MainView
+from PJ.view.main_view import MainView
 
 class CommandListView(MainView):
     
