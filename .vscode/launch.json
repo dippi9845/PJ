@@ -11,7 +11,7 @@
             "program": "pj.py",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "cwd": ".."
+            "cwd": "${workspaceFolder}/src"
         }
     ]
 }
