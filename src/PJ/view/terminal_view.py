@@ -10,7 +10,7 @@ class TerminalView(MainView):
     INFO_SEGNALATION = "[" + Fore.CYAN + "INFO" + Fore.WHITE +"] "
 
     def __init__(self) -> None:
-        self.introduction()
+        super().__init__()
 
     def introduction(self):
         with open(self.INTRODUCTION_FILE) as file:
