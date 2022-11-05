@@ -54,7 +54,7 @@ class MainController:
         desc = list(map(lambda x: self.description[x], cmds))
         ch = ""
         
-        while ch is not Commands.EXIT.value:
+        while ch != Commands.EXIT.value:
             ch = self.__view.menu("Select the main commands", cmds, desc)
             self.cmds[ch]()
         
@@ -151,10 +151,10 @@ class MainController:
     
     def exit(self):
         self.__view.log_info("Bye bye")
-        del self.__view, self.__config, self.injectors, self.description, self.cmds
+        del self
     
     def __del__(self):
-        self.exit()
+        del self.__view, self.__config, self.injectors, self.description, self.cmds
         
 
     @classmethod
