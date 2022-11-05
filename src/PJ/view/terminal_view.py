@@ -1,9 +1,9 @@
-from main_view import MainView
+from PJ.view.main_view import MainView
 from colorama import Fore
 
 class TerminalView(MainView):
     
-    INTRODUCTION_FILE = "../../../../res/view/introduction.txt"
+    INTRODUCTION_FILE = "../res/view/introduction.txt"
 
     WARINING_SEGNALATION = "[" + Fore.YELLOW + "WARINIG" + Fore.WHITE + "] "
     ERROR_SEGNALATION = "[" + Fore.RED + "ERROR" + Fore.WHITE + "] "
