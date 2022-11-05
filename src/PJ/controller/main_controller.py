@@ -84,7 +84,7 @@ class MainController:
         injcetors = [InjectionType.URL.value]
         desc = ["Injector using url variables"]
         
-        injector_str = self.__view.menu("Which kind of payload file you want to add", injcetors, desc)
+        injector_str = self.__view.menu("Which kind of Injector you want to add", injcetors, desc)
         injector = self.injectors[injector_str]()
         self._add_injector(injector)
     
