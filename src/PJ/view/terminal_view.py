@@ -1,4 +1,4 @@
-from PJ.view.main_view import MainView
+from main_view import MainView
 from colorama import Fore
 
 class TerminalView(MainView):
