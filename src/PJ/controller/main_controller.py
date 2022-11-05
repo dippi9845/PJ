@@ -4,6 +4,8 @@ from PJ.controller.injector.injector import Injector
 from PJ.controller.injector.url_injector import UrlInjector
 from PJ.view.main_view import MainView
 from PJ.model.configuration import Configuration, InjectionType
+from PJ.model.url import Url
+from PJ.model.variable import Variable, FixedVariable
 from typing import Optional
 
 class Commands(Enum):
@@ -27,7 +29,8 @@ class MainController:
             Commands.ADD_INJECTOR.value : self.add_injector_cmd,
             Commands.LOAD_PAYLOADS_FROM_FILE.value : self.load_payloads_from_file,
             Commands.START_INJECTING.value : self.start_injecting,
-            Commands.INJECT_ALL.value : self.inject_all
+            Commands.INJECT_ALL.value : self.inject_all,
+            Commands.EXIT.value: self.exit
         }
         
         self.description = {
@@ -44,7 +47,6 @@ class MainController:
             InjectionType.URL.value : self._build_url_injector
         }
         
-        self.__view.introduction()
         self.main_menu()
     
     def main_menu(self):
@@ -85,8 +87,26 @@ class MainController:
         self._add_injector(injector)
     
     def _build_url_injector(self) -> UrlInjector:
-        # missing a way to create url
-        url_params = ["Url", ]
+        url = self.__view.ask_input("Insert the url to inject")
+        
+        variables = []
+        fixed = []
+        ch = None
+        
+        while ch is None or ch != "":
+            ch = self.__view.ask_yes_no("Do you want to add a variable to the url ?")
+            if ch == "y":
+                type_v = self.__view.menu("Insert the type of the variable", ["f", "v"], ["Fixed varaible which is needed to be here", "Variable that is going to be injected"])
+                name = self.__view.ask_input("Insert the variable name")
+                value = self.__view.ask_input("Insert the variable value")
+                
+                if type_v == "f": fixed.append(FixedVariable(name, value))
+                else: variables.append(Variable(name, value))
+        
+        ch = self.__view.menu("Variable in the url are they Fixed, Varaible, or ignore them ?", ["f", "v", "i"], ["Fixed varaibles", "Variables", "Ignore them"])
+        vinurl = True if ch == "f" else False if ch == "v" else None
+        
+        return UrlInjector(Url(url, injectable_varaible=variables, fixed_variable=fixed, vars_in_url_are_fixed=vinurl), self.__config)
     
     def _set_configuration(self, config : Configuration=None) -> Configuration:
         if config == None:
@@ -128,6 +148,14 @@ class MainController:
     def inject_all(self):
         to_inject = self.__config.build_injectors()
         to_inject.inject_all()
+    
+    def exit(self):
+        self.__view.log_info("Bye bye")
+        del self.__view, self.__config, self.injectors, self.description, self.cmds
+    
+    def __del__(self):
+        self.exit()
+        
 
     @classmethod
     def from_file(cls, view : MainView, filename : str) -> MainController:
