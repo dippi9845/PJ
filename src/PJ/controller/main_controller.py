@@ -7,6 +7,7 @@ from PJ.model.configuration import Configuration, InjectionType
 from PJ.model.url import Url
 from PJ.model.variable import Variable, FixedVariable
 from typing import Optional
+from copy import deepcopy
 
 class Commands(Enum):
     ADD_GLOBAL_PAYLOAD = "Add Global Payload"
@@ -87,6 +88,14 @@ class MainController:
         injector_str = self.__view.menu("Which kind of Injector you want to add", injcetors, desc)
         injector = self.injectors[injector_str]()
         self._add_injector(injector)
+    
+    
+    def get_config_property(self, key : str) -> str | list | dict:
+        return deepcopy(self.__config[key])
+    
+    
+    def get_config(self) -> Configuration:
+        return deepcopy(self.__config)
     
     
     def _build_url_injector(self) -> UrlInjector:
