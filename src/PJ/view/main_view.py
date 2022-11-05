@@ -8,6 +8,8 @@ class MainView:
 
     def __init__(self, level_of_log=3) -> None:
         
+        self.introduction()
+        
         if level_of_log < 1 or level_of_log > self.MAX_LEVEL_OF_LOG:
             raise TypeError("level of log not valid")
         
