@@ -256,20 +256,35 @@ class MainControllerTests(unittest.TestCase):
     def test_main_controller_menu_add_global_payload_file_cmd(self):
         payload_to_add = "test payload"
         
-        test_view = CommandListView([MainControllerCommands.ADD_GLOBAL_PAYLOAD.value])
+        test_view = CommandListView([MainControllerCommands.ADD_GLOBAL_PAYLOAD_FILE.value])
         test_view.add_command(ConfigInjectionType.URL.value)
         test_view.add_command(payload_to_add)
         test_view.add_command(MainControllerCommands.EXIT.value)
         
         main_controller = MainController(test_view)
-        payloads_global = main_controller.get_config_property(ConfigExportIdentifier.GLOBAL_PAYLOAD_FILES)[ConfigInjectionType.URL.value]
+        payloads_file = main_controller.get_config_property(ConfigExportIdentifier.GLOBAL_PAYLOAD_FILES.value)[ConfigInjectionType.URL.value]
         
-        self.assertEqual(len(payloads_global), 1)
-        self.assertEqual(payloads_global[0], payload_to_add)
-    
+        self.assertEqual(len(payloads_file), 1)
+        self.assertEqual(payloads_file[0], payload_to_add)
+
     
     def test_main_controller_menu_add_injector_cmd(self):
-        self.fail("Not implemented yet")
+        domain = "http://blablabla?ada=null&kl=null"
+        payloads = ["1", "2", "3", "4", "5", "6"]
+        url = Url(domain, vars_in_url_are_fixed=False)
+
+        injector = UrlInjector(url, payloads)
+        
+        test_view = CommandListView([MainControllerCommands.ADD_INJECTOR.value])
+        test_view.add_command(ConfigInjectionType.URL.value)
+        test_view.add_command(domain)
+        test_view.add_command("n")
+        test_view.add_command("v")
+        #test_view.add_command(i)
+        test_view.add_command(MainControllerCommands.EXIT.value)
+        
+        main_controller = MainController(test_view)
+        
     
     
     def test_main_controller_menu_load_payloads_from_file(self):
