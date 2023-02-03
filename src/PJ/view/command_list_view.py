@@ -3,7 +3,7 @@ from PJ.view.main_view import MainView
 
 class CommandListView(MainView):
     
-    def __init__(self, commands : list[str]) -> None:
+    def __init__(self, commands : list[str]=[]) -> None:
         super().__init__()
         self.__commands = commands
     
