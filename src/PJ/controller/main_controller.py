@@ -47,8 +47,6 @@ class MainController:
         self.injectors = {
             InjectionType.URL.value : self._build_url_injector
         }
-        
-        self.main_menu()
     
     
     def main_menu(self):
