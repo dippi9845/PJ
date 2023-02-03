@@ -7,8 +7,12 @@ class CommandListView(MainView):
         super().__init__()
         self.__commands = commands
     
+    
     def add_command(self, command : str) -> None:
         self.__commands.append(command)
+    
+    def add_commands(self, *args) -> None:
+        self.__commands += args
     
     
     def _get_next_command(self) -> str:
